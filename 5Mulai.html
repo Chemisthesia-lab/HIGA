@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Latihan Soal | Hidrolisis Garam</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-primary:#f0f9ff;
+  --bg-secondary:#ffffff;
+  --text-primary:#1e293b;
+  --text-secondary:#64748b;
+  --accent:#06b6d4;
+  --accent-hover:#0891b2;
+  --shadow:rgba(6,182,212,0.15);
+}
+body{font-family:'Poppins',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh}
+
+/* HEADER */
+.header{
+  background:var(--bg-secondary);
+  padding:1rem 2rem;
+  display:flex;justify-content:space-between;align-items:center;
+  position:sticky;top:0;
+  box-shadow:0 2px 8px var(--shadow);
+  z-index:1000;
+}
+.logo-section img{width:50px}
+.nav-menu{display:flex;gap:1rem}
+.nav-btn{
+  background:transparent;border:2px solid var(--accent);
+  padding:0.5rem 1.5rem;border-radius:25px;cursor:pointer;
+  font-weight:500;transition:0.3s;font-family:'Poppins',sans-serif;color:var(--text-primary);
+}
+.nav-btn:hover{background:var(--accent);color:white;transform:translateY(-2px)}
+
+/* MAIN */
+main{
+  max-width:900px;margin:2.5rem auto 4rem;
+  background:var(--bg-secondary);padding:2rem;
+  border-radius:20px;box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+.hidden{display:none!important}
+h2{color:var(--accent);margin-bottom:1rem}
+
+/* LOGIN */
+#loginBox{text-align:center}
+#loginBox .form-inner{max-width:420px;margin:0 auto;text-align:left}
+#loginBox p{margin-bottom:1.5rem;color:var(--text-secondary)}
+input{
+  width:100%;padding:0.8rem;margin-bottom:1rem;
+  border-radius:12px;border:2px solid #e2e8f0;
+  font-size:1rem;transition:0.3s;font-family:'Poppins',sans-serif;
+}
+input:focus{outline:none;border-color:var(--accent)}
+.primary{
+  background:var(--accent);color:white;border:none;
+  padding:0.8rem 2rem;border-radius:25px;cursor:pointer;
+  font-weight:600;font-size:1rem;transition:0.3s;font-family:'Poppins',sans-serif;
+}
+.primary:hover{background:var(--accent-hover);transform:translateY(-2px)}
+.btn-center{display:flex;justify-content:center;margin-top:0.5rem}
+
+/* PROGRESS */
+.progress-text{display:flex;justify-content:space-between;font-weight:500;margin-bottom:0.5rem;color:var(--text-secondary)}
+.progress-bar{width:100%;height:10px;background:#e2e8f0;border-radius:20px;overflow:hidden;margin-bottom:1.5rem}
+.progress-fill{height:100%;background:linear-gradient(135deg,#06b6d4,#3b82f6);transition:width 0.3s}
+
+/* QUESTION */
+.question{font-size:1.1rem;margin-bottom:1.5rem;line-height:1.6}
+
+/* OPTIONS */
+.option-btn{
+  width:100%;text-align:left;padding:1rem 1.2rem;margin-bottom:0.75rem;
+  border:2px solid #e2e8f0;border-radius:15px;background:white;cursor:pointer;
+  transition:0.25s;font-size:1rem;font-family:'Poppins',sans-serif;
+}
+.option-btn:hover:not(:disabled){border-color:var(--accent);background:#ecfeff;transform:translateX(5px)}
+.option-btn.correct{border-color:#22c55e;background:#dcfce7}
+.option-btn.wrong{border-color:#ef4444;background:#fee2e2}
+.option-btn:disabled{cursor:not-allowed}
+
+/* EXPLANATION */
+.explanation{
+  margin-top:1.5rem;padding:1.2rem;
+  background:#e0f2fe;border-left:5px solid var(--accent);border-radius:10px;
+  display:none;line-height:1.8;
+}
+.explanation math{font-size:1.05em;margin:0.3em 0}
+
+/* NAV QUIZ */
+.nav-quiz{display:flex;justify-content:space-between;margin-top:2rem;gap:1rem}
+.nav-quiz button{padding:0.8rem 1.8rem;border:none;border-radius:25px;font-weight:600;cursor:pointer;font-size:1rem;transition:0.3s;font-family:'Poppins',sans-serif}
+.prev{background:#e2e8f0;color:var(--text-primary)}
+.prev:hover:not(:disabled){background:#cbd5e1}
+.next{background:var(--accent);color:white}
+.next:hover:not(:disabled){background:var(--accent-hover);transform:translateY(-2px)}
+.nav-quiz button:disabled{opacity:0.5;cursor:not-allowed}
+
+/* RESULT */
+.result{text-align:center}
+.result h2{margin-bottom:0.5rem;font-size:2rem}
+.score-display{font-size:1.1rem;margin:0.5rem 0;color:var(--text-secondary)}
+.score-big{font-size:3.5rem;font-weight:700;color:var(--accent);display:block;margin:0.5rem 0 0.2rem}
+.score-msg{color:var(--text-secondary);font-size:1rem;margin-bottom:1rem}
+.review{margin-top:2rem;text-align:left}
+.review-item{padding:1.2rem;border-radius:12px;margin-bottom:1rem;line-height:1.6}
+.review-item.correct{background:#dcfce7;border-left:5px solid #22c55e}
+.review-item.wrong{background:#fee2e2;border-left:5px solid #ef4444}
+.review-item math{font-size:1em}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin-top:1.5rem}
+th,td{border:1px solid #cbd5e1;padding:0.8rem;text-align:center}
+th{background:#e0f2fe;color:var(--accent);font-weight:600}
+tr:hover{background:#f0f9ff}
+
+/* FOOTER */
+footer{
+  background:var(--bg-secondary);text-align:center;padding:1.5rem;
+  margin-top:3rem;color:var(--text-secondary);box-shadow:0 -2px 8px var(--shadow);
+}
+
+@media(max-width:768px){
+  .header{flex-direction:column;gap:1rem;padding:1rem}
+  .logo-section,.nav-menu{width:100%;justify-content:center}
+  .nav-menu{flex-wrap:wrap}
+  main{margin:1rem;padding:1.5rem}
+  .nav-quiz{flex-direction:column}
+  table{font-size:0.85rem}
+  th,td{padding:0.5rem}
+}
+
+/* === RESPONSIVE_GLOBAL_START === */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, video, canvas, iframe { max-width: 100%; height: auto; }
+/* === RESPONSIVE_GLOBAL_END === */
+
+
+/* === NAV_UNIFORM_START === */
+.nav-menu{
+  display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  align-items:center;
+}
+.nav-menu .nav-btn{
+  appearance:none;
+  border:0;
+  cursor:pointer;
+  border-radius:999px;
+  padding:.55rem .95rem;
+  font-size:.95rem !important;
+  font-weight:500 !important;
+  line-height:1.1;
+  white-space:nowrap;
+}
+@media (max-width:600px){
+  .nav-menu{ justify-content:center; }
+  .nav-menu .nav-btn{
+    padding:.5rem .8rem;
+    font-size:.9rem !important;
+  }
+}
+/* === NAV_UNIFORM_END === */
+
+</style>
+</head>
+
+<body>
+<div class="header">
+  <div class="logo-section">
+    <img src="logo um rev.png" alt="Logo Universitas Negeri Malang">
+  </div>
+  <div class="nav-menu">
+    <button class="nav-btn" onclick="history.back()">← Kembali</button>
+    <button class="nav-btn" onclick="location.href='2Beranda.html'">🏠 Beranda</button>
+    <button class="nav-btn" onclick="location.href='2Profil.html'">👤 Profil</button>
+  </div>
+</div>
+
+<main>
+  <!-- LOGIN -->
+  <div id="loginBox">
+    <h2>🔐 Identitas Peserta</h2>
+    <p>Silakan isi identitas sebelum memulai latihan soal</p>
+    <div class="form-inner">
+      <input id="nama"  placeholder="Nama Lengkap" type="text">
+      <input id="kelas" placeholder="Kelas" type="text">
+      <input id="absen" placeholder="Nomor Absen" type="number">
+    </div>
+    <div class="btn-center">
+      <button class="primary" onclick="startQuiz()">Mulai Mengerjakan →</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quizBox" class="hidden">
+    <div class="progress-text">
+      <span>Progress</span>
+      <span id="progressText">1 / 10</span>
+    </div>
+    <div class="progress-bar">
+      <div id="progressFill" class="progress-fill" style="width:10%"></div>
+    </div>
+
+    <h2 id="questionNumber">Soal 1</h2>
+    <div id="questionText" class="question"></div>
+
+    <div id="options"></div>
+    <div id="explanation" class="explanation"></div>
+
+    <div class="nav-quiz">
+      <button id="prevBtn" class="prev" disabled>← Sebelumnya</button>
+      <button id="nextBtn" class="next" disabled>Selanjutnya →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="resultBox" class="result hidden">
+    <h2>🎉 Latihan Selesai!</h2>
+    <p class="score-display">Skor Anda:</p>
+    <span id="scoreText" class="score-big"></span>
+    <p id="scoreMsg" class="score-msg"></p>
+    <div class="review" id="reviewBox"></div>
+    <button class="primary" style="margin-top:1.5rem" onclick="restartQuiz()">🔄 Mulai Ulang</button>
+  </div>
+
+  <!-- SCOREBOARD -->
+  <hr style="margin:3rem 0 2rem;border:none;border-top:2px solid #e2e8f0">
+  <h2>📊 Papan Skor</h2>
+  <p style="color:var(--text-secondary);margin-bottom:1rem">Daftar peserta yang telah mengerjakan latihan (tersimpan online)</p>
+
+  <table>
+    <thead>
+      <tr><th>No</th><th>Nama</th><th>Kelas</th><th>Absen</th><th>Skor</th><th>Waktu</th></tr>
+    </thead>
+    <tbody id="scoreTable">
+      <tr><td colspan="6" style="color:var(--text-secondary)">Memuat data...</td></tr>
+    </tbody>
+  </table>
+
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;align-items:center">
+    <button class="primary" onclick="loadScoreboard()">🔄 Refresh</button>
+    <button class="primary" style="background:#ef4444" onclick="resetScoreboard()">🔑 Reset (Guru)</button>
+    <span id="lastRefresh" style="margin-left:auto;color:var(--text-secondary);font-size:.85rem"></span>
+  </div>
+</main>
+
+<footer>&copy; 2026 Tsary ▏ Sumari ▏ Departemen Kimia ▏ Universitas Negeri Malang</footer>
+
+<script>
+/* ✅ URL SHEET */
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbxqw-LbZISNsMUMjQJZKSb_JylLQPSwNZ2ABDCkpZ3p2rRHUCRV1FWzNZoBypcaoYd0rw/exec";
+
+/* ===================== SOAL (10 NOMOR) ===================== */
+const quizData = [
+  {
+    question: "Ion-ion berikut yang tidak mengalami hidrolisis dalam air adalah...",
+    options: ["NH\u2084\u207A dan Cl\u207B","Na\u207A dan SO\u2084\u00B2\u207B","CH\u2083COO\u207B dan K\u207A","CN\u207B dan Ca\u00B2\u207A","Al\u00B3\u207A dan NO\u2083\u207B"],
+    correct: 1,
+    explanationHTML: `<strong>💡 Pembahasan:</strong><br>
+      Na⁺ berasal dari basa kuat (NaOH) dan SO₄²⁻ dari asam kuat (H₂SO₄).
+      Ion dari asam kuat dan basa kuat tidak bereaksi dengan air karena merupakan asam/basa konjugasi sangat lemah, sehingga <strong>tidak terhidrolisis</strong>.`
+  },
+  {
+    question: "Garam berikut yang mengalami hidrolisis total adalah...",
+    options: ["AlCl\u2083","K\u2082CO\u2083","NH\u2084CH\u2083COO","Ca(NO\u2083)\u2082","NaBr"],
+    correct: 2,
+    explanationHTML: `<strong>💡 Pembahasan:</strong><br>
+      NH₄CH₃COO berasal dari asam lemah (CH₃COOH) dan basa lemah (NH₄OH).
+      Baik kation NH₄⁺ maupun anion CH₃COO⁻ terhidrolisis → <strong>hidrolisis total</strong>.`
+  },
+  {
+    question: "Reaksi hidrolisis yang terjadi pada larutan NH₄Cl adalah...",
+    options: ["NH\u2084\u207A + H\u2082O \u2192 NH\u2084OH + H\u207A","Cl\u207B + H\u2082O \u2192 HCl + OH\u207B","NH\u2084Cl \u2192 NH\u2084\u207A + Cl\u207B","NH\u2084\u207A + OH\u207B \u2192 NH\u2084OH","Cl\u207B + H\u207A \u2192 HCl"],
+    correct: 0,
+    explanationHTML: `<strong>💡 Pembahasan:</strong><br>
+      NH₄Cl berasal dari basa lemah dan asam kuat. Yang terhidrolisis adalah kation NH₄⁺
+      bereaksi dengan air menghasilkan NH₄OH dan ion H⁺, sehingga larutan bersifat <strong>asam</strong>.`
+  },
+  {
+    question: "Garam dari asam kuat dan basa kuat tidak dapat terhidrolisis karena...",
+    options: ["Garam bersifat basa","Garam bersifat asam","Tidak ada ionisasi","Senyawa terionisasi sebagian","Senyawa terionisasi sempurna"],
+    correct: 4,
+    explanationHTML: `<strong>💡 Pembahasan:</strong><br>
+      Garam dari asam kuat dan basa kuat terionisasi sempurna menghasilkan ion-ion yang merupakan
+      asam/basa konjugasi sangat lemah, sehingga tidak dapat mengikat molekul air.
+      Tidak terhidrolisis, pH = 7 (netral).`
+  },
+  {
+    question: "pH garam yang terbentuk dari asam lemah dan basa kuat akan ….",
+    options: ["memerahkan lakmus biru","membirukan lakmus merah","bersifat netral","tidak berwarna jika ditetesi phenolphthalein","berwarna merah jika ditetesi metil merah"],
+    correct: 1,
+    explanationHTML: `<strong>💡 Pembahasan:</strong><br>
+      Garam dari asam lemah dan basa kuat mengalami hidrolisis anion yang menghasilkan ion OH⁻,
+      sehingga larutan bersifat <strong>basa (pH &gt; 7)</strong> → membirukan lakmus merah.`
+  },
+  {
+    question: "Hidrolisis parsial adalah hidrolisis yang terjadi pada garam yang terbentuk dari ....",
+    options: ["asam kuat-basa lemah atau asam lemah-basa kuat","asam kuat-basa kuat","asam lemah-basa kuat","asam lemah-basa lemah","semua benar"],
+    correct: 0,
+    explanationHTML: `<strong>💡 Pembahasan:</strong><br>
+      Hidrolisis parsial terjadi ketika hanya <em>salah satu</em> ion dari garam yang bereaksi dengan air,
+      yaitu ion yang berasal dari komponen lemah (asam lemah atau basa lemah).`
+  },
+  {
+    question: "pH hasil hidrolisis larutan NaCN 0,01 M adalah …. (Ka HCN = 1×10⁻¹⁰, Kw = 10⁻¹⁴)",
+    options: ["3","4","10","11","12"],
+    correct: 3,
+    explanationHTML: `<strong>💡 Pembahasan:</strong><br><br>
+<strong>Langkah 1 — Hitung K<sub>b</sub>:</strong>
+<math display="block">
+  <mrow>
+    <msub><mi>K</mi><mi>b</mi></msub>
+    <mo>=</mo>
+    <mfrac>
+      <msub><mi>K</mi><mi>w</mi></msub>
+      <msub><mi>K</mi><mi>a</mi></msub>
+    </mfrac>
+    <mo>=</mo>
+    <mfrac>
+      <msup><mn>10</mn><mrow><mo>-</mo><mn>14</mn></mrow></msup>
+      <msup><mn>10</mn><mrow><mo>-</mo><mn>10</mn></mrow></msup>
+    </mfrac>
+    <mo>=</mo>
+    <msup><mn>10</mn><mrow><mo>-</mo><mn>4</mn></mrow></msup>
+  </mrow>
+</math>
+<strong>Langkah 2 — Hitung [OH⁻]:</strong>
+<math display="block">
+  <mrow>
+    <mo>[</mo><msup><mtext>OH</mtext><mo>-</mo></msup><mo>]</mo>
+    <mo>=</mo>
+    <msqrt>
+      <mrow>
+        <msub><mi>K</mi><mi>b</mi></msub>
+        <mo>×</mo>
+        <mi>M</mi>
+      </mrow>
+    </msqrt>
+    <mo>=</mo>
+    <msqrt>
+      <mrow>
+        <msup><mn>10</mn><mrow><mo>-</mo><mn>4</mn></mrow></msup>
+        <mo>×</mo>
+        <msup><mn>10</mn><mrow><mo>-</mo><mn>2</mn></mrow></msup>
+      </mrow>
+    </msqrt>
+    <mo>=</mo>
+    <msqrt>
+      <msup><mn>10</mn><mrow><mo>-</mo><mn>6</mn></mrow></msup>
+    </msqrt>
+    <mo>=</mo>
+    <msup><mn>10</mn><mrow><mo>-</mo><mn>3</mn></mrow></msup>
+  </mrow>
+</math>
+<strong>Langkah 3 — Hitung pH:</strong>
+<math display="block">
+  <mrow>
+    <mtext>pOH</mtext><mo>=</mo><mn>3</mn>
+    <mspace width="2em"/>
+    <mo>⟹</mo>
+    <mspace width="2em"/>
+    <mtext>pH</mtext><mo>=</mo><mn>14</mn><mo>-</mo><mn>3</mn><mo>=</mo><mn>11</mn>
+  </mrow>
+</math>`
+  },
+  {
+    question: "Dalam 1 L larutan terdapat 1 mol CH₃COONa. Jika Kh = 10⁻¹⁰, pH larutan adalah...",
+    options: ["5","7","9","10","11"],
+    correct: 2,
+    explanationHTML: `<strong>💡 Pembahasan:</strong><br><br>
+<strong>Langkah 1 — Hitung [OH⁻]:</strong>
+<math display="block">
+  <mrow>
+    <msup>
+      <mrow><mo>[</mo><msup><mtext>OH</mtext><mo>-</mo></msup><mo>]</mo></mrow>
+      <mn>2</mn>
+    </msup>
+    <mo>=</mo>
+    <msub><mi>K</mi><mi>h</mi></msub>
+    <mo>×</mo>
+    <mo>[</mo><mi>G</mi><mo>]</mo>
+    <mo>=</mo>
+    <msup><mn>10</mn><mrow><mo>-</mo><mn>10</mn></mrow></msup>
+    <mo>×</mo>
+    <mn>1</mn>
+    <mo>=</mo>
+    <msup><mn>10</mn><mrow><mo>-</mo><mn>10</mn></mrow></msup>
+  </mrow>
+</math>
+<math display="block">
+  <mrow>
+    <mo>[</mo><msup><mtext>OH</mtext><mo>-</mo></msup><mo>]</mo>
+    <mo>=</mo>
+    <msqrt><msup><mn>10</mn><mrow><mo>-</mo><mn>10</mn></mrow></msup></msqrt>
+    <mo>=</mo>
+    <msup><mn>10</mn><mrow><mo>-</mo><mn>5</mn></mrow></msup>
+  </mrow>
+</math>
+<strong>Langkah 2 — Hitung pH:</strong>
+<math display="block">
+  <mrow>
+    <mtext>pOH</mtext><mo>=</mo><mn>5</mn>
+    <mspace width="2em"/>
+    <mo>⟹</mo>
+    <mspace width="2em"/>
+    <mtext>pH</mtext><mo>=</mo><mn>14</mn><mo>-</mo><mn>5</mn><mo>=</mo><mn>9</mn>
+  </mrow>
+</math>`
+  },
+  {
+    question: "Larutan NH₄Cl 0,4 M memiliki Kh = 10⁻⁹. Konsentrasi H⁺ dalam larutan adalah...",
+    options: ["2 \u00d7 10\u207B\u2075 M","4 \u00d7 10\u207B\u2075 M","2 \u00d7 10\u207B\u2074 M","4 \u00d7 10\u207B\u2074 M","2 \u00d7 10\u207B\u00b3 M"],
+    correct: 0,
+    explanationHTML: `<strong>💡 Pembahasan:</strong><br><br>
+<math display="block">
+  <mrow>
+    <mo>[</mo><msup><mi>H</mi><mo>+</mo></msup><mo>]</mo>
+    <mo>=</mo>
+    <msqrt>
+      <mrow>
+        <msub><mi>K</mi><mi>h</mi></msub>
+        <mo>×</mo>
+        <mi>M</mi>
+      </mrow>
+    </msqrt>
+    <mo>=</mo>
+    <msqrt>
+      <mrow>
+        <msup><mn>10</mn><mrow><mo>-</mo><mn>9</mn></mrow></msup>
+        <mo>×</mo>
+        <mn>0,4</mn>
+      </mrow>
+    </msqrt>
+    <mo>=</mo>
+    <msqrt>
+      <mrow>
+        <mn>4</mn>
+        <mo>×</mo>
+        <msup><mn>10</mn><mrow><mo>-</mo><mn>10</mn></mrow></msup>
+      </mrow>
+    </msqrt>
+    <mo>=</mo>
+    <mn>2</mn>
+    <mo>×</mo>
+    <msup><mn>10</mn><mrow><mo>-</mo><mn>5</mn></mrow></msup>
+    <mtext> M</mtext>
+  </mrow>
+</math>`
+  },
+  {
+    question: "Untuk garam dari asam lemah dan basa lemah, hubungan tetapan hidrolisis adalah...",
+    options: ["Kh = Kw/Ka","Kh = Kw/Kb","Kh = Ka \u00d7 Kb","Kh = Kw/(Ka \u00d7 Kb)","Kh = (Ka \u00d7 Kb)/Kw"],
+    correct: 3,
+    explanationHTML: `<strong>💡 Pembahasan:</strong><br>
+      Untuk hidrolisis total (asam lemah + basa lemah), baik kation maupun anion terhidrolisis.
+      Dari penurunan rumus diperoleh:
+<math display="block">
+  <mrow>
+    <msub><mi>K</mi><mi>h</mi></msub>
+    <mo>=</mo>
+    <mfrac>
+      <msub><mi>K</mi><mi>w</mi></msub>
+      <mrow>
+        <msub><mi>K</mi><mi>a</mi></msub>
+        <mo>×</mo>
+        <msub><mi>K</mi><mi>b</mi></msub>
+      </mrow>
+    </mfrac>
+  </mrow>
+</math>`
+  }
+];
+
+/* ===================== STATE ===================== */
+let idx=0, answers=[], userData={};
+const TOTAL = quizData.length; /* 10 */
+
+const progressFill = document.getElementById("progressFill");
+const progressText = document.getElementById("progressText");
+const prevBtn      = document.getElementById("prevBtn");
+const nextBtn      = document.getElementById("nextBtn");
+
+/* ✅ Hitung skor dari array answers */
+function calcScore(){
+  let s=0;
+  for(let i=0;i<TOTAL;i++){
+    if(answers[i] === quizData[i].correct) s++;
+  }
+  return s;
+}
+
+/* pesan motivasi berdasar skor */
+function scoreMessage(score){
+  const pct = (score/TOTAL)*100;
+  if(pct===100) return "🏆 Sempurna! Semua jawaban benar!";
+  if(pct>=80)   return "🌟 Bagus sekali! Terus pertahankan!";
+  if(pct>=60)   return "👍 Cukup baik! Pelajari lagi yang salah.";
+  if(pct>=40)   return "📚 Perlu belajar lebih giat ya!";
+  return "💪 Jangan menyerah, coba lagi!";
+}
+
+/* START */
+function startQuiz(){
+  const nama  = document.getElementById("nama").value.trim();
+  const kelas = document.getElementById("kelas").value.trim();
+  const absen = document.getElementById("absen").value.trim();
+  if(!nama||!kelas||!absen){ alert("⚠️ Mohon lengkapi semua identitas!"); return; }
+
+  userData = {nama,kelas,absen};
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("quizBox").classList.remove("hidden");
+  idx=0; answers=[];
+  loadQuestion();
+}
+
+/* LOAD QUESTION */
+function loadQuestion(){
+  const q = quizData[idx];
+  document.getElementById("questionNumber").textContent = `Soal ${idx+1}`;
+  document.getElementById("questionText").textContent   = q.question;
+  document.getElementById("options").innerHTML          = "";
+
+  const expl = document.getElementById("explanation");
+  expl.style.display = "none";
+  expl.innerHTML     = "";
+
+  progressFill.style.width = `${((idx+1)/TOTAL)*100}%`;
+  progressText.textContent = `${idx+1} / ${TOTAL}`;
+  prevBtn.disabled = idx===0;
+  nextBtn.disabled = (answers[idx]===undefined);
+
+  q.options.forEach((opt,i)=>{
+    const btn = document.createElement("button");
+    btn.className   = "option-btn";
+    btn.textContent = String.fromCharCode(65+i)+". "+opt;
+    btn.onclick     = ()=>selectOption(i);
+    document.getElementById("options").appendChild(btn);
+  });
+
+  if(answers[idx]!==undefined){
+    applyAnswerStyles();
+  }
+}
+
+/* terapkan warna + tampilkan penjelasan MathML */
+function applyAnswerStyles(){
+  const q = quizData[idx];
+  const chosen = answers[idx];
+  const btns = document.querySelectorAll(".option-btn");
+
+  btns.forEach(b=>b.disabled=true);
+  btns[chosen].classList.add(chosen===q.correct?"correct":"wrong");
+  if(chosen!==q.correct) btns[q.correct].classList.add("correct");
+
+  const expl = document.getElementById("explanation");
+  expl.innerHTML     = q.explanationHTML;
+  expl.style.display = "block";
+  nextBtn.disabled   = false;
+}
+
+/* pilih jawaban */
+function selectOption(i){
+  answers[idx] = i;
+  applyAnswerStyles();
+}
+
+/* NAV */
+nextBtn.onclick=()=>{ if(idx<TOTAL-1){idx++;loadQuestion();} else showResult(); };
+prevBtn.onclick=()=>{ if(idx>0){idx--;loadQuestion();} };
+
+/* RESULT */
+function showResult(){
+  const score = calcScore();
+
+  document.getElementById("quizBox").classList.add("hidden");
+  document.getElementById("resultBox").classList.remove("hidden");
+
+  /* ✅ Tampilkan skor sebagai X/10 */
+  document.getElementById("scoreText").textContent = `${score}/${TOTAL}`;
+  document.getElementById("scoreMsg").textContent  = scoreMessage(score);
+
+  const box = document.getElementById("reviewBox");
+  box.innerHTML = "";
+
+  quizData.forEach((q,i)=>{
+    const ok = (answers[i] === q.correct);
+    const div = document.createElement("div");
+    div.className = "review-item "+(ok?"correct":"wrong");
+
+    const pilihanSiswa = (answers[i]!==undefined)
+      ? String.fromCharCode(65+answers[i])+". "+q.options[answers[i]]
+      : "-";
+    const pilihanBenar = String.fromCharCode(65+q.correct)+". "+q.options[q.correct];
+
+    div.innerHTML = `
+      <strong>Soal ${i+1}:</strong> ${esc(q.question)}<br>
+      <strong>Jawaban Anda:</strong> ${esc(pilihanSiswa)}<br>
+      <strong>Jawaban Benar:</strong> ${esc(pilihanBenar)}<br>
+      <div style="margin-top:0.5rem">${q.explanationHTML}</div>`;
+    box.appendChild(div);
+  });
+
+  /* ✅ Kirim skor "X/10" ke Google Sheets */
+  saveScoreOnline(score);
+  setTimeout(loadScoreboard, 1200);
+}
+
+/* RESTART */
+function restartQuiz(){
+  idx=0; answers=[];
+  document.getElementById("resultBox").classList.add("hidden");
+  document.getElementById("loginBox").classList.remove("hidden");
+  ["nama","kelas","absen"].forEach(id=>document.getElementById(id).value="");
+}
+
+/* format waktu */
+function formatWaktu(){
+  const now = new Date();
+  const d   = String(now.getDate());
+  const m   = String(now.getMonth()+1);
+  const y   = now.getFullYear();
+  const hh  = String(now.getHours()).padStart(2,"0");
+  const mm  = String(now.getMinutes()).padStart(2,"0");
+  const ss  = String(now.getSeconds()).padStart(2,"0");
+  return `${d}/${m}/${y}, ${hh}.${mm}.${ss}`;
+}
+
+/* ✅ Kirim ke Google Sheets — skor format "X/10" */
+function saveScoreOnline(score){
+  fetch(SHEET_URL,{
+    method:"POST",
+    mode:"no-cors",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({
+      nama:  userData.nama,
+      kelas: userData.kelas,
+      absen: userData.absen,
+      skor:  `${score}/${TOTAL}`,
+      waktu: formatWaktu()
+    })
+  }).catch(err=>console.warn("Gagal kirim skor:",err));
+}
+
+/* ========== SCOREBOARD (JSONP) ========== */
+function normalizeRow(d){
+  return {
+    nama:  String(d["Nama"]  ?? d["nama"]  ?? ""),
+    kelas: String(d["Kelas"] ?? d["kelas"] ?? ""),
+    absen: String(d["Absen"] ?? d["absen"] ?? ""),
+    skor:  String(d["Skor"]  ?? d["skor"]  ?? ""),
+    waktu: String(d["Waktu"] ?? d["waktu"] ?? "")
+  };
+}
+
+function loadScoreboard(){
+  const tbody = document.getElementById("scoreTable");
+  tbody.innerHTML = '<tr><td colspan="6" style="color:var(--text-secondary)">Memuat data...</td></tr>';
+
+  jsonp(SHEET_URL, {}, function(data){
+    document.getElementById("lastRefresh").textContent =
+      "Update: " + new Date().toLocaleTimeString("id-ID");
+
+    if(!data || !data.length){
+      tbody.innerHTML = '<tr><td colspan="6" style="color:var(--text-secondary)">Belum ada data</td></tr>';
+      return;
+    }
+
+    const rows = data.slice().reverse().map(normalizeRow);
+    tbody.innerHTML = rows.map((d,i)=>`<tr>
+      <td>${i+1}</td>
+      <td>${esc(d.nama)}</td>
+      <td>${esc(d.kelas)}</td>
+      <td>${esc(d.absen)}</td>
+      <td><strong>${esc(d.skor)}</strong></td>
+      <td style="font-size:.88rem">${esc(d.waktu)}</td>
+    </tr>`).join("");
+  }, function(){
+    tbody.innerHTML = '<tr><td colspan="6" style="color:var(--text-secondary)">Gagal memuat. Klik Refresh.</td></tr>';
+  });
+}
+
+function resetScoreboard(){
+  const pass = prompt("🔑 Masukkan password guru:");
+  if(!pass) return;
+
+  jsonp(SHEET_URL, {action:"reset", pass:pass}, function(res){
+    if(res && res.status==="reset_ok"){
+      alert("✅ Papan skor berhasil direset!");
+    } else {
+      alert("❌ Password salah!");
+    }
+    loadScoreboard();
+  }, function(){
+    alert("Gagal menghubungi server. Coba lagi.");
+    loadScoreboard();
+  });
+}
+
+function jsonp(url, params, onSuccess, onError){
+  const cbName = "cb_"+Date.now();
+  const extra  = Object.entries(params).map(([k,v])=>k+"="+encodeURIComponent(v)).join("&");
+  const src    = url+"?callback="+cbName+(extra?"&"+extra:"")+"&ts="+Date.now();
+
+  window[cbName] = function(data){
+    try{ delete window[cbName]; }catch(e){}
+    if(s && s.parentNode) s.parentNode.removeChild(s);
+    onSuccess(data);
+  };
+
+  const s = document.createElement("script");
+  s.src = src;
+  s.onerror = function(){
+    try{ delete window[cbName]; }catch(e){}
+    if(s.parentNode) s.parentNode.removeChild(s);
+    if(onError) onError();
+  };
+  document.body.appendChild(s);
+}
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+
+loadScoreboard();
+</script>
+</body>
+</html>

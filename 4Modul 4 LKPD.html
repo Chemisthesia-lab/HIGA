@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LKPD Hidrolisis Garam</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-primary:#f0f9ff;
+  --bg-secondary:#ffffff;
+  --text-primary:#1e293b;
+  --text-secondary:#64748b;
+  --accent:#06b6d4;
+  --accent-hover:#0891b2;
+  --shadow:rgba(6,182,212,0.15);
+  --green:#16a34a; --green-l:#dcfce7;
+  --amber:#d97706; --amber-l:#fef3c7;
+  --red:#dc2626; --red-l:#fee2e2;
+  --blue:#2563eb; --blue-l:#dbeafe;
+}
+
+body{font-family:'Poppins',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;}
+
+/* HEADER */
+.header{background:#fff;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;box-shadow:0 2px 8px var(--shadow);z-index:1000;}
+.logo-section img{width:50px}
+.nav-menu{display:flex;gap:1rem;flex-wrap:wrap}
+.nav-btn{background:transparent;border:2px solid var(--accent);padding:.5rem 1.5rem;border-radius:25px;cursor:pointer;font-weight:500;transition:.3s;color:var(--text-primary)}
+.nav-btn:hover{background:var(--accent);color:white;transform:translateY(-2px)}
+
+/* CONTAINER */
+.container{max-width:1000px;margin:1.5rem auto 3rem;padding:0 1rem}
+
+/* CARD */
+.card{background:#fff;border-radius:20px;padding:1.5rem 1.8rem;box-shadow:0 8px 24px rgba(0,0,0,.07);margin-bottom:1.4rem}
+
+h1{text-align:center;color:var(--accent);font-size:1.5rem;margin-bottom:.3rem}
+.lkpd-sub{text-align:center;font-size:.88rem;color:var(--text-secondary);margin-bottom:.2rem}
+h2{border-left:5px solid var(--accent);padding-left:.75rem;margin-bottom:.9rem;font-size:1.1rem;color:var(--text-primary)}
+h3{color:var(--accent);margin:.9rem 0 .5rem;font-size:1rem}
+p{line-height:1.75;margin-bottom:.7rem;text-align:justify;font-size:.95rem}
+ul,ol{margin-left:1.4rem;line-height:1.9;font-size:.95rem;color:var(--text-secondary)}
+ul li,ol li{margin-bottom:.2rem}
+
+/* TAHAP BADGE */
+.tahap-badge{background:var(--accent);color:#fff;padding:.3rem 1rem;border-radius:15px;font-size:.8rem;font-weight:700;display:inline-block;margin-bottom:.8rem;letter-spacing:.04em}
+
+/* BERITA BOX */
+.news-box{
+  border:2px solid #e2e8f0;border-radius:16px;overflow:hidden;margin:1rem 0;
+  box-shadow:0 4px 16px rgba(0,0,0,.07);
+}
+.news-header{background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#fff;padding:1rem 1.4rem;display:flex;align-items:center;gap:.8rem}
+.news-source{font-size:.75rem;opacity:.7;margin-top:.15rem}
+.news-label{background:#ef4444;color:#fff;font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:5px;flex-shrink:0}
+.news-body{padding:1.2rem 1.4rem;background:#f8fafc}
+.news-title{font-weight:700;font-size:1rem;color:#0f172a;margin-bottom:.7rem;line-height:1.5}
+.news-text{font-size:.88rem;color:#475569;line-height:1.8;text-align:justify}
+.news-quote{
+  background:#fff;border-left:4px solid var(--accent);padding:.75rem 1rem;
+  border-radius:0 10px 10px 0;margin:1rem 0;font-style:italic;font-size:.9rem;color:#334155;
+}
+.news-quote cite{font-size:.8rem;color:var(--text-secondary);display:block;margin-top:.4rem;font-style:normal}
+.news-meta{font-size:.78rem;color:#94a3b8;margin-top:.8rem;padding-top:.7rem;border-top:1px solid #e2e8f0}
+
+/* CALLOUT BOXES */
+.callout{border-radius:12px;padding:1rem 1.2rem;margin:.8rem 0;font-size:.9rem;line-height:1.75}
+.callout-info{background:var(--blue-l);border-left:4px solid var(--blue);color:#1e3a8a}
+.callout-warning{background:var(--amber-l);border-left:4px solid var(--amber);color:#78350f}
+.callout-green{background:var(--green-l);border-left:4px solid var(--green);color:#14532d}
+.callout-title{font-weight:700;margin-bottom:.3rem;font-size:.88rem;letter-spacing:.04em}
+
+/* FORM ELEMENTS */
+textarea{
+  width:100%;margin-top:.5rem;border-radius:10px;border:1.5px solid #e2e8f0;
+  padding:.8rem 1rem;font-family:'Poppins',sans-serif;font-size:.9rem;
+  resize:vertical;min-height:90px;transition:.2s;color:var(--text-primary);
+}
+textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(6,182,212,.1)}
+input[type="text"]{
+  width:100%;margin-top:.45rem;border-radius:10px;border:1.5px solid #e2e8f0;
+  padding:.65rem 1rem;font-family:'Poppins',sans-serif;font-size:.9rem;transition:.2s;
+}
+input[type="text"]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(6,182,212,.1)}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin:.8rem 0}
+table{width:100%;border-collapse:collapse;min-width:780px}
+th{background:linear-gradient(135deg,#0e7490,#06b6d4);color:#fff;padding:.7rem .6rem;font-size:.82rem;font-weight:600;text-align:center;border:1px solid #e2e8f0}
+td{border:1px solid #e2e8f0;padding:.5rem .4rem;vertical-align:middle;text-align:center;font-size:.88rem}
+tr:nth-child(even){background:#f0f9ff}
+tr:hover{background:#e0f2fe}
+td input[type="text"]{margin:0;border:none;background:transparent;text-align:center;padding:.3rem .4rem;font-size:.85rem;min-width:80px}
+td input[type="text"]:focus{background:#fff;border:1.5px solid var(--accent);border-radius:6px}
+
+/* SOAL REAKSI */
+.reaksi-item{display:grid;grid-template-columns:auto 1fr;gap:.5rem .8rem;align-items:center;margin-bottom:.6rem}
+.reaksi-label{font-weight:600;font-size:.9rem;color:var(--accent);white-space:nowrap}
+.reaksi-item input{margin:0}
+
+/* QUESTION NUMBER */
+.q-block{margin-bottom:1.1rem}
+.q-label{font-weight:600;font-size:.93rem;color:var(--text-primary);margin-bottom:.1rem}
+
+/* IDENTITAS */
+.identitas-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem 1.2rem}
+@media(max-width:600px){.identitas-grid{grid-template-columns:1fr}}
+.id-label{font-size:.82rem;font-weight:600;color:#64748b;margin-bottom:.2rem}
+
+/* NAV BOTTOM */
+.nav-bottom{display:flex;justify-content:space-between;gap:1rem;margin-top:2rem;flex-wrap:wrap}
+.nav-bottom a{background:var(--accent);color:#fff;text-decoration:none;padding:.8rem 1.8rem;border-radius:25px;font-weight:600;transition:.3s;min-width:140px;text-align:center}
+.nav-bottom a:hover{background:var(--accent-hover);transform:translateY(-2px)}
+
+/* FOOTER */
+footer{background:#fff;text-align:center;padding:1.5rem;margin-top:3rem;box-shadow:0 -2px 8px var(--shadow);font-size:.88rem;color:var(--text-secondary)}
+
+/* DIVIDER */
+.divider{border:none;border-top:2px dashed #e2e8f0;margin:1.2rem 0}
+
+/* UPLOAD LINK */
+.upload-btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--accent);color:#fff;text-decoration:none;padding:.75rem 1.6rem;
+  border-radius:12px;font-weight:600;font-size:.95rem;margin-top:.8rem;transition:.3s;
+}
+.upload-btn:hover{background:var(--accent-hover);transform:translateY(-2px)}
+
+
+/* DOWNLOAD BUTTON */
+.download-btn{
+  display:inline-flex;align-items:center;gap:.75rem;
+  background:linear-gradient(135deg,#0891b2,#06b6d4);
+  color:#fff;border:none;padding:.9rem 2rem;border-radius:14px;
+  font-size:1rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;
+  transition:all .3s;box-shadow:0 4px 15px rgba(6,182,212,.35);
+}
+.download-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(6,182,212,.5)}
+.download-btn:active{transform:translateY(0)}
+.download-icon{font-size:1.3rem;animation:bounce-dl 1.5s infinite}
+@keyframes bounce-dl{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.download-btn.loading{background:#94a3b8;pointer-events:none}
+
+@media(max-width:700px){
+  .header{flex-direction:column;gap:.8rem;padding:1rem}
+  .card{padding:1.1rem}
+}
+
+/* === RESPONSIVE_GLOBAL_START === */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, video, canvas, iframe { max-width: 100%; height: auto; }
+/* === RESPONSIVE_GLOBAL_END === */
+
+
+/* === NAV_UNIFORM_START === */
+.nav-menu{
+  display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  align-items:center;
+}
+.nav-menu .nav-btn{
+  appearance:none;
+  border:0;
+  cursor:pointer;
+  border-radius:999px;
+  padding:.55rem .95rem;
+  font-size:.95rem !important;
+  font-weight:500 !important;
+  line-height:1.1;
+  white-space:nowrap;
+}
+@media (max-width:600px){
+  .nav-menu{ justify-content:center; }
+  .nav-menu .nav-btn{
+    padding:.5rem .8rem;
+    font-size:.9rem !important;
+  }
+}
+/* === NAV_UNIFORM_END === */
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-section"><img src="logo um rev.png" alt="Logo UM"></div>
+  <div class="nav-menu">
+    <button class="nav-btn" onclick="history.back()">← Kembali</button>
+    <button class="nav-btn" onclick="location.href='2Beranda.html'">🏠 Beranda</button>
+    <button class="nav-btn" onclick="location.href='2Profil.html'">👤 Profil</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- JUDUL -->
+  <div class="card">
+    <h1>Lembar Kerja Peserta Didik (LKPD)</h1>
+    <p class="lkpd-sub">Hidrolisis Garam &nbsp;|&nbsp; Kimia SMA Kelas XI</p>
+    <hr class="divider">
+    <div class="identitas-grid">
+      <div>
+        <div class="id-label">NOMOR KELOMPOK</div>
+        <input type="text" id="nomorKelompok" placeholder="Contoh: 1, 2, 3...">
+      </div>
+      <div>
+        <div class="id-label">KELAS</div>
+        <input type="text" id="kelasInput" placeholder="Kelas...">
+      </div>
+      <div>
+        <div class="id-label">ANGGOTA KELOMPOK</div>
+        <textarea id="anggotaInput" placeholder="1. &#10;2. &#10;3. &#10;4." style="min-height:75px"></textarea>
+      </div>
+      <div>
+        <div class="id-label">TANGGAL</div>
+        <input type="text" id="tanggalInput" placeholder="Tanggal pengerjaan...">
+      </div>
+    </div>
+  </div>
+
+  <!-- TUJUAN -->
+  <div class="card">
+    <h2>🎯 Tujuan Pembelajaran</h2>
+    <p>Setelah mempelajari materi ini, peserta didik diharapkan dapat:</p>
+    <ol>
+      <li>Menganalisis sifat larutan garam berdasarkan konsep hidrolisis.</li>
+      <li>Menuliskan reaksi hidrolisis yang terjadi pada garam dalam air.</li>
+      <li>Menghitung pH dan tetapan hidrolisis (Kh) larutan garam hasil hidrolisis.</li>
+      <li>Mengaitkan konsep hidrolisis garam dengan permasalahan nyata di bidang pertanian.</li>
+    </ol>
+  </div>
+
+  <!-- =====================
+       TAHAP 1: ORIENTASI
+  ====================== -->
+  <div class="card">
+    <span class="tahap-badge">TAHAP 1 — PROBLEM BASED LEARNING</span>
+    <h2>Orientasi terhadap Masalah</h2>
+
+    <div class="callout callout-info">
+      <div class="callout-title">📰 Bacalah berita nyata berikut dengan seksama!</div>
+      Berita ini merupakan kejadian nyata yang terjadi di Kalimantan Timur. Temukan kaitannya dengan konsep hidrolisis garam yang telah kalian pelajari!
+    </div>
+
+    <!-- BERITA -->
+    <div class="news-box">
+      <div class="news-header">
+        <div>
+          <div style="font-weight:700;font-size:.95rem">seputarfakta.com</div>
+          <div class="news-source">Seputar Kaltim &nbsp;·&nbsp; 12 Januari 2025</div>
+        </div>
+        <div class="news-label">BERITA ASLI</div>
+      </div>
+      <div class="news-body">
+        <div class="news-title">Petani Keluhkan Kadar Keasaman Sawah Tinggi, Pemdes Sebakung Jaya Salurkan 5 Ton Pupuk Anti Asam</div>
+        <p class="news-text">
+          <strong>Penajam</strong> — Para petani di Desa Sebakung, Kecamatan Babulu, Penajam Paser Utara (PPU), Kalimantan Timur, kerap mengeluhkan tingginya kadar keasaman tanah di lahan persawahan miliknya. Kondisi tanah dengan kadar pH rendah atau terlalu asam mengakibatkan pertumbuhan dan produktivitas tanaman padi menjadi tidak maksimal.
+        </p>
+        <p class="news-text">
+          Untuk menetralkan kadar keasaman di lahan persawahan, Pemerintah Desa (Pemdes) Sebakung Jaya membantu para petani dengan menaburkan pupuk yang mengandung zat anti asam di lahan yang pH-nya rendah.
+        </p>
+        <div class="news-quote">
+          "Bantuan lima ton pupuk anti asam yang diberikan Distan baru-baru ini kita manfaatkan untuk membantu 16 Kelompok Tani (Poktan) di desa kita."
+          <cite>— Sajidin, Kepala Desa Sebakung Jaya</cite>
+        </div>
+        <p class="news-text">
+          Pupuk ini terbukti efektif dalam menurunkan kadar asam tanah. Namun pupuk ini memiliki kelemahan: saat hujan deras dan volume air di lahan naik, zat anti asamnya larut sehingga manfaatnya perlahan menghilang.
+        </p>
+        <div class="news-quote">
+          "Ketika hujan deras melanda, zat anti asamnya akan larut hingga manfaat pun ikut hilang. Jadi agar hasilnya nampak, jangan sampai banjir di lahan persawahannya."
+          <cite>— Sajidin, Kepala Desa Sebakung Jaya</cite>
+        </div>
+        <p class="news-text">
+          Para petani berharap dengan bantuan pupuk ini, produktivitas padi meningkat dan desa mereka dapat menjadi penyuplai beras bagi penduduk lokal hingga mendukung kehadiran Ibu Kota Nusantara (IKN) di wilayah terdekat.
+        </p>
+        <div class="news-meta">📍 Desa Sebakung Jaya, Kec. Babulu, Penajam Paser Utara, Kalimantan Timur &nbsp;·&nbsp; Penulis: Agus Saputra &nbsp;·&nbsp; <a href="https://seputarfakta.com/seputar-kaltim/petani-keluhkan-kadar-keasaman-sawah-tinggi-pemdes-sebakung-jaya-salurkan-5-ton-pupuk-anti-asam-7897" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600;text-decoration:none">🔗 Baca Sumber Asli ↗</a></div>
+      </div>
+    </div>
+
+    <div class="callout callout-warning">
+      <div class="callout-title">🌾 Konteks Tambahan</div>
+      pH ideal tanah untuk tanaman padi adalah <strong>5,5 – 6,5</strong>. Jika pH tanah terlalu rendah (sangat asam), unsur hara penting seperti fosfat tidak dapat diserap akar tanaman. Pupuk "anti asam" yang umum digunakan petani mengandung <strong>kapur pertanian (CaCO₃)</strong> atau garam-garam yang bersifat basa saat dilarutkan dalam air, misalnya <strong>Ca(CH₃COO)₂</strong> (kalsium asetat).
+    </div>
+  </div>
+
+  <!-- =====================
+       TAHAP 2: ORGANISASI
+  ====================== -->
+  <div class="card">
+    <span class="tahap-badge">TAHAP 2 — PROBLEM BASED LEARNING</span>
+    <h2>Mengorganisasi Peserta Didik untuk Belajar</h2>
+
+    <h3>📋 Pertanyaan Analisis Masalah</h3>
+
+    <div class="q-block">
+      <div class="q-label">1. Informasi penting apa saja yang kalian temukan dari berita di atas? Identifikasi minimal 4 poin!</div>
+      <textarea placeholder="Tuliskan poin-poin penting dari berita..."></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">2. Mengapa tanah sawah di Desa Sebakung Jaya bisa bersifat asam? Apa saja kemungkinan penyebabnya?</div>
+      <textarea placeholder="Tuliskan kemungkinan penyebab tanah bersifat asam..."></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">3. Mengapa produktivitas padi menurun saat pH tanah terlalu rendah? Jelaskan dari sisi kimia!</div>
+      <textarea placeholder="Jelaskan hubungan antara pH tanah dengan ketersediaan unsur hara..."></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">4. Mengapa "pupuk anti asam" efektif menaikkan pH tanah, tetapi efeknya hilang saat terkena banjir? Kaitkan dengan sifat kelarutan garam!</div>
+      <textarea placeholder="Jelaskan mengapa manfaat pupuk menghilang ketika banjir..."></textarea>
+    </div>
+
+    <hr class="divider">
+
+    <h3>💡 Hipotesis (Dugaan Awal)</h3>
+    <div class="callout callout-green">
+      <div class="callout-title">Petunjuk Merumuskan Hipotesis</div>
+      Hipotesis yang baik berformat: <em>"Jika [kondisi/variabel], maka [akibat/prediksi], karena [alasan]."</em>
+    </div>
+    <div class="q-block">
+      <div class="q-label">Rumuskan hipotesis kalian tentang: apakah jenis garam dalam pupuk mempengaruhi sifat larutan (asam/basa/netral) dan pH tanah? Jelaskan alasannya!</div>
+      <textarea placeholder="Hipotesis: Jika pupuk mengandung garam dari... maka... karena..."></textarea>
+    </div>
+  </div>
+
+  <!-- =====================
+       TAHAP 3: PENYELIDIKAN
+  ====================== -->
+  <div class="card">
+    <span class="tahap-badge">TAHAP 3 — PROBLEM BASED LEARNING</span>
+    <h2>Membimbing Penyelidikan Individual maupun Kelompok</h2>
+
+    <h3>🔍 Tugas Investigasi</h3>
+    <p>Cari informasi dari berbagai sumber untuk menjawab permasalahan yang telah diidentifikasi. Sumber dapat berupa buku paket, jurnal, video pembelajaran, atau bertanya kepada guru.</p>
+
+    <div class="q-block">
+      <div class="q-label">Sumber referensi yang digunakan kelompok:</div>
+      <input type="text" placeholder="1. Judul buku / URL / nama narasumber...">
+      <input type="text" placeholder="2." style="margin-top:.5rem">
+      <input type="text" placeholder="3." style="margin-top:.5rem">
+      <input type="text" placeholder="4." style="margin-top:.5rem">
+    </div>
+
+    <hr class="divider">
+
+    <h3>📊 Tabel Analisis Garam</h3>
+    <p>Kelima garam berikut berkaitan dengan jenis-jenis pupuk yang umum digunakan di pertanian Indonesia. Lengkapi tabel dengan tepat!</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Rumus Kimia Garam</th>
+            <th>Nama Garam / Pupuk</th>
+            <th>Kation</th>
+            <th>Anion</th>
+            <th>Ion yang Bereaksi dengan Air</th>
+            <th>Ion Spektator</th>
+            <th>Sifat Larutan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1.</td>
+            <td><strong>(NH₄)₂SO₄</strong><br><small>(Pupuk ZA)</small></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+          </tr>
+          <tr>
+            <td>2.</td>
+            <td><strong>KNO₃</strong><br><small>(Pupuk Niter)</small></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+          </tr>
+          <tr>
+            <td>3.</td>
+            <td><strong>Ca(CH₃COO)₂</strong><br><small>(Kalsium Asetat / Anti Asam)</small></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+          </tr>
+          <tr>
+            <td>4.</td>
+            <td><strong>(NH₄)₂HPO₄</strong><br><small>(Pupuk DAP)</small></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+          </tr>
+          <tr>
+            <td>5.</td>
+            <td><strong>Ca(H₂PO₄)₂</strong><br><small>(Pupuk TSP)</small></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+            <td><input type="text" placeholder="..."></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- =====================
+       TAHAP 4: PENGEMBANGAN
+  ====================== -->
+  <div class="card">
+    <span class="tahap-badge">TAHAP 4 — PROBLEM BASED LEARNING</span>
+    <h2>Mengembangkan dan Menyajikan Hasil Karya</h2>
+
+    <h3>📝 Pembahasan dan Analisis Data</h3>
+
+    <div class="q-block">
+      <div class="q-label">a. Berdasarkan tabel di atas, adakah hubungan antara jenis asam dan basa pembentuk garam dengan sifat larutannya? Jelaskan polanya!</div>
+      <textarea placeholder="Jelaskan hubungan antara kekuatan asam/basa pembentuk dengan sifat larutan garam..."></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">b. Kelompokkan kelima garam di atas berdasarkan jenis hidrolisis yang dialaminya! (Hidrolisis total / hidrolisis parsial / tidak terhidrolisis)</div>
+      <textarea placeholder="Hidrolisis total: ...&#10;Hidrolisis parsial: ...&#10;Tidak terhidrolisis: ..."></textarea>
+    </div>
+
+    <hr class="divider">
+
+    <h3>⚗ Persamaan Reaksi Hidrolisis</h3>
+    <p>Tuliskan reaksi ionisasi garam dan reaksi hidrolisis yang terjadi saat masing-masing garam dilarutkan dalam air!</p>
+
+    <p style="margin-bottom:.3rem"><strong>1. (NH₄)₂SO₄</strong></p>
+    <div class="reaksi-item">
+      <span class="reaksi-label">Ionisasi:</span>
+      <input type="text" placeholder="(NH₄)₂SO₄ → ...">
+    </div>
+    <div class="reaksi-item">
+      <span class="reaksi-label">Hidrolisis:</span>
+      <input type="text" placeholder="... + H₂O ⇌ ...">
+    </div>
+
+    <p style="margin:.8rem 0 .3rem"><strong>2. KNO₃</strong></p>
+    <div class="reaksi-item">
+      <span class="reaksi-label">Ionisasi:</span>
+      <input type="text" placeholder="KNO₃ → ...">
+    </div>
+    <div class="reaksi-item">
+      <span class="reaksi-label">Hidrolisis:</span>
+      <input type="text" placeholder="Apakah terjadi hidrolisis? Jelaskan...">
+    </div>
+
+    <p style="margin:.8rem 0 .3rem"><strong>3. Ca(CH₃COO)₂</strong></p>
+    <div class="reaksi-item">
+      <span class="reaksi-label">Ionisasi:</span>
+      <input type="text" placeholder="Ca(CH₃COO)₂ → ...">
+    </div>
+    <div class="reaksi-item">
+      <span class="reaksi-label">Hidrolisis:</span>
+      <input type="text" placeholder="... + H₂O ⇌ ...">
+    </div>
+
+    <p style="margin:.8rem 0 .3rem"><strong>4. (NH₄)₂HPO₄</strong></p>
+    <div class="reaksi-item">
+      <span class="reaksi-label">Ionisasi:</span>
+      <input type="text" placeholder="(NH₄)₂HPO₄ → ...">
+    </div>
+    <div class="reaksi-item">
+      <span class="reaksi-label">Hidrolisis:</span>
+      <input type="text" placeholder="... + H₂O ⇌ ...">
+    </div>
+
+    <p style="margin:.8rem 0 .3rem"><strong>5. Ca(H₂PO₄)₂</strong></p>
+    <div class="reaksi-item">
+      <span class="reaksi-label">Ionisasi:</span>
+      <input type="text" placeholder="Ca(H₂PO₄)₂ → ...">
+    </div>
+    <div class="reaksi-item">
+      <span class="reaksi-label">Hidrolisis:</span>
+      <input type="text" placeholder="... + H₂O ⇌ ...">
+    </div>
+
+    <hr class="divider">
+
+    <h3>🧮 Perhitungan pH dan Tetapan Hidrolisis</h3>
+
+    <div class="callout callout-info">
+      <div class="callout-title">📌 Data Soal</div>
+      Pemdes Sebakung Jaya menggunakan pupuk anti asam yang mengandung <strong>Ca(CH₃COO)₂</strong> (kalsium asetat) dengan konsentrasi <strong>0,1 M</strong>.<br>
+      Diketahui: K<sub>a</sub> CH₃COOH = 1,8 × 10⁻⁵ &nbsp;&nbsp;|&nbsp;&nbsp; K<sub>w</sub> = 1 × 10⁻¹⁴
+    </div>
+
+    <div class="q-block" style="margin-top:.9rem">
+      <div class="q-label">a. Hitunglah nilai tetapan hidrolisis (K<sub>h</sub>) dari ion CH₃COO⁻!</div>
+      <textarea placeholder="Diketahui: ...&#10;Ditanya: ...&#10;Jawab: Kh = Kw / Ka = ..."></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">b. Hitunglah pH larutan Ca(CH₃COO)₂ 0,1 M tersebut! (Gunakan rumus pH = ½(14 + pKa + log[G]))</div>
+      <textarea placeholder="Langkah 1: Hitung pKa = ...&#10;Langkah 2: Substitusi ke rumus...&#10;Hasil: pH = ..."></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">c. Apakah pH larutan Ca(CH₃COO)₂ tersebut sesuai untuk digunakan menaikkan pH tanah yang asam? Jelaskan!</div>
+      <textarea placeholder="Bandingkan pH larutan dengan pH ideal tanah padi (5,5–6,5)..."></textarea>
+    </div>
+  </div>
+
+  <!-- =====================
+       TAHAP 5: EVALUASI & REFLEKSI
+  ====================== -->
+  <div class="card">
+    <span class="tahap-badge">TAHAP 5 — PROBLEM BASED LEARNING</span>
+    <h2>Menganalisis dan Mengevaluasi Proses Pemecahan Masalah</h2>
+
+    <h3>🌾 Kembali ke Masalah Petani Sebakung Jaya</h3>
+    <p>Setelah kalian mendalami konsep hidrolisis garam, sekarang saatnya membantu para petani di Desa Sebakung Jaya, Penajam Paser Utara!</p>
+
+    <div class="callout callout-warning">
+      <div class="callout-title">📌 Situasi Kasus</div>
+      Tanah sawah di Desa Sebakung Jaya memiliki pH sekitar <strong>4,5 – 5,0 (sangat asam)</strong>. Tersedia empat jenis pupuk:
+      <ul style="margin-top:.5rem">
+        <li><strong>Pupuk ZA</strong> → mengandung (NH₄)₂SO₄</li>
+        <li><strong>Pupuk Niter</strong> → mengandung KNO₃</li>
+        <li><strong>Kalsium Asetat</strong> → mengandung Ca(CH₃COO)₂</li>
+        <li><strong>Pupuk DAP</strong> → mengandung (NH₄)₂HPO₄</li>
+      </ul>
+    </div>
+
+    <div class="q-block" style="margin-top:1rem">
+      <div class="q-label">1. Pupuk mana yang paling tepat digunakan untuk menaikkan pH tanah sawah Sebakung Jaya yang sangat asam? Jelaskan alasannya berdasarkan konsep hidrolisis!</div>
+      <textarea placeholder="Tuliskan pilihan pupuk dan alasannya berdasarkan sifat hidrolisis..."></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">2. Kepala Desa Sajidin menyebutkan bahwa efek pupuk anti asam hilang saat banjir. Jelaskan fenomena ini menggunakan konsep hidrolisis dan kelarutan garam!</div>
+      <textarea placeholder="Jelaskan mengapa larutan garam basa akan terencerkan dan pH-nya mendekati netral saat banjir..."></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">3. Jika petani di Sebakung Jaya ingin menggunakan pupuk yang tidak mengubah pH tanah (netral), pupuk mana yang seharusnya dipilih? Jelaskan!</div>
+      <textarea placeholder="Pilih garam yang bersifat netral dan berikan alasan kimia yang mendukung..."></textarea>
+    </div>
+
+    <hr class="divider">
+
+    <h3>📌 Kesimpulan</h3>
+    <div class="callout callout-green">
+      <div class="callout-title">Panduan Menulis Kesimpulan</div>
+      Kesimpulan yang baik menjawab: <em>(1) apa yang telah dipelajari, (2) bagaimana hubungan dengan masalah nyata, (3) apa rekomendasi solusi.</em>
+    </div>
+    <div class="q-block" style="margin-top:.8rem">
+      <div class="q-label">Tuliskan kesimpulan kelompok kalian tentang: bagaimana konsep hidrolisis garam dapat membantu menyelesaikan masalah keasaman tanah di Desa Sebakung Jaya?</div>
+      <textarea style="min-height:120px" placeholder="Berdasarkan hasil diskusi dan analisis, dapat disimpulkan bahwa..."></textarea>
+    </div>
+
+    <hr class="divider">
+
+    <h3>🪞 Refleksi Diri</h3>
+    <div class="q-block">
+      <div class="q-label">Apa hal baru yang kalian pelajari dari LKPD ini? Apa yang masih membingungkan?</div>
+      <textarea placeholder="Hal baru yang saya pelajari: ...&#10;Hal yang masih membingungkan: ..."></textarea>
+    </div>
+  </div>
+
+  <!-- PENGUMPULAN -->
+  <div class="card">
+    <h2>📤 Cara Pengumpulan Tugas</h2>
+    <ol>
+      <li>Diskusikan jawaban secara kelompok, lalu ketik di sini/catat di lembar kerja cetak</li>
+      <li>Format file pengumpulan: <strong>Word/PDF</strong></li>
+      <li>Nama file: <strong>Jangan diubah</strong></li>
+      <li>Kumpulkan melalui tautan Google Form di bawah ini</li>
+    </ol>
+    <a href="https://forms.gle/GoiGk44mf8Pe47et9" target="_blank" class="upload-btn">
+      ➡️ Kumpulkan Tugas di Google Form
+    </a>
+  </div>
+
+
+  <!-- DOWNLOAD JAWABAN -->
+  <div class="card" id="downloadCard">
+    <h2>⬇️ Unduh Jawaban</h2>
+    <p>Setelah mengisi semua jawaban, unduh hasil kerja kelompokmu dalam format Word (.docx) yang sudah tertata rapi!</p>
+
+    <div class="callout callout-info" style="margin-bottom:1rem">
+      <div class="callout-title">📋 Format nama file otomatis</div>
+      File akan dinamai: <strong id="previewFilename" style="font-family:monospace;background:#fff;padding:.15rem .5rem;border-radius:5px">kelas_tanggal_kelompokX.docx</strong>
+      <br><small style="opacity:.8">Pastikan Kelas, Tanggal, dan Nomor Kelompok sudah diisi di identitas.</small>
+    </div>
+
+    <button onclick="downloadDocx()" id="btnDownload" class="download-btn">
+      <span class="download-icon">⬇</span>
+      <span>Unduh Jawaban (.docx)</span>
+    </button>
+    <div id="downloadStatus" style="margin-top:.8rem;font-size:.88rem;color:#64748b;display:none"></div>
+  </div>
+
+  <!-- NAV BOTTOM -->
+  <div class="nav-bottom">
+    <a href="4Modul 3 Simulasi.html">⬅️ Kembali ke Simulasi...</a>
+    <a href="4Modul 5 Latihan Soal.html">Lanjut ke Latihan Soal ➡️</a>
+  </div>
+
+</div>
+
+<footer>&copy; 2026 Tsary ▏ Sumari ▏ Departemen Kimia ▏ Universitas Negeri Malang</footer>
+
+
+<!-- docx.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.0/papaparse.min.js"></script>
+<script>
+/* ============================================================
+   FILENAME PREVIEW (live update)
+============================================================ */
+function buildFilename(){
+  const kelas  = (document.getElementById('kelasInput')?.value||'kelas').trim().replace(/\s+/g,'') || 'kelas';
+  const tgl    = (document.getElementById('tanggalInput')?.value||'').trim().replace(/[/\\\s]+/g,'-') || new Date().toLocaleDateString('id-ID').replace(/\//g,'-');
+  const nomor  = (document.getElementById('nomorKelompok')?.value||'').trim().replace(/\s+/g,'') || 'X';
+  return `${kelas}_${tgl}_kelompok${nomor}`;
+}
+
+function updateFilenamePreview(){
+  const el = document.getElementById('previewFilename');
+  if(el) el.textContent = buildFilename() + '.docx';
+}
+
+['kelasInput','tanggalInput','nomorKelompok'].forEach(id=>{
+  document.getElementById(id)?.addEventListener('input', updateFilenamePreview);
+});
+updateFilenamePreview();
+
+/* ============================================================
+   COLLECT ALL ANSWERS
+============================================================ */
+function collectData(){
+  // Identitas
+  const nomor   = document.getElementById('nomorKelompok')?.value || '-';
+  const kelas   = document.getElementById('kelasInput')?.value || '-';
+  const anggota = document.getElementById('anggotaInput')?.value || '-';
+  const tanggal = document.getElementById('tanggalInput')?.value || '-';
+
+  // All textareas in order
+  const textareas = document.querySelectorAll('textarea');
+  const tAns = Array.from(textareas).map(t => t.value || '(belum diisi)');
+
+  // All single-line inputs EXCLUDING identitas
+  const inputs = document.querySelectorAll('input[type="text"]:not(#kelasInput):not(#nomorKelompok):not(#tanggalInput)');
+  const iAns = Array.from(inputs).map(i => i.value || '(belum diisi)');
+
+  return { nomor, kelas, anggota, tanggal, tAns, iAns };
+}
+
+/* ============================================================
+   GENERATE DOCX via raw XML (no external lib needed in browser)
+   We create a minimal but well-structured OOXML file
+============================================================ */
+async function downloadDocx(){
+  const btn = document.getElementById('btnDownload');
+  const status = document.getElementById('downloadStatus');
+  btn.classList.add('loading');
+  btn.querySelector('span:last-child').textContent = 'Menyiapkan file...';
+  status.style.display = 'block';
+  status.textContent = '⏳ Mengumpulkan jawaban...';
+
+  await new Promise(r => setTimeout(r, 200));
+
+  try {
+    const d = collectData();
+    const filename = buildFilename() + '.docx';
+    const docxBlob = buildDocx(d);
+    
+    const url = URL.createObjectURL(docxBlob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    status.innerHTML = `✅ Berhasil diunduh: <strong>${filename}</strong>`;
+    status.style.color = '#16a34a';
+  } catch(e){
+    console.error(e);
+    status.textContent = '❌ Gagal membuat file. Coba lagi atau hubungi guru.';
+    status.style.color = '#dc2626';
+  }
+
+  btn.classList.remove('loading');
+  btn.querySelector('span:last-child').textContent = 'Unduh Jawaban (.docx)';
+}
+
+/* ============================================================
+   BUILD DOCX (pure JS, no lib — using JSZip via CDN)
+============================================================ */
+function escXml(s){ 
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/\r\n|\n/g,'</w:t><w:br/><w:t xml:space="preserve">');
+}
+
+function para(text, opts={}){
+  const sz   = opts.sz   || 22;
+  const bold = opts.bold ? '<w:b/>' : '';
+  const color= opts.color? `<w:color w:val="${opts.color}"/>` : '';
+  const space= opts.space|| 120;
+  const align= opts.align? `<w:jc w:val="${opts.align}"/>` : '';
+  const shade= opts.shade? `<w:shd w:val="clear" w:color="auto" w:fill="${opts.shade}"/>` : '';
+  const indent= opts.indent? `<w:ind w:left="${opts.indent}"/>` : '';
+  return `<w:p>
+    <w:pPr>
+      ${align}${shade}${indent}
+      <w:spacing w:before="${space}" w:after="${space}"/>
+    </w:pPr>
+    <w:r>
+      <w:rPr>${bold}<w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/>${color}<w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/></w:rPr>
+      <w:t xml:space="preserve">${escXml(text)}</w:t>
+    </w:r>
+  </w:p>`;
+}
+
+function heading(text, level=1){
+  const sz    = level===1 ? 32 : level===2 ? 26 : 22;
+  const color = level===1 ? '0891B2' : level===2 ? '0E7490' : '155E75';
+  return `<w:p>
+    <w:pPr>
+      <w:spacing w:before="240" w:after="100"/>
+      ${level===1 ? '<w:jc w:val="center"/>' : `<w:pBdr><w:left w:val="single" w:sz="18" w:space="10" w:color="06B6D4"/></w:pBdr>`}
+    </w:pPr>
+    <w:r>
+      <w:rPr><w:b/><w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/><w:color w:val="${color}"/>
+      <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/></w:rPr>
+      <w:t xml:space="preserve">${escXml(text)}</w:t>
+    </w:r>
+  </w:p>`;
+}
+
+function answerBox(label, answer){
+  return `
+  ${para(label, {sz:21, bold:true, color:'1E293B', space:80})}
+  <w:p>
+    <w:pPr>
+      <w:spacing w:before="60" w:after="160"/>
+      <w:shd w:val="clear" w:color="auto" w:fill="F0F9FF"/>
+      <w:pBdr>
+        <w:top    w:val="single" w:sz="4" w:space="1" w:color="BAE6FD"/>
+        <w:left   w:val="single" w:sz="4" w:space="4" w:color="BAE6FD"/>
+        <w:bottom w:val="single" w:sz="4" w:space="1" w:color="BAE6FD"/>
+        <w:right  w:val="single" w:sz="4" w:space="1" w:color="BAE6FD"/>
+      </w:pBdr>
+      <w:ind w:left="160" w:right="160"/>
+    </w:pPr>
+    <w:r>
+      <w:rPr><w:sz w:val="21"/><w:szCs w:val="21"/><w:color w:val="1E293B"/>
+      <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/></w:rPr>
+      <w:t xml:space="preserve">${escXml(answer)}</w:t>
+    </w:r>
+  </w:p>`;
+}
+
+function badge(text, fillColor='0891B2'){
+  return `<w:p>
+    <w:pPr><w:spacing w:before="160" w:after="60"/>
+      <w:shd w:val="clear" w:color="auto" w:fill="${fillColor}"/>
+      <w:ind w:left="120" w:right="120"/>
+    </w:pPr>
+    <w:r>
+      <w:rPr><w:b/><w:color w:val="FFFFFF"/><w:sz w:val="18"/><w:szCs w:val="18"/>
+      <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/></w:rPr>
+      <w:t xml:space="preserve">  ${escXml(text)}  </w:t>
+    </w:r>
+  </w:p>`;
+}
+
+function divider(){
+  return `<w:p>
+    <w:pPr>
+      <w:spacing w:before="80" w:after="80"/>
+      <w:pBdr><w:bottom w:val="single" w:sz="6" w:space="1" w:color="BAE6FD"/></w:pBdr>
+    </w:pPr>
+  </w:p>`;
+}
+
+function buildDocxXml(d){
+  const { nomor, kelas, anggota, tanggal, tAns, iAns } = d;
+
+  // Map textarea indices (from DOM order)
+  const T = tAns; // 0-based
+  // Textareas order in DOM:
+  // 0: anggota (skip, in identitas)
+  // 1,2,3,4: T2.1,2.2,2.3,2.4 (tahap2)
+  // 5: hipotesis
+  // 6: sumber? no — sumber pakai input biasa
+  // Tahap 3 answers: T[1..4]
+  // Tahap 4a,b: T[5,6]
+  // Tahap 4 reaksi: iAns
+  // Tahap 4 perhitungan a,b,c: T[7,8,9]
+  // Tahap 5 q1,2,3: T[10,11,12]
+  // Kesimpulan: T[13]
+  // Refleksi: T[14]
+
+  // Source inputs (type=text excl identitas) — ordered as in DOM
+  const I = iAns;
+
+  const sections = [];
+
+  // ── COVER ──────────────────────────────────────────────
+  sections.push(
+    heading('LEMBAR KERJA PESERTA DIDIK (LKPD)', 1),
+    para('Hidrolisis Garam  |  Kimia SMA Kelas XI', {sz:20, align:'center', color:'64748B', space:60}),
+    divider(),
+  );
+
+  // ── IDENTITAS ──────────────────────────────────────────
+  sections.push(heading('IDENTITAS KELOMPOK', 2));
+  const identRows = [
+    ['Nomor Kelompok', nomor],
+    ['Kelas', kelas],
+    ['Tanggal', tanggal],
+    ['Anggota Kelompok', anggota],
+  ];
+  identRows.forEach(([lbl, val]) => {
+    sections.push(`<w:p>
+      <w:pPr><w:spacing w:before="60" w:after="60"/>
+        <w:shd w:val="clear" w:color="auto" w:fill="F0F9FF"/>
+        <w:ind w:left="120"/>
+      </w:pPr>
+      <w:r><w:rPr><w:b/><w:sz w:val="21"/><w:szCs w:val="21"/><w:color w:val="0E7490"/>
+        <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/></w:rPr>
+        <w:t xml:space="preserve">${escXml(lbl)}: </w:t></w:r>
+      <w:r><w:rPr><w:sz w:val="21"/><w:szCs w:val="21"/><w:color w:val="1E293B"/>
+        <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/></w:rPr>
+        <w:t xml:space="preserve">${escXml(val)}</w:t></w:r>
+    </w:p>`);
+  });
+  sections.push(divider());
+
+  // ── TAHAP 2 ────────────────────────────────────────────
+  sections.push(badge('TAHAP 2 — Mengorganisasi Peserta Didik untuk Belajar'));
+  sections.push(heading('Pertanyaan Analisis Masalah', 3));
+  const t2q = [
+    '1. Informasi penting dari berita Sebakung Jaya',
+    '2. Penyebab tanah bersifat asam',
+    '3. Hubungan pH tanah dengan pertumbuhan padi',
+    '4. Mengapa efek pupuk hilang saat banjir',
+  ];
+  t2q.forEach((q, i) => sections.push(answerBox(q, T[i+1] || '(belum diisi)')));
+  sections.push(heading('Hipotesis', 3));
+  sections.push(answerBox('Hipotesis kelompok:', T[5] || '(belum diisi)'));
+  sections.push(divider());
+
+  // ── TAHAP 3 — SUMBER ───────────────────────────────────
+  sections.push(badge('TAHAP 3 — Membimbing Penyelidikan'));
+  sections.push(heading('Sumber Referensi', 3));
+  // Sumber are the first 4 inputs (index 0–3 in iAns, since no table inputs come before)
+  // Actually from DOM: sumber inputs are BEFORE table inputs
+  const sumberLabels = ['Sumber 1','Sumber 2','Sumber 3','Sumber 4'];
+  sumberLabels.forEach((lbl, i) => {
+    sections.push(para(`${lbl}: ${I[i] || '(belum diisi)'}`, {sz:21, space:60, indent:160}));
+  });
+  sections.push(divider());
+
+  // ── TABEL ANALISIS (inputs 4–43: 5 rows x 8 cols, but col0=no col1=fixed) ──
+  sections.push(heading('Tabel Analisis Garam', 3));
+  const garamNames = ['(NH₄)₂SO₄ / Pupuk ZA','KNO₃ / Pupuk Niter','Ca(CH₃COO)₂ / Kalsium Asetat','(NH₄)₂HPO₄ / Pupuk DAP','Ca(H₂PO₄)₂ / Pupuk TSP'];
+  const colLabels = ['Nama Garam','Kation','Anion','Ion Bereaksi','Ion Spektator','Sifat Larutan'];
+  // Each row has 6 inputs (cols: nama, kation, anion, ion bereaksi, spektator, sifat)
+  // table inputs start at index 4 (after 4 sumber inputs)
+  let tblIdx = 4;
+  garamNames.forEach((garam, ri) => {
+    sections.push(para(`${ri+1}. ${garam}`, {sz:21, bold:true, color:'0E7490', space:80}));
+    colLabels.forEach((col, ci) => {
+      const val = I[tblIdx++] || '(belum diisi)';
+      sections.push(para(`   ${col}: ${val}`, {sz:20, space:40, indent:320}));
+    });
+  });
+  sections.push(divider());
+
+  // ── TAHAP 4 ────────────────────────────────────────────
+  sections.push(badge('TAHAP 4 — Mengembangkan dan Menyajikan Hasil Karya'));
+  sections.push(heading('Pembahasan dan Analisis Data', 3));
+  sections.push(answerBox('a. Hubungan jenis asam/basa pembentuk dengan sifat larutan:', T[6] || '(belum diisi)'));
+  sections.push(answerBox('b. Pengelompokan berdasarkan jenis hidrolisis:', T[7] || '(belum diisi)'));
+
+  sections.push(heading('Persamaan Reaksi Hidrolisis', 3));
+  const reaksiGaram = ['(NH₄)₂SO₄','KNO₃','Ca(CH₃COO)₂','(NH₄)₂HPO₄','Ca(H₂PO₄)₂'];
+  // Reaksi inputs: ionisasi + hidrolisis per garam = 10 inputs total, starting at index tblIdx
+  reaksiGaram.forEach((g, i) => {
+    const ionisasi = I[tblIdx++] || '(belum diisi)';
+    const hidro    = I[tblIdx++] || '(belum diisi)';
+    sections.push(para(`${i+1}. ${g}`, {sz:21, bold:true, color:'0E7490', space:80}));
+    sections.push(para(`   Ionisasi : ${ionisasi}`, {sz:20, space:40, indent:320}));
+    sections.push(para(`   Hidrolisis: ${hidro}`,  {sz:20, space:40, indent:320}));
+  });
+
+  sections.push(heading('Perhitungan pH dan Tetapan Hidrolisis', 3));
+  // T indices for perhitungan: check textarea order
+  // tAns: 0=anggota,1-4=t2q,5=hipotesis,6=tahap4a,7=tahap4b... wait, let's re-check
+  // Actual textarea order in HTML DOM:
+  // [0] anggota  [1] t2q1  [2] t2q2  [3] t2q3  [4] t2q4  [5] hipotesis
+  // [6] tahap4a  [7] tahap4b  (pembahasan)
+  // [8] Kh  [9] pH  [10] kesesuaian
+  // [11] t5q1  [12] t5q2  [13] t5q3
+  // [14] kesimpulan  [15] refleksi
+  sections.push(answerBox('a. Nilai Kh dari ion CH₃COO⁻:', T[8] || '(belum diisi)'));
+  sections.push(answerBox('b. Perhitungan pH larutan Ca(CH₃COO)₂ 0,1 M:', T[9] || '(belum diisi)'));
+  sections.push(answerBox('c. Kesesuaian pH untuk menaikkan pH tanah asam:', T[10] || '(belum diisi)'));
+  sections.push(divider());
+
+  // ── TAHAP 5 ────────────────────────────────────────────
+  sections.push(badge('TAHAP 5 — Evaluasi & Refleksi'));
+  sections.push(heading('Kembali ke Masalah Petani Sebakung Jaya', 3));
+  sections.push(answerBox('1. Pupuk paling tepat untuk menaikkan pH tanah asam:', T[11] || '(belum diisi)'));
+  sections.push(answerBox('2. Mengapa efek pupuk hilang saat banjir (konsep hidrolisis):', T[12] || '(belum diisi)'));
+  sections.push(answerBox('3. Pupuk yang tidak mengubah pH tanah:', T[13] || '(belum diisi)'));
+  sections.push(divider());
+
+  sections.push(heading('Kesimpulan', 3));
+  sections.push(answerBox('Kesimpulan kelompok:', T[14] || '(belum diisi)'));
+
+  sections.push(heading('Refleksi Diri', 3));
+  sections.push(answerBox('Refleksi:', T[15] || '(belum diisi)'));
+  sections.push(divider());
+
+  // ── FOOTER INFO ──────────────────────────────────────
+  sections.push(para('© 2026 Tsary  |  Sumari  |  Departemen Kimia  |  Universitas Negeri Malang', 
+    {sz:18, align:'center', color:'94A3B8', space:200}));
+  sections.push(para('Sumber berita: seputarfakta.com — Petani Keluhkan Kadar Keasaman Sawah Tinggi, Pemdes Sebakung Jaya (12 Januari 2025)',
+    {sz:16, align:'center', color:'94A3B8', space:60}));
+
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
+  xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+  xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing">
+  <w:body>
+    ${sections.join('\n')}
+    <w:sectPr>
+      <w:pgSz w:w="11906" w:h="16838"/>
+      <w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134"/>
+    </w:sectPr>
+  </w:body>
+</w:document>`;
+}
+
+/* ============================================================
+   ZIP ASSEMBLY (pure JS, no JSZip needed — we use a minimal zip)
+   Uses the JSZip library loaded from CDN
+============================================================ */
+function buildDocx(d){
+  const docXml  = buildDocxXml(d);
+
+  const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml"  ContentType="application/xml"/>
+  <Override PartName="/word/document.xml"
+    ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+</Types>`;
+
+  const rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1"
+    Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument"
+    Target="word/document.xml"/>
+</Relationships>`;
+
+  const wordRels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+</Relationships>`;
+
+  // Manually assemble a ZIP file in pure JS
+  function str2ab(str){
+    const enc = new TextEncoder();
+    return enc.encode(str);
+  }
+  function u32le(n){ return [n&0xff,(n>>8)&0xff,(n>>16)&0xff,(n>>24)&0xff]; }
+  function u16le(n){ return [n&0xff,(n>>8)&0xff]; }
+
+  function crc32(data){
+    let crc = 0xFFFFFFFF;
+    for(let i=0;i<data.length;i++){
+      crc ^= data[i];
+      for(let j=0;j<8;j++) crc = (crc&1)?(crc>>>1)^0xEDB88320:(crc>>>1);
+    }
+    return (crc^0xFFFFFFFF)>>>0;
+  }
+
+  function addEntry(name, content){
+    const nameBytes = new TextEncoder().encode(name);
+    const data      = typeof content==='string' ? new TextEncoder().encode(content) : content;
+    const crc       = crc32(data);
+    const offset    = bytes.length;
+
+    // Local file header
+    const lhdr = [
+      0x50,0x4B,0x03,0x04, // sig
+      ...u16le(20),         // version needed
+      ...u16le(0),          // flags
+      ...u16le(0),          // compression (store)
+      ...u16le(0),          // mod time
+      ...u16le(0),          // mod date
+      ...u32le(crc),
+      ...u32le(data.length),
+      ...u32le(data.length),
+      ...u16le(nameBytes.length),
+      ...u16le(0),          // extra
+    ];
+    bytes.push(...lhdr, ...nameBytes, ...data);
+
+    centralDir.push({name:nameBytes, crc, size:data.length, offset});
+  }
+
+  const bytes = [];
+  const centralDir = [];
+
+  addEntry('[Content_Types].xml', contentTypes);
+  addEntry('_rels/.rels',          rels);
+  addEntry('word/document.xml',    docXml);
+  addEntry('word/_rels/document.xml.rels', wordRels);
+
+  // Central directory
+  const cdStart = bytes.length;
+  for(const e of centralDir){
+    const cdr = [
+      0x50,0x4B,0x01,0x02, // sig
+      ...u16le(20), ...u16le(20),
+      ...u16le(0), ...u16le(0),
+      ...u16le(0), ...u16le(0),
+      ...u32le(e.crc),
+      ...u32le(e.size), ...u32le(e.size),
+      ...u16le(e.name.length),
+      ...u16le(0), ...u16le(0),
+      ...u16le(0), ...u16le(0),
+      ...u32le(0),
+      ...u32le(e.offset),
+      ...e.name,
+    ];
+    bytes.push(...cdr);
+  }
+  const cdEnd = bytes.length;
+
+  // End of central directory
+  const eocd = [
+    0x50,0x4B,0x05,0x06,
+    ...u16le(0), ...u16le(0),
+    ...u16le(centralDir.length),
+    ...u16le(centralDir.length),
+    ...u32le(cdEnd - cdStart),
+    ...u32le(cdStart),
+    ...u16le(0),
+  ];
+  bytes.push(...eocd);
+
+  return new Blob([new Uint8Array(bytes)], {type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+}
+</script>
+</body>
+</html>

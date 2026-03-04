@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Simulasi Hidrolisis Garam</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-primary:#f0f9ff;
+  --bg-secondary:#ffffff;
+  --text-primary:#1e293b;
+  --text-secondary:#64748b;
+  --accent:#06b6d4;
+  --accent-hover:#0891b2;
+  --shadow:rgba(6,182,212,0.15);
+  --amber:#d97706; --amber-l:#fef3c7;
+  --purple:#7c3aed; --purple-l:#ede9fe;
+  --blue:#2563eb; --blue-l:#dbeafe;
+  --teal:#0d9488; --teal-l:#ccfbf1;
+  --red:#dc2626; --red-l:#fee2e2;
+  --green:#16a34a; --green-l:#dcfce7;
+}
+
+body{font-family:'Poppins',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;}
+
+/* HEADER */
+.header{background:#fff;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;box-shadow:0 2px 8px var(--shadow);z-index:1000;}
+.logo-section{display:flex;align-items:center;gap:.75rem}
+.nav-menu{display:flex;gap:1rem}
+.nav-btn{background:transparent;color:var(--text-primary);border:2px solid var(--accent);padding:.5rem 1.5rem;border-radius:25px;cursor:pointer;font-weight:500;transition:.3s;}
+.nav-btn:hover{background:var(--accent);color:white;transform:translateY(-2px)}
+
+/* CONTAINER */
+.container{max-width:1200px;margin:1.5rem auto 3rem;padding:1.5rem;background:#fff;border-radius:20px;box-shadow:0 4px 20px var(--shadow);}
+h1{text-align:center;color:var(--accent);margin-bottom:.4rem}
+.subtitle{text-align:center;color:var(--text-secondary);margin-bottom:1.5rem;font-size:.95rem}
+
+/* STEP INDICATOR */
+.steps{display:flex;justify-content:center;gap:0;margin-bottom:1.8rem;flex-wrap:wrap}
+.step{display:flex;align-items:center;gap:.4rem;padding:.5rem 1rem;border-radius:99px;font-size:.82rem;font-weight:600;color:var(--text-secondary);border:2px solid #e2e8f0;background:#f8fafc;transition:.3s}
+.step.active{background:var(--accent);color:white;border-color:var(--accent);box-shadow:0 3px 12px rgba(6,182,212,.3)}
+.step.done{background:var(--green-l);color:var(--green);border-color:#86efac}
+.step-arrow{color:#cbd5e1;font-size:1rem;margin:0 .3rem}
+
+/* SECTION CARDS */
+.section-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:1.2rem 1.4rem;margin-bottom:1.2rem}
+.section-title{font-size:.8rem;font-weight:700;letter-spacing:.1em;color:var(--text-secondary);text-transform:uppercase;margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem}
+
+/* ION GRID */
+.ion-panel-title{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+.ion-btn-grid{display:flex;flex-wrap:wrap;gap:.5rem}
+.ion-btn{
+  background:#fff;border:2px solid #e2e8f0;border-radius:12px;cursor:pointer;
+  padding:.6rem .9rem;min-width:82px;display:flex;flex-direction:column;align-items:center;gap:.12rem;
+  transition:all .2s;box-shadow:0 1px 3px rgba(0,0,0,.05);font-family:'Poppins',sans-serif;
+}
+.ion-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.ion-btn.cation:hover,.ion-btn.cation-active{border-color:var(--amber);background:var(--amber-l);color:var(--amber);box-shadow:0 2px 10px rgba(217,119,6,.2)}
+.ion-btn.anion:hover,.ion-btn.anion-active{border-color:var(--purple);background:var(--purple-l);color:var(--purple);box-shadow:0 2px 10px rgba(124,58,237,.2)}
+.ion-btn .sym{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700}
+.ion-btn .sub{font-size:.72rem;color:#94a3b8}
+.selector-row{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:start}
+.plus-center{display:flex;align-items:center;justify-content:center;padding-top:2rem;font-size:2rem;color:#cbd5e1;font-weight:700}
+
+/* ION POPUP MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:9000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(4px);
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{
+  background:#fff;border-radius:22px;padding:2rem;max-width:480px;width:90%;
+  box-shadow:0 20px 60px rgba(0,0,0,.2);transform:scale(.92) translateY(12px);transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.modal-overlay.open .modal-box{transform:scale(1) translateY(0)}
+.modal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.2rem}
+.modal-sym{font-family:'Space Mono',monospace;font-size:2.2rem;font-weight:700}
+.modal-close{background:#f1f5f9;border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1.1rem;transition:.2s;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:#e2e8f0}
+.modal-badge{display:inline-block;padding:.3rem .9rem;border-radius:99px;font-size:.8rem;font-weight:700;margin-bottom:.9rem}
+.modal-prop{display:grid;grid-template-columns:auto 1fr;gap:.4rem .8rem;font-size:.9rem;margin-bottom:.9rem}
+.modal-prop .lbl{color:#94a3b8;font-weight:500}
+.modal-prop .val{color:var(--text-primary);font-weight:600}
+.modal-reaction{background:#f0f9ff;border-left:4px solid var(--accent);padding:.8rem 1rem;border-radius:10px;font-family:'Space Mono',monospace;font-size:.85rem;line-height:1.7;color:#0f172a}
+.modal-note{background:var(--amber-l);border-radius:10px;padding:.7rem 1rem;font-size:.85rem;margin-top:.8rem;color:#92400e}
+.btn-select-ion{
+  width:100%;margin-top:1rem;padding:.75rem;border:none;border-radius:12px;
+  font-size:1rem;font-weight:700;cursor:pointer;transition:.2s;font-family:'Poppins',sans-serif;
+}
+.btn-select-ion:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+
+/* STAGE: BEAKER + pH */
+.sim-stage{display:grid;grid-template-columns:1fr 260px;gap:1.2rem;align-items:start}
+.beaker-wrap{display:flex;flex-direction:column;align-items:center;gap:.9rem}
+.beaker-scene{position:relative;width:200px;height:290px;flex-shrink:0}
+#pcanvas{position:absolute;left:0;top:0;z-index:3;pointer-events:none}
+.beaker-svg-el{position:absolute;inset:0;width:100%;height:100%;z-index:4;pointer-events:none}
+.ph-float{background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:.65rem 2rem;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.08);min-width:170px}
+.ph-float .lbl{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;font-weight:600}
+.ph-float .val{font-family:'Space Mono',monospace;font-size:2.6rem;font-weight:700}
+.ph-float .typ{font-size:.9rem;font-weight:600}
+.ph-bar-wrap{width:100%;max-width:310px}
+.ph-bar-track{height:11px;border-radius:99px;background:linear-gradient(to right,#ef4444 0%,#f97316 15%,#eab308 28%,#22c55e 50%,#3b82f6 71%,#8b5cf6 90%,#a855f7 100%);position:relative;margin-bottom:.4rem;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.ph-marker{position:absolute;top:-6px;width:20px;height:20px;background:#fff;border-radius:50%;transform:translateX(-50%);box-shadow:0 0 0 2.5px #475569,0 2px 6px rgba(0,0,0,.2);transition:left .8s cubic-bezier(.34,1.56,.64,1)}
+.ph-scale-nums{display:flex;justify-content:space-between;font-size:.72rem;color:#94a3b8}
+
+/* RIGHT PANEL */
+.right-panel{display:flex;flex-direction:column;gap:1rem}
+.icard{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:.85rem 1rem}
+.icard-label{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin-bottom:.5rem}
+.combine-badge{padding:.6rem 1rem;border-radius:10px;font-weight:800;font-size:.9rem;border:2px solid;text-align:center;font-family:'Poppins',sans-serif;line-height:1.4}
+.pill{display:inline-block;padding:.18rem .6rem;border-radius:99px;font-size:.72rem;font-weight:600}
+.pill-h{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
+.pill-s{background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1}
+
+/* EQ BOX */
+.eq{font-family:'Space Mono',monospace;font-size:.8rem;line-height:1.55;color:#0f172a}
+.eq-box-inner{display:flex;flex-direction:row;gap:.5rem;flex-wrap:wrap}
+.eq-step{display:flex;flex-direction:column;gap:.25rem;padding:.6rem .75rem;border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0;flex:1;min-width:120px}
+.eq-step-header{display:flex;align-items:center;gap:.4rem;margin-bottom:.1rem}
+.eq-num{background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0}
+.eq-note{font-family:'Poppins',sans-serif;font-size:.78rem;color:#64748b;margin-top:.15rem}
+
+/* INDICATORS */
+.ind-row{display:flex;align-items:center;gap:.65rem;padding:.4rem 0;border-bottom:1px solid #f1f5f9}
+.ind-row:last-child{border-bottom:none}
+.ind-name{flex:1;font-size:.85rem;color:#64748b}
+.ind-swatch{width:34px;height:16px;border-radius:5px;transition:background .6s;border:1px solid rgba(0,0,0,.1);flex-shrink:0}
+.ind-label{min-width:90px;text-align:right;font-family:'Space Mono',monospace;font-size:.78rem;color:#475569}
+
+/* CONCENTRATION SLIDER */
+.slabel{display:flex;justify-content:space-between;margin-bottom:.4rem;font-size:.88rem;font-weight:500}
+input[type=range]{width:100%;appearance:none;height:6px;background:#e2e8f0;border-radius:99px;outline:none}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:18px;height:18px;border-radius:50%;background:var(--teal);cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+
+/* ======================
+   DRAG & DROP PREDICTION
+====================== */
+.prediction-section{background:#fff;border:2px solid #e2e8f0;border-radius:18px;padding:1.4rem;margin-top:1.2rem;transition:.4s}
+.prediction-section.active{border-color:var(--accent);box-shadow:0 0 0 3px rgba(6,182,212,.12)}
+.pred-title{font-size:1rem;font-weight:800;color:var(--text-primary);margin-bottom:.3rem}
+.pred-subtitle{font-size:.85rem;color:#64748b;margin-bottom:1.2rem}
+
+.drag-area{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:start;margin-bottom:1rem}
+.drag-source{background:#f8fafc;border:2px dashed #e2e8f0;border-radius:14px;padding:1rem;min-height:80px}
+.drag-source-title{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin-bottom:.7rem}
+.drag-tokens{display:flex;flex-wrap:wrap;gap:.5rem}
+.drag-token{
+  padding:.45rem .9rem;border-radius:10px;font-family:'Space Mono',monospace;font-size:.9rem;font-weight:700;
+  cursor:grab;user-select:none;transition:all .2s;border:2px solid transparent;
+  display:flex;align-items:center;gap:.4rem;
+}
+.drag-token:active{cursor:grabbing;transform:scale(.96)}
+.drag-token.cation-token{background:var(--amber-l);color:var(--amber);border-color:#fcd34d}
+.drag-token.anion-token{background:var(--purple-l);color:var(--purple);border-color:#c4b5fd}
+.drag-token.water-token{background:#e0f2fe;color:#0369a1;border-color:#7dd3fc}
+.drag-token.dragging{opacity:.4;transform:scale(.9)}
+
+.drop-arrow{display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#cbd5e1;padding-top:2rem}
+
+.drop-zone{
+  background:#f0f9ff;border:2px dashed #93c5fd;border-radius:14px;padding:.9rem;
+  min-height:80px;transition:all .25s;
+}
+.drop-zone.drag-over{background:#dbeafe;border-color:var(--blue);border-style:solid;transform:scale(1.02)}
+.drop-zone.correct{background:var(--green-l);border-color:#86efac;border-style:solid}
+.drop-zone.wrong{background:var(--red-l);border-color:#fca5a5;border-style:solid;animation:shake .35s}
+.drop-zone-title{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.6rem}
+.drop-zone-title.cation-c{color:var(--amber)}
+.drop-zone-title.anion-c{color:var(--purple)}
+.drop-tokens{display:flex;flex-wrap:wrap;gap:.5rem;min-height:36px}
+.drop-placeholder{color:#94a3b8;font-size:.82rem;font-style:italic;padding:.3rem 0;display:flex;align-items:center;gap:.4rem}
+
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes pulse-green{0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.4)}50%{box-shadow:0 0 0 8px rgba(22,163,74,0)}}
+@keyframes bounce-in{0%{transform:scale(0)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+
+/* SUBMIT */
+.pred-actions{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem}
+.btn-check{background:var(--accent);color:#fff;border:none;padding:.7rem 1.6rem;border-radius:12px;font-size:.95rem;font-weight:700;cursor:pointer;transition:.2s;font-family:'Poppins',sans-serif}
+.btn-check:hover{background:var(--accent-hover);transform:translateY(-1px)}
+.btn-check:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-reset-pred{background:#f1f5f9;color:#64748b;border:none;padding:.7rem 1.2rem;border-radius:12px;font-size:.9rem;font-weight:600;cursor:pointer;transition:.2s;font-family:'Poppins',sans-serif}
+.btn-reset-pred:hover{background:#e2e8f0}
+
+/* HINT SYSTEM */
+.hint-area{margin-top:1rem;display:flex;flex-direction:column;gap:.7rem}
+.hint-box{
+  padding:.85rem 1rem;border-radius:12px;font-size:.88rem;line-height:1.6;
+  animation:bounce-in .35s;
+}
+.hint-box.level-1{background:#fef9c3;border-left:4px solid #eab308;color:#713f12}
+.hint-box.level-2{background:#ffedd5;border-left:4px solid #f97316;color:#7c2d12}
+.hint-box.level-3{background:var(--blue-l);border-left:4px solid var(--blue);color:#1e3a8a}
+.hint-title{font-weight:700;margin-bottom:.3rem;font-size:.85rem;letter-spacing:.04em}
+
+/* FEEDBACK */
+.feedback-box{
+  padding:1rem 1.2rem;border-radius:14px;margin-top:.8rem;font-size:.95rem;line-height:1.6;
+  animation:bounce-in .4s;
+}
+.feedback-box.success{background:var(--green-l);border:2px solid #86efac;color:#14532d}
+.feedback-box.error{background:var(--red-l);border:2px solid #fca5a5;color:#7f1d1d}
+.feedback-title{font-weight:800;font-size:1rem;margin-bottom:.3rem}
+
+/* BEAKER CLUE ANIMATION */
+.beaker-clue{
+  position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  background:#1e293b;color:#fff;padding:.4rem .9rem;border-radius:20px;
+  font-size:.78rem;font-weight:600;white-space:nowrap;opacity:0;
+  transition:opacity .4s;pointer-events:none;z-index:10;
+}
+.beaker-clue.show{opacity:1}
+.beaker-clue::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#1e293b}
+
+/* ATTEMPTS COUNTER */
+.attempts-badge{
+  display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;
+  background:#f1f5f9;border:1px solid #e2e8f0;border-radius:99px;font-size:.82rem;font-weight:600;color:#475569;
+}
+.attempt-dot{width:10px;height:10px;border-radius:50%;background:#e2e8f0;transition:.3s}
+.attempt-dot.used{background:#fca5a5}
+
+/* BOTTOM NAV */
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-top:2rem}
+.nav-bottom a{background:var(--accent);color:#fff;text-decoration:none;padding:.8rem 1.8rem;border-radius:25px;font-weight:600;transition:.3s;min-width:150px;text-align:center}
+.nav-bottom a:hover{background:var(--accent-hover);transform:translateY(-2px)}
+
+footer{background:#fff;color:#64748b;text-align:center;padding:1.5rem 0;margin-top:3rem;box-shadow:0 -2px 8px var(--shadow)}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  .container{padding:1rem}
+  .sim-stage{grid-template-columns:1fr}
+  .selector-row{grid-template-columns:1fr;gap:.5rem}
+  .plus-center{padding:.2rem 0;font-size:1.4rem}
+  .ion-btn{min-width:70px;padding:.5rem .6rem}
+  .ion-btn .sym{font-size:.88rem}
+  .drag-area{grid-template-columns:1fr;gap:.7rem}
+  .drop-arrow{display:none}
+  .header{flex-direction:column;gap:.8rem;padding:1rem}
+  .logo-section,.nav-menu{width:100%;justify-content:center}
+  .nav-menu{flex-wrap:wrap}
+  .eq-box-inner{flex-direction:column}
+  .eq-step{min-width:unset}
+  .beaker-scene{width:160px;height:232px}
+  .ph-float{min-width:140px;padding:.5rem 1rem}
+  .ph-float .val{font-size:2rem}
+}
+@media(max-width:480px){
+  h1{font-size:1.2rem}
+  .subtitle{font-size:.82rem}
+  .steps{gap:.2rem}
+  .step{font-size:.72rem;padding:.4rem .7rem}
+  .ion-btn{min-width:60px;padding:.45rem .5rem}
+  .ion-btn .sym{font-size:.82rem}
+  .modal-box{padding:1.4rem}
+  .modal-sym{font-size:1.7rem}
+}
+
+/* === RESPONSIVE_GLOBAL_START === */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, video, canvas, iframe { max-width: 100%; height: auto; }
+/* === RESPONSIVE_GLOBAL_END === */
+
+
+/* === NAV_UNIFORM_START === */
+.nav-menu{
+  display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  align-items:center;
+}
+.nav-menu .nav-btn{
+  appearance:none;
+  border:0;
+  cursor:pointer;
+  border-radius:999px;
+  padding:.55rem .95rem;
+  font-size:.95rem !important;
+  font-weight:500 !important;
+  line-height:1.1;
+  white-space:nowrap;
+}
+@media (max-width:600px){
+  .nav-menu{ justify-content:center; }
+  .nav-menu .nav-btn{
+    padding:.5rem .8rem;
+    font-size:.9rem !important;
+  }
+}
+/* === NAV_UNIFORM_END === */
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-section">
+    <img src="logo um rev.png" alt="Logo UM" width="50" height="50">
+  </div>
+  <div class="nav-menu">
+    <button class="nav-btn" onclick="history.back()">← Kembali</button>
+    <button class="nav-btn" onclick="location.href='2Beranda.html'">🏠 Beranda</button>
+    <button class="nav-btn" onclick="location.href='2Profil.html'">👤 Profil</button>
+  </div>
+</div>
+
+<div class="container">
+  <h1>Simulasi Hidrolisis Garam</h1>
+  <p class="subtitle">Pilih ion, amati reaksi, lalu prediksi mana yang terhidrolisis dengan drag &amp; drop.</p>
+
+  <!-- STEP INDICATOR -->
+  <div class="steps">
+    <div class="step active" id="step1">① Pilih Ion</div>
+    <div class="step-arrow">›</div>
+    <div class="step" id="step2">② Amati Simulasi</div>
+    <div class="step-arrow">›</div>
+    <div class="step" id="step3">③ Prediksi &amp; Cek</div>
+  </div>
+
+  <!-- MAIN LAYOUT: selector kiri, simulasi kanan -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
+  <!-- STEP 1: ION SELECTOR -->
+  <div class="section-card" id="selectorCard">
+    <div class="section-title">⚗ Pilih Kation &amp; Anion <span style="color:#94a3b8;font-size:.78rem;margin-left:.5rem">(klik ion untuk melihat info lengkap, lalu pilih)</span></div>
+    <div class="selector-row">
+      <div>
+        <div class="ion-panel-title" style="color:var(--amber)">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--amber);display:inline-block"></span>
+          Kation (Ion Positif)
+        </div>
+        <div class="ion-btn-grid" id="cationGrid"></div>
+      </div>
+      <div class="plus-center">+</div>
+      <div>
+        <div class="ion-panel-title" style="color:var(--purple)">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--purple);display:inline-block"></span>
+          Anion (Ion Negatif)
+        </div>
+        <div class="ion-btn-grid" id="anionGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: SIMULATION STAGE -->
+  <div class="section-card" id="stageCard" style="opacity:.45;pointer-events:none;transition:.4s">
+    <div class="section-title">🔬 Hasil Simulasi</div>
+    <div class="sim-stage">
+
+      <!-- LEFT: BEAKER + pH -->
+      <div class="beaker-wrap">
+        <div class="beaker-scene" id="beakerScene" style="position:relative">
+          <canvas id="pcanvas"></canvas>
+          <div class="beaker-clue" id="beakerClue">Perhatikan partikel berubah!</div>
+          <svg class="beaker-svg-el" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="liqClip"><path d="M20 68 L11 284 Q11 295 23 295 L177 295 Q189 295 189 284 L180 68 Z"/></clipPath>
+              <linearGradient id="liqFade" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="white" stop-opacity="0.28"/>
+                <stop offset="100%" stop-color="white" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <g clip-path="url(#liqClip)">
+              <rect id="liqRect" x="11" y="68" width="178" height="227" fill="rgba(147,197,253,0.2)"/>
+              <rect x="11" y="68" width="178" height="227" fill="url(#liqFade)"/>
+              <path id="waveA" fill="rgba(255,255,255,0.2)"/>
+              <path id="waveB" fill="rgba(255,255,255,0.12)"/>
+            </g>
+            <path d="M20 66 L11 284 Q11 295 23 295 L177 295 Q189 295 189 284 L180 66 Z" stroke="#a8bdd1" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+            <line x1="20" y1="66" x2="180" y2="66" stroke="#a8bdd1" stroke-width="2"/>
+            <path d="M157 66 Q174 56 192 51" stroke="#a8bdd1" stroke-width="2" stroke-linecap="round"/>
+            <path d="M189 108 Q215 108 215 152 Q215 196 189 196" stroke="#a8bdd1" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M29 79 L22 276" stroke="white" stroke-width="6" stroke-opacity="0.18" stroke-linecap="round"/>
+            <text x="171" y="131" fill="#9fb8c8" font-size="7" text-anchor="end" font-family="monospace">150</text>
+            <text x="171" y="177" fill="#9fb8c8" font-size="7" text-anchor="end" font-family="monospace">100</text>
+            <text x="171" y="223" fill="#9fb8c8" font-size="7" text-anchor="end" font-family="monospace">50</text>
+          </svg>
+        </div>
+
+        <div class="ph-float">
+          <div class="lbl">pH Larutan</div>
+          <div class="val" id="phVal" style="color:#94a3b8">—</div>
+          <div class="typ" id="phType" style="color:#94a3b8">Pilih ion dahulu</div>
+        </div>
+
+        <div class="ph-bar-wrap">
+          <div class="ph-bar-track"><div class="ph-marker" id="phMarker" style="left:50%"></div></div>
+          <div class="ph-scale-nums"><span>0 Asam</span><span>7 Netral</span><span>14 Basa</span></div>
+        </div>
+
+        <div>
+          <div class="slabel">
+            <span>Konsentrasi</span>
+            <span id="concDisplay" style="color:var(--teal);font-weight:700">0.1 M</span>
+          </div>
+          <input type="range" id="concSlider" min="1" max="10" value="1">
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="right-panel">
+        <div>
+          <div class="icard-label">🌈 Indikator Asam-Basa</div>
+          <div class="icard" id="indContainer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> <!-- end main layout -->
+
+  <!-- REAKSI HIDROLISIS - full width -->
+  <div class="section-card" id="reaksiCard" style="opacity:.45;pointer-events:none;transition:.4s;margin-bottom:1.2rem">
+    <div class="section-title">⚗ Reaksi Hidrolisis</div>
+    <div class="icard" id="eqBox" style="background:transparent;border:none;padding:0">
+      <span style="color:#94a3b8;font-size:.85rem">Pilih ion untuk melihat reaksi...</span>
+    </div>
+  </div>
+
+  <!-- STEP 3: DRAG & DROP PREDICTION -->
+  <div class="prediction-section" id="predSection" style="opacity:.4;pointer-events:none;transition:.4s">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.8rem;margin-bottom:1rem">
+      <div>
+        <div class="pred-title">🧠 Prediksi: Ion Mana yang Terhidrolisis?</div>
+        <div class="pred-subtitle">Seret ion ke kolom yang tepat. Ion yang terhidrolisis bereaksi dengan air menghasilkan H⁺ atau OH⁻.</div>
+      </div>
+      <div class="attempts-badge" id="attemptsBadge">
+        <span>Percobaan:</span>
+        <div class="attempt-dot" id="dot1"></div>
+        <div class="attempt-dot" id="dot2"></div>
+        <div class="attempt-dot" id="dot3"></div>
+      </div>
+    </div>
+
+    <div class="drag-area">
+      <!-- Source: available ions -->
+      <div class="drag-source">
+        <div class="drag-source-title">🔵 Ion Tersedia</div>
+        <div class="drag-tokens" id="dragSource"></div>
+      </div>
+
+      <div class="drop-arrow">→</div>
+
+      <!-- Drop targets -->
+      <div style="display:flex;flex-direction:column;gap:.8rem">
+        <div>
+          <div class="drop-zone" id="dropHydrolized" ondragover="onDragOver(event)" ondrop="onDrop(event,'hydrolized')" ondragleave="onDragLeave(event)">
+            <div class="drop-zone-title anion-c">⚡ Terhidrolisis (bereaksi dengan air)</div>
+            <div class="drop-tokens" id="dropHydrolizedTokens">
+              <div class="drop-placeholder">⬅ Seret ion ke sini</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="drop-zone" id="dropSpectator" ondragover="onDragOver(event)" ondrop="onDrop(event,'spectator')" ondragleave="onDragLeave(event)">
+            <div class="drop-zone-title" style="color:#64748b">👁 Spektator (tidak bereaksi)</div>
+            <div class="drop-tokens" id="dropSpectatorTokens">
+              <div class="drop-placeholder">⬅ Seret ion ke sini</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pred-actions">
+      <button class="btn-check" id="btnCheck" onclick="checkAnswer()" disabled>✓ Periksa Jawaban</button>
+      <button class="btn-reset-pred" onclick="resetPrediction()">↺ Ulangi</button>
+    </div>
+
+    <div class="hint-area" id="hintArea"></div>
+    <div id="feedbackBox"></div>
+  </div>
+
+  <div class="nav-bottom">
+    <a href="4Modul 2 Teori.html">⬅️ Kembali ke Teori...</a>
+    <a href="4Modul 4 LKPD.html">Lanjut ke LKPD... ➡️</a>
+  </div>
+</div>
+
+<footer>&copy; 2026 Tsary ▏ Sumari ▏ Departemen Kimia ▏ Universitas Negeri Malang</footer>
+
+<!-- ION POPUP MODAL -->
+<div class="modal-overlay" id="ionModal" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-header">
+      <div>
+        <div class="modal-sym" id="mSym"></div>
+        <div style="font-size:.95rem;color:#64748b;margin-top:.2rem" id="mName"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div id="mBadge"></div>
+    <div class="modal-prop" id="mProp"></div>
+    <div class="modal-reaction" id="mReaction"></div>
+    <div class="modal-note" id="mNote"></div>
+    <button class="btn-select-ion" id="btnSelectIon" onclick="confirmSelectIon()"></button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DATA IONS
+============================================================ */
+const cations = [
+  {
+    symbol:'Na⁺', name:'Natrium', type:'neutral',
+    label:'Dari basa kuat (NaOH)', color:'#d97706', status:'spectator',
+    reaction:'Na⁺ + H₂O → tidak bereaksi',
+    origin:'NaOH (basa kuat)', charge:'+1',
+    note:'Ion Na⁺ tidak mampu menarik elektron dari air karena Na adalah logam alkali dengan ikatan ionik kuat.',
+    why:'Karena Na⁺ berasal dari basa kuat, ia tidak bereaksi dengan air — disebut ion spektator.'
+  },
+  {
+    symbol:'K⁺', name:'Kalium', type:'neutral',
+    label:'Dari basa kuat (KOH)', color:'#ca8a04', status:'spectator',
+    reaction:'K⁺ + H₂O → tidak bereaksi',
+    origin:'KOH (basa kuat)', charge:'+1',
+    note:'K⁺ juga logam alkali, sama seperti Na⁺, tidak terhidrolisis.',
+    why:'Ion K⁺ adalah spektator — tidak berpengaruh pada pH larutan.'
+  },
+  {
+    symbol:'Ca²⁺', name:'Kalsium', type:'neutral',
+    label:'Dari basa kuat Ca(OH)₂', color:'#b45309', status:'spectator',
+    reaction:'Ca²⁺ + H₂O → tidak bereaksi',
+    origin:'Ca(OH)₂ (basa kuat)', charge:'+2',
+    note:'Ca²⁺ berasal dari basa kuat Ca(OH)₂. Meskipun bermuatan +2, Ca²⁺ tetap spektator karena induknya basa kuat.',
+    why:'Ca²⁺ adalah ion spektator — tidak mengubah pH larutan. Ditemukan dalam pupuk Kalsium Asetat Ca(CH₃COO)₂.'
+  },
+  {
+    symbol:'NH₄⁺', name:'Amonium', type:'weak',
+    label:'Dari basa lemah (NH₃)', color:'#ea580c', status:'hydrolized',
+    reaction:'NH₄⁺ + H₂O ⇌ NH₃ + H₃O⁺',
+    origin:'NH₃ (basa lemah)', charge:'+1',
+    note:'NH₄⁺ adalah asam konjugat dari basa lemah NH₃. Dalam air, ia melepas H⁺ membentuk H₃O⁺.',
+    why:'NH₄⁺ terhidrolisis menghasilkan H₃O⁺ → larutan bersifat ASAM. Ada dalam Pupuk ZA (NH₄)₂SO₄ dan Pupuk DAP (NH₄)₂HPO₄.'
+  },
+  {
+    symbol:'Al³⁺', name:'Aluminium', type:'weak',
+    label:'Dari basa lemah Al(OH)₃', color:'#7c3aed', status:'hydrolized',
+    reaction:'Al³⁺ + 3H₂O ⇌ Al(OH)₃ + 3H⁺',
+    origin:'Al(OH)₃ (basa lemah)', charge:'+3',
+    note:'Al³⁺ memiliki muatan tinggi dan jari-jari kecil, sehingga sangat efektif menarik elektron dari air.',
+    why:'Al³⁺ terhidrolisis kuat menghasilkan H⁺ → larutan sangat asam.'
+  },
+  {
+    symbol:'Fe³⁺', name:'Besi(III)', type:'weak',
+    label:'Dari basa lemah Fe(OH)₃', color:'#92400e', status:'hydrolized',
+    reaction:'Fe³⁺ + 3H₂O ⇌ Fe(OH)₃ + 3H⁺',
+    origin:'Fe(OH)₃ (basa lemah)', charge:'+3',
+    note:'Fe³⁺ mirip Al³⁺, bermuatan +3 sehingga mudah menarik OH dari molekul air.',
+    why:'Fe³⁺ terhidrolisis menghasilkan H⁺ → larutan bersifat asam.'
+  },
+  {
+    symbol:'Cu²⁺', name:'Tembaga(II)', type:'weak',
+    label:'Dari basa lemah Cu(OH)₂', color:'#0e7490', status:'hydrolized',
+    reaction:'Cu²⁺ + 2H₂O ⇌ Cu(OH)₂ + 2H⁺',
+    origin:'Cu(OH)₂ (basa lemah)', charge:'+2',
+    note:'Cu²⁺ adalah kation logam transisi yang bersifat asam Lewis, menarik pasangan elektron dari air.',
+    why:'Cu²⁺ terhidrolisis menghasilkan H⁺ → larutan bersifat asam.'
+  },
+];
+const anions = [
+  {
+    symbol:'Cl⁻', name:'Klorida', type:'neutral',
+    label:'Dari asam kuat (HCl)', color:'#475569', status:'spectator',
+    reaction:'Cl⁻ + H₂O → tidak bereaksi',
+    origin:'HCl (asam kuat)', charge:'−1',
+    note:'Cl⁻ adalah basa konjugat dari asam kuat HCl. Karena asam induknya sangat kuat, Cl⁻ sangat lemah dan tidak bereaksi dengan air.',
+    why:'Cl⁻ adalah ion spektator — tidak mempengaruhi pH larutan.'
+  },
+  {
+    symbol:'NO₃⁻', name:'Nitrat', type:'neutral',
+    label:'Dari asam kuat (HNO₃)', color:'#64748b', status:'spectator',
+    reaction:'NO₃⁻ + H₂O → tidak bereaksi',
+    origin:'HNO₃ (asam kuat)', charge:'−1',
+    note:'NO₃⁻ berasal dari asam kuat HNO₃, sehingga ia sangat stabil dan tidak mau bereaksi dengan air.',
+    why:'NO₃⁻ adalah ion spektator — tidak berpengaruh pada pH larutan. Ada dalam Pupuk Niter KNO₃.'
+  },
+  {
+    symbol:'SO₄²⁻', name:'Sulfat', type:'neutral',
+    label:'Dari asam kuat (H₂SO₄)', color:'#334155', status:'spectator',
+    reaction:'SO₄²⁻ + H₂O → tidak bereaksi',
+    origin:'H₂SO₄ (asam kuat)', charge:'−2',
+    note:'SO₄²⁻ berasal dari asam sulfat yang merupakan asam kuat, sehingga ion konjugatnya sangat lemah dan tidak bereaksi dengan air.',
+    why:'SO₄²⁻ adalah ion spektator — tidak mempengaruhi pH. Ada dalam Pupuk ZA (NH₄)₂SO₄.'
+  },
+  {
+    symbol:'CH₃COO⁻', name:'Asetat', type:'weak',
+    label:'Dari asam lemah (CH₃COOH)', color:'#6d28d9', status:'hydrolized',
+    reaction:'CH₃COO⁻ + H₂O ⇌ CH₃COOH + OH⁻',
+    origin:'CH₃COOH (asam lemah)', charge:'−1',
+    note:'CH₃COO⁻ adalah basa konjugat dari asam asetat yang lemah, sehingga ia cukup kuat untuk mengambil H⁺ dari air.',
+    why:'CH₃COO⁻ terhidrolisis menghasilkan OH⁻ → larutan bersifat BASA. Ada dalam Pupuk Kalsium Asetat Ca(CH₃COO)₂.'
+  },
+  {
+    symbol:'HPO₄²⁻', name:'Hidrogen Fosfat', type:'weak',
+    label:'Dari asam lemah H₃PO₄', color:'#0f766e', status:'hydrolized',
+    reaction:'HPO₄²⁻ + H₂O ⇌ H₂PO₄⁻ + OH⁻',
+    origin:'H₃PO₄ (asam lemah)', charge:'−2',
+    note:'HPO₄²⁻ adalah anion dari asam fosfat yang lemah. Ia masih dapat menerima proton dari air menghasilkan OH⁻.',
+    why:'HPO₄²⁻ terhidrolisis menghasilkan OH⁻ → larutan bersifat BASA. Ada dalam Pupuk DAP (NH₄)₂HPO₄.'
+  },
+  {
+    symbol:'H₂PO₄⁻', name:'Dihidrogen Fosfat', type:'weak',
+    label:'Dari asam lemah H₃PO₄', color:'#166534', status:'hydrolized',
+    reaction:'H₂PO₄⁻ + H₂O ⇌ H₃PO₄ + OH⁻',
+    origin:'H₃PO₄ (asam lemah)', charge:'−1',
+    note:'H₂PO₄⁻ berasal dari asam fosfat yang lemah. Meski ionisasinya kecil, ia masih sedikit terhidrolisis dalam air.',
+    why:'H₂PO₄⁻ terhidrolisis lemah menghasilkan OH⁻ → larutan sedikit basa/netral. Ada dalam Pupuk TSP Ca(H₂PO₄)₂.'
+  },
+  {
+    symbol:'CO₃²⁻', name:'Karbonat', type:'weak',
+    label:'Dari asam lemah (H₂CO₃)', color:'#047857', status:'hydrolized',
+    reaction:'CO₃²⁻ + H₂O ⇌ HCO₃⁻ + OH⁻',
+    origin:'H₂CO₃ (asam lemah)', charge:'−2',
+    note:'CO₃²⁻ bermuatan −2 dan merupakan basa yang cukup kuat untuk menerima proton dari air.',
+    why:'CO₃²⁻ terhidrolisis menghasilkan OH⁻ → larutan bersifat basa.'
+  },
+  {
+    symbol:'CN⁻', name:'Sianida', type:'weak',
+    label:'Dari asam lemah (HCN)', color:'#7c3aed', status:'hydrolized',
+    reaction:'CN⁻ + H₂O ⇌ HCN + OH⁻',
+    origin:'HCN (asam lemah)', charge:'−1',
+    note:'CN⁻ adalah basa yang cukup kuat (Kb cukup besar) sehingga dapat bereaksi dengan air.',
+    why:'CN⁻ terhidrolisis menghasilkan OH⁻ → larutan bersifat basa.'
+  },
+  {
+    symbol:'F⁻', name:'Fluorida', type:'weak',
+    label:'Dari asam lemah (HF)', color:'#1d4ed8', status:'hydrolized',
+    reaction:'F⁻ + H₂O ⇌ HF + OH⁻',
+    origin:'HF (asam lemah)', charge:'−1',
+    note:'Meskipun F adalah elektronegatif, HF adalah asam lemah karena ikatan H-F sangat kuat. F⁻ masih dapat menerima proton dari air.',
+    why:'F⁻ terhidrolisis menghasilkan OH⁻ → larutan bersifat basa.'
+  },
+];
+
+const phMap = {neutral:{neutral:7.0,weak:9.5},weak:{neutral:4.5,weak:7.0}};
+const liqRGB = {acid:[248,113,113],neutral:[110,231,183],basic:[96,165,250]};
+const indicators = [
+  {name:'Lakmus',        ranges:[{max:7,color:'#ef4444',label:'Merah (Asam)'},{max:7.1,color:'#a855f7',label:'Ungu (Netral)'},{max:14,color:'#3b82f6',label:'Biru (Basa)'}]},
+  {name:'Ind. Universal',ranges:[{max:3,color:'#dc2626',label:'Merah'},{max:5,color:'#ea580c',label:'Oranye'},{max:6,color:'#ca8a04',label:'Kuning'},{max:7.5,color:'#16a34a',label:'Hijau'},{max:10,color:'#2563eb',label:'Biru'},{max:14,color:'#7c3aed',label:'Ungu'}]},
+  {name:'Fenolftalein',  ranges:[{max:8.2,color:'#f3f4f6',label:'Tak berwarna'},{max:14,color:'#f472b6',label:'Merah muda'}]},
+  {name:'Metil Jingga',  ranges:[{max:3.1,color:'#ef4444',label:'Merah'},{max:4.4,color:'#fb923c',label:'Jingga'},{max:14,color:'#fbbf24',label:'Kuning'}]},
+];
+
+/* ============================================================
+   STATE
+============================================================ */
+let selCation=null, selAnion=null, conc=0.1;
+let particles=[], animId=null, waveT=0, idleId=null;
+let pendingIon=null, pendingKind=null;
+let predState={placed:{},attempts:0,done:false};
+const SVG_W=200, SVG_H=300, LX1=14, LY1=70, LX2=186, LY2=292;
+
+/* ============================================================
+   CANVAS
+============================================================ */
+const canvas=document.getElementById('pcanvas');
+const ctx=canvas.getContext('2d');
+const scene=document.getElementById('beakerScene');
+
+function sceneSize(){const r=scene.getBoundingClientRect();return{w:r.width,h:r.height}}
+function liquidBounds(){
+  const{w,h}=sceneSize();const sx=w/SVG_W,sy=h/SVG_H;
+  return{x1:LX1*sx,y1:LY1*sy,x2:LX2*sx,y2:LY2*sy,w:(LX2-LX1)*sx,h:(LY2-LY1)*sy};
+}
+function sizeCanvas(){const{w,h}=sceneSize();canvas.width=w;canvas.height=h;canvas.style.width=w+'px';canvas.style.height=h+'px'}
+
+function animWave(t){
+  const wA=document.getElementById('waveA'),wB=document.getElementById('waveB');
+  if(!wA||!wB)return;
+  const amp=3.5,y0=LY1,x1=LX1,x2=LX2;
+  function path(a,f,ph){
+    let d=`M${x1} ${y0+a}`;
+    for(let x=x1;x<=x2;x+=3){const p=(x-x1)/(x2-x1);const y=y0+Math.sin(p*Math.PI*f+ph)*a+a*.6;d+=` L${x} ${y}`;}
+    return d+` L${x2} ${y0} L${x1} ${y0} Z`;
+  }
+  wA.setAttribute('d',path(amp,2.8,t*.04));
+  wB.setAttribute('d',path(amp*.6,3.6,-t*.03+1.5));
+}
+
+function setLiquid(rgb,a=0.25){const el=document.getElementById('liqRect');if(el)el.setAttribute('fill',`rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`)}
+
+/* ============================================================
+   PARTICLES
+============================================================ */
+function buildPTypes(){
+  if(!selCation||!selAnion)return[];
+  const ct=selCation.type,at=selAnion.type;
+  const t=[
+    {label:selCation.symbol,color:selCation.color,kind:'cation',count:8,r:12},
+    {label:selAnion.symbol,color:selAnion.color,kind:'anion',count:8,r:12},
+    {label:'H₂O',color:'#38bdf8',kind:'water',count:22,r:6},
+  ];
+  if(ct==='weak'&&at==='neutral')t.push({label:'H₃O⁺',color:'#ef4444',kind:'product',count:6,r:10,glow:true});
+  if(ct==='neutral'&&at==='weak')t.push({label:'OH⁻',color:'#3b82f6',kind:'product',count:6,r:10,glow:true});
+  if(ct==='weak'&&at==='weak'){
+    t.push({label:'H₃O⁺',color:'#ef4444',kind:'product',count:4,r:10,glow:true});
+    t.push({label:'OH⁻',color:'#3b82f6',kind:'product',count:4,r:10,glow:true});
+  }
+  return t;
+}
+
+function spawnParticles(){
+  particles=[];const lb=liquidBounds();if(lb.w<20)return;
+  buildPTypes().forEach(pt=>{
+    for(let i=0;i<pt.count;i++){
+      const m=pt.r+2;
+      particles.push({
+        x:lb.x1+m+Math.random()*(lb.w-m*2),y:lb.y1+m+Math.random()*(lb.h-m*2),
+        vx:(Math.random()-.5)*1.0,vy:(Math.random()-.5)*1.0,
+        r:pt.r,color:pt.color,label:pt.label,kind:pt.kind,glow:pt.glow||false,
+        x1:lb.x1,y1:lb.y1,x2:lb.x2,y2:lb.y2
+      });
+    }
+  });
+}
+
+function hr(hex){return[parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)]}
+
+function drawP(p){
+  const[r,g,b]=hr(p.color);
+  ctx.save();
+  if(p.glow){ctx.shadowBlur=22;ctx.shadowColor=p.color}
+  ctx.beginPath();ctx.arc(p.x,p.y,p.r+3.5,0,Math.PI*2);
+  ctx.strokeStyle=`rgba(${r},${g},${b},0.16)`;ctx.lineWidth=2.5;ctx.stroke();
+  const gr=ctx.createRadialGradient(p.x-p.r*.3,p.y-p.r*.35,p.r*.05,p.x,p.y,p.r);
+  gr.addColorStop(0,`rgb(${Math.min(255,r+90)},${Math.min(255,g+90)},${Math.min(255,b+90)})`);
+  gr.addColorStop(.55,`rgb(${r},${g},${b})`);
+  gr.addColorStop(1,`rgb(${Math.max(0,r-55)},${Math.max(0,g-55)},${Math.max(0,b-55)})`);
+  ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=gr;ctx.fill();
+  const hl=ctx.createRadialGradient(p.x-p.r*.35,p.y-p.r*.38,0,p.x-p.r*.15,p.y-p.r*.15,p.r*.65);
+  hl.addColorStop(0,'rgba(255,255,255,0.72)');hl.addColorStop(1,'rgba(255,255,255,0)');
+  ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=hl;ctx.fill();
+  ctx.restore();
+  const short=p.label.length>5?p.label.slice(0,4):p.label;
+  const fs=p.r<=7?p.r*.95:p.r*.7;
+  ctx.save();ctx.font=`bold ${fs}px 'Space Mono',monospace`;ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillStyle='rgba(0,0,0,0.28)';ctx.fillText(short,p.x+.5,p.y+.8);
+  ctx.fillStyle='#fff';ctx.fillText(short,p.x,p.y);ctx.restore();
+}
+
+function drawFrame(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ['water','cation','anion','product'].forEach(k=>particles.filter(p=>p.kind===k).forEach(drawP));
+}
+
+function tick(){
+  particles.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<p.x1+p.r){p.x=p.x1+p.r;p.vx=Math.abs(p.vx)*.9}
+    if(p.x>p.x2-p.r){p.x=p.x2-p.r;p.vx=-Math.abs(p.vx)*.9}
+    if(p.y<p.y1+p.r){p.y=p.y1+p.r;p.vy=Math.abs(p.vy)*.9}
+    if(p.y>p.y2-p.r){p.y=p.y2-p.r;p.vy=-Math.abs(p.vy)*.9}
+    p.vx+=(Math.random()-.5)*.07;p.vy+=(Math.random()-.5)*.07;
+    const sp=Math.hypot(p.vx,p.vy);
+    if(sp>1.5){p.vx*=1.5/sp;p.vy*=1.5/sp}
+    if(sp<0.08){p.vx+=(Math.random()-.5)*.4;p.vy+=(Math.random()-.5)*.4}
+  });
+}
+
+function loop(){waveT++;animWave(waveT);tick();drawFrame();animId=requestAnimationFrame(loop)}
+function startIdle(){
+  cancelAnimationFrame(idleId);
+  function idleFrame(){waveT++;animWave(waveT);if(!selCation||!selAnion)idleId=requestAnimationFrame(idleFrame)}
+  idleId=requestAnimationFrame(idleFrame);
+}
+
+/* ============================================================
+   BUILD UI
+============================================================ */
+function buildGrid(arr,cid,kind){
+  const cont=document.getElementById(cid);
+  arr.forEach((ion,i)=>{
+    const btn=document.createElement('button');
+    btn.className=`ion-btn ${kind}`;
+    btn.innerHTML=`<span class="sym">${ion.symbol}</span><span class="sub">${ion.name}</span>`;
+    btn.title='Klik untuk info lengkap';
+    btn.onclick=()=>openModal(ion,kind,btn,i);
+    cont.appendChild(btn);
+  });
+}
+buildGrid(cations,'cationGrid','cation');
+buildGrid(anions,'anionGrid','anion');
+
+const indCont=document.getElementById('indContainer');
+indicators.forEach(ind=>{
+  const key=ind.name.replace(/[\s.]/g,'');
+  const row=document.createElement('div');row.className='ind-row';
+  row.innerHTML=`<span class="ind-name">${ind.name}</span>
+    <div class="ind-swatch" id="sw_${key}" style="background:#e2e8f0"></div>
+    <span class="ind-label" id="lb_${key}">—</span>`;
+  indCont.appendChild(row);
+});
+
+/* ============================================================
+   ION POPUP MODAL
+============================================================ */
+let _modalBtn=null,_modalIdx=null,_modalKind=null,_modalIon=null;
+
+function openModal(ion,kind,btn,idx){
+  _modalBtn=btn; _modalIdx=idx; _modalKind=kind; _modalIon=ion;
+  const isSelected=(kind==='cation'&&selCation===ion)||(kind==='anion'&&selAnion===ion);
+
+  document.getElementById('mSym').textContent=ion.symbol;
+  document.getElementById('mSym').style.color=ion.color;
+  document.getElementById('mName').textContent=ion.name+' | Muatan: '+ion.charge;
+
+  const hydro=ion.status==='hydrolized';
+  const badge=document.getElementById('mBadge');
+  badge.innerHTML=`<span class="modal-badge" style="background:${hydro?'#fee2e2':'#f1f5f9'};color:${hydro?'#dc2626':'#64748b'};border:1.5px solid ${hydro?'#fca5a5':'#e2e8f0'}">
+    ${hydro?'⚡ Terhidrolisis':'👁 Spektator (tidak bereaksi)'}
+  </span>`;
+
+  document.getElementById('mProp').innerHTML=`
+    <span class="lbl">Asal ion:</span><span class="val">${ion.origin}</span>
+    <span class="lbl">Jenis:</span><span class="val">${kind==='cation'?'Kation (Ion Positif)':'Anion (Ion Negatif)'}</span>
+    <span class="lbl">Status:</span><span class="val">${hydro?'Bereaksi dengan H₂O':'Tidak bereaksi dengan H₂O'}</span>
+  `;
+  document.getElementById('mReaction').innerHTML=`<strong>Reaksi:</strong><br>${ion.reaction}<br><br><em style="font-family:Poppins,sans-serif;font-size:.8rem;color:#64748b">${ion.note}</em>`;
+  const noteEl=document.getElementById('mNote');
+  noteEl.textContent='💡 '+ion.why;
+  noteEl.style.display='block';
+
+  const btnSel=document.getElementById('btnSelectIon');
+  if(isSelected){
+    btnSel.textContent='✓ Ion ini sudah dipilih';
+    btnSel.style.background='#dcfce7';btnSel.style.color='#15803d';
+  } else {
+    btnSel.textContent=`Pilih ${ion.symbol} sebagai ${kind==='cation'?'kation':'anion'}`;
+    btnSel.style.background=ion.color;btnSel.style.color='#fff';
+  }
+  document.getElementById('ionModal').classList.add('open');
+}
+
+function closeModal(e){if(e.target===document.getElementById('ionModal'))closeModalDirect()}
+function closeModalDirect(){document.getElementById('ionModal').classList.remove('open')}
+
+function confirmSelectIon(){
+  if(!_modalIon||!_modalKind)return;
+  const kind=_modalKind, ion=_modalIon;
+  // deactivate old buttons of this kind
+  document.querySelectorAll(`.ion-btn.${kind}`).forEach(b=>b.classList.remove(`${kind}-active`));
+  // activate the clicked button
+  if(_modalBtn) _modalBtn.classList.add(`${kind}-active`);
+  if(kind==='cation') selCation=ion; else selAnion=ion;
+  closeModalDirect();
+  updateAll();
+}
+
+/* ============================================================
+   LOGIC
+============================================================ */
+function getInfo(){
+  if(!selCation||!selAnion)return null;
+  const ct=selCation.type,at=selAnion.type;
+  let basePH=phMap[ct][at],kind,bg,fg,bc,rgb,expl;
+  if(ct==='neutral'&&at==='neutral'){
+    kind='NETRAL';bg='#dcfce7';fg='#15803d';bc='#86efac';rgb=liqRGB.neutral;
+    expl=`${selCation.symbol} dan ${selAnion.symbol} keduanya spektator — tidak bereaksi dengan air. pH = 7.`;
+  } else if(ct==='neutral'&&at==='weak'){
+    kind='HIDROLISIS ANIONIK → BASA';bg='#dbeafe';fg='#1d4ed8';bc='#93c5fd';rgb=liqRGB.basic;
+    expl=`${selAnion.symbol} dari asam lemah terhidrolisis menghasilkan OH⁻. Larutan bersifat basa (pH > 7).`;
+  } else if(ct==='weak'&&at==='neutral'){
+    kind='HIDROLISIS KATIONIK → ASAM';bg='#fee2e2';fg='#dc2626';bc='#fca5a5';rgb=liqRGB.acid;
+    expl=`${selCation.symbol} dari basa lemah terhidrolisis menghasilkan H₃O⁺. Larutan bersifat asam (pH < 7).`;
+  } else {
+    kind='HIDROLISIS TOTAL';bg='#f0fdf4';fg='#15803d';bc='#86efac';rgb=liqRGB.neutral;
+    expl=`Kedua ion terhidrolisis — hidrolisis total. ${selCation.symbol} menghasilkan H₃O⁺, ${selAnion.symbol} menghasilkan OH⁻.`;
+  }
+  let ph=basePH;
+  if(ct==='weak'&&at==='neutral')ph-=0.3*Math.log10(conc/.1);
+  else if(ct==='neutral'&&at==='weak')ph+=0.3*Math.log10(conc/.1);
+  ph=Math.max(.5,Math.min(13.5,ph));
+  return{ph,kind,bg,fg,bc,rgb,expl};
+}
+
+function fmla(c,a){
+  if(!c||!a)return'—';
+  return c.symbol.replace(/[⁺⁻⁰¹²³⁴]/g,'')+a.symbol.replace(/[⁺⁻⁰¹²³⁴]/g,'');
+}
+
+function ionCard(ion,color){
+  const hydro=ion.status==='hydrolized';
+  const pill=hydro?'<span class="pill pill-h">⚡ Terhidrolisis</span>':'<span class="pill pill-s">👁 Spektator</span>';
+  return `<div style="color:${color};font-family:'Space Mono',monospace;font-size:1.1rem;margin-bottom:.15rem;font-weight:700">${ion.symbol}</div>
+    <div style="font-size:.82rem;color:#64748b;margin-bottom:.4rem">${ion.label}</div>${pill}`;
+}
+
+/* ============================================================
+   UPDATE ALL
+============================================================ */
+function updateAll(){
+  const info=getInfo();
+  const stageCard=document.getElementById('stageCard');
+  const reaksiCard=document.getElementById('reaksiCard');
+  const predSection=document.getElementById('predSection');
+
+  if(!info){
+    document.getElementById('phVal').textContent='—';
+    document.getElementById('phVal').style.color='#94a3b8';
+    document.getElementById('phType').textContent='Pilih ion dahulu';
+    document.getElementById('phType').style.color='#94a3b8';
+    document.getElementById('phMarker').style.left='50%';
+    document.getElementById('eqBox').innerHTML='<span style="color:#94a3b8;font-size:.85rem">Pilih ion untuk melihat reaksi...</span>';
+    setLiquid([147,197,253],.15);
+    stageCard.style.opacity=selCation||selAnion?'.7':'.45';
+    stageCard.style.pointerEvents=selCation||selAnion?'all':'none';
+    reaksiCard.style.opacity='.45';reaksiCard.style.pointerEvents='none';
+    predSection.style.opacity='.4';predSection.style.pointerEvents='none';
+    cancelAnimationFrame(animId);animId=null;ctx.clearRect(0,0,canvas.width,canvas.height);
+    startIdle();
+    updateSteps(1);
+    return;
+  }
+
+  const{ph,kind,bg,fg,bc,rgb,expl}=info;
+
+  // Enable stage
+  stageCard.style.opacity='1';stageCard.style.pointerEvents='all';
+  reaksiCard.style.opacity='1';reaksiCard.style.pointerEvents='all';
+
+
+  const pv=document.getElementById('phVal');
+  pv.textContent=ph.toFixed(2);
+  pv.style.color=ph<6.5?'#dc2626':ph>7.5?'#2563eb':'#16a34a';
+
+  const pt=document.getElementById('phType');
+  pt.textContent=ph<6.5?'⬇ Larutan Asam':ph>7.5?'⬆ Larutan Basa':'⟷ Larutan Netral';
+  pt.style.color=ph<6.5?'#dc2626':ph>7.5?'#2563eb':'#16a34a';
+  document.getElementById('phMarker').style.left=(ph/14*100)+'%';
+
+  setLiquid(rgb,.28);
+
+  // REACTION BOX with step-by-step
+  const eqSteps=[
+    {step:`${fmla(selCation,selAnion)} → ${selCation.symbol} + ${selAnion.symbol}`,note:'Ionisasi garam dalam air'},
+    {step:selCation.reaction,note:selCation.status==='hydrolized'?'Kation bereaksi dengan air':'Kation tidak bereaksi (spektator)'},
+    {step:selAnion.reaction, note:selAnion.status==='hydrolized'?'Anion bereaksi dengan air':'Anion tidak bereaksi (spektator)'},
+    {step:`Larutan: ${ph<6.5?'ASAM (H₃O⁺ dominan)':ph>7.5?'BASA (OH⁻ dominan)':'NETRAL (H₃O⁺ = OH⁻)'} — pH ≈ ${ph.toFixed(2)}`,note:expl},
+  ];
+  document.getElementById('eqBox').innerHTML=`<div class="eq-box-inner">`+eqSteps.map((s,i)=>`
+    <div class="eq-step">
+      <div class="eq-step-header"><div class="eq-num">${i+1}</div></div>
+      <div class="eq">${s.step}</div>
+      <div class="eq-note" style="font-family:'Poppins',sans-serif;font-size:.72rem;color:#64748b;margin-top:.1rem">${s.note}</div>
+    </div>`).join('')+'</div>';
+
+  // Indicators
+  indicators.forEach(ind=>{
+    const key=ind.name.replace(/[\s.]/g,'');
+    let chosen=ind.ranges[ind.ranges.length-1];
+    for(const r of ind.ranges){if(ph<=r.max){chosen=r;break}}
+    const sw=document.getElementById('sw_'+key);const lb=document.getElementById('lb_'+key);
+    if(sw)sw.style.background=chosen.color;if(lb)lb.textContent=chosen.label;
+  });
+
+  // Beaker animation
+  cancelAnimationFrame(animId);cancelAnimationFrame(idleId);animId=null;idleId=null;
+  sizeCanvas();spawnParticles();loop();
+
+  // Enable prediction
+  predSection.style.opacity='1';predSection.style.pointerEvents='all';
+  predSection.classList.add('active');
+  buildPrediction();
+  updateSteps(2);
+}
+
+/* ============================================================
+   STEP INDICATOR
+============================================================ */
+function updateSteps(active){
+  ['step1','step2','step3'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.classList.remove('active','done');
+    if(i+1<active)el.classList.add('done');
+    else if(i+1===active)el.classList.add('active');
+  });
+}
+
+/* ============================================================
+   DRAG & DROP PREDICTION
+============================================================ */
+let draggingToken=null;
+
+function buildPrediction(){
+  predState={placed:{},attempts:0,done:false};
+  document.getElementById('hintArea').innerHTML='';
+  document.getElementById('feedbackBox').innerHTML='';
+  document.getElementById('btnCheck').disabled=true;
+  updateAttemptDots();
+
+  const src=document.getElementById('dragSource');
+  src.innerHTML='';
+  const dzH=document.getElementById('dropHydrolizedTokens');
+  const dzS=document.getElementById('dropSpectatorTokens');
+  dzH.innerHTML='<div class="drop-placeholder">⬅ Seret ion ke sini</div>';
+  dzS.innerHTML='<div class="drop-placeholder">⬅ Seret ion ke sini</div>';
+  document.getElementById('dropHydrolized').classList.remove('correct','wrong');
+  document.getElementById('dropSpectator').classList.remove('correct','wrong');
+
+  const ions=[
+    {ion:selCation, kind:'cation', tokenClass:'cation-token'},
+    {ion:selAnion,  kind:'anion',  tokenClass:'anion-token'},
+  ];
+
+  ions.forEach(({ion,kind,tokenClass})=>{
+    const t=document.createElement('div');
+    t.className=`drag-token ${tokenClass}`;
+    t.draggable=true;
+    t.dataset.ionSymbol=ion.symbol;
+    t.dataset.ionStatus=ion.status;
+    t.dataset.ionKind=kind;
+    t.innerHTML=`<span style="font-family:'Space Mono',monospace;font-size:.95rem;font-weight:700">${ion.symbol}</span>
+      <span style="font-size:.72rem;opacity:.7">${kind==='water'?'Air':ion.name||''}</span>`;
+    t.addEventListener('dragstart',e=>{
+      draggingToken=t;
+      t.classList.add('dragging');
+      e.dataTransfer.setData('text/plain',ion.symbol+'|'+ion.status+'|'+kind);
+    });
+    t.addEventListener('dragend',()=>{t.classList.remove('dragging');draggingToken=null});
+    // Touch support
+    t.addEventListener('touchstart',touchStart,{passive:false});
+    t.addEventListener('touchmove',touchMove,{passive:false});
+    t.addEventListener('touchend',touchEnd);
+    src.appendChild(t);
+  });
+}
+
+function onDragOver(e){e.preventDefault();e.currentTarget.classList.add('drag-over')}
+function onDragLeave(e){e.currentTarget.classList.remove('drag-over')}
+
+function onDrop(e, zone){
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if(predState.done)return;
+  const data=e.dataTransfer.getData('text/plain');
+  if(!data)return;
+  const[symbol,status,kind]=data.split('|');
+  placeToken(symbol,status,kind,zone);
+}
+
+function placeToken(symbol,status,kind,zone){
+  // Remove from wherever it was placed before
+  const existing=document.querySelector(`.drag-token[data-ion-symbol="${symbol}"]`);
+  const inSource=document.getElementById('dragSource').contains(existing);
+
+  // Record placement
+  predState.placed[symbol]=zone;
+
+  // Move token to new zone
+  const dzId=zone==='hydrolized'?'dropHydrolizedTokens':'dropSpectatorTokens';
+  const otherDzId=zone==='hydrolized'?'dropSpectatorTokens':'dropHydrolizedTokens';
+
+  // Remove placeholder if present
+  [dzId,otherDzId].forEach(id=>{
+    const ph=document.getElementById(id).querySelector('.drop-placeholder');
+    if(ph)ph.remove();
+  });
+
+  // If token was in the other dropzone, remove it
+  const otherDz=document.getElementById(otherDzId);
+  const inOther=otherDz.querySelector(`[data-ion-symbol="${symbol}"]`);
+  if(inOther)inOther.remove();
+
+  // If not in source anymore, we already found it; otherwise clone
+  const targetDz=document.getElementById(dzId);
+  if(!targetDz.querySelector(`[data-ion-symbol="${symbol}"]`)){
+    const tok=existing.cloneNode(true);
+    tok.dataset.ionSymbol=symbol;tok.dataset.ionStatus=status;tok.dataset.ionKind=kind;
+    // Restore drag events on clone
+    tok.draggable=true;
+    tok.addEventListener('dragstart',ev=>{
+      draggingToken=tok;tok.classList.add('dragging');
+      ev.dataTransfer.setData('text/plain',symbol+'|'+status+'|'+kind);
+    });
+    tok.addEventListener('dragend',()=>{tok.classList.remove('dragging');draggingToken=null});
+    // Add click to return to source
+    tok.addEventListener('dblclick',()=>returnToSource(symbol,status,kind));
+    targetDz.appendChild(tok);
+  }
+
+  // Check if all ions placed (excluding water, which is always spectator)
+  const ionsToPlace=[selCation.symbol,selAnion.symbol];
+  const allPlaced=ionsToPlace.every(s=>predState.placed[s]);
+  document.getElementById('btnCheck').disabled=!allPlaced||predState.done;
+  updateSteps(3);
+}
+
+function returnToSource(symbol,status,kind){
+  if(predState.done)return;
+  delete predState.placed[symbol];
+  ['dropHydrolizedTokens','dropSpectatorTokens'].forEach(id=>{
+    const el=document.getElementById(id).querySelector(`[data-ion-symbol="${symbol}"]`);
+    if(el)el.remove();
+  });
+  // Re-enable btn check
+  const ionsToPlace=[selCation.symbol,selAnion.symbol];
+  const allPlaced=ionsToPlace.every(s=>predState.placed[s]);
+  document.getElementById('btnCheck').disabled=!allPlaced||predState.done;
+}
+
+/* TOUCH SUPPORT */
+let _touchToken=null,_touchClone=null;
+function touchStart(e){
+  e.preventDefault();
+  _touchToken=e.currentTarget;
+  const rect=_touchToken.getBoundingClientRect();
+  _touchClone=_touchToken.cloneNode(true);
+  _touchClone.style.cssText=`position:fixed;z-index:9999;opacity:.85;pointer-events:none;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px`;
+  document.body.appendChild(_touchClone);
+}
+function touchMove(e){
+  e.preventDefault();
+  if(!_touchClone)return;
+  const t=e.touches[0];
+  _touchClone.style.left=(t.clientX-_touchClone.offsetWidth/2)+'px';
+  _touchClone.style.top=(t.clientY-_touchClone.offsetHeight/2)+'px';
+}
+function touchEnd(e){
+  if(!_touchToken||!_touchClone){return}
+  document.body.removeChild(_touchClone);_touchClone=null;
+  const t=e.changedTouches[0];
+  const el=document.elementFromPoint(t.clientX,t.clientY);
+  let zone=null;
+  if(el){
+    const dz=el.closest('#dropHydrolized');const dz2=el.closest('#dropSpectator');
+    if(dz)zone='hydrolized';else if(dz2)zone='spectator';
+  }
+  if(zone){
+    placeToken(
+      _touchToken.dataset.ionSymbol,
+      _touchToken.dataset.ionStatus,
+      _touchToken.dataset.ionKind,
+      zone
+    );
+  }
+  _touchToken=null;
+}
+
+/* ============================================================
+   CHECK ANSWER
+============================================================ */
+function checkAnswer(){
+  if(predState.done)return;
+  predState.attempts++;
+  updateAttemptDots();
+
+  const placed=predState.placed;
+  // correct answer
+  const correct={};
+  [selCation,selAnion].forEach(ion=>{
+    correct[ion.symbol]=ion.status==='hydrolized'?'hydrolized':'spectator';
+  });
+
+  let allRight=true;
+  const wrongIons=[];
+
+  [selCation.symbol,selAnion.symbol].forEach(sym=>{
+    if(placed[sym]!==correct[sym]){allRight=false;wrongIons.push(sym);}
+  });
+
+  // Visual feedback on dropzones
+  if(allRight){
+    showSuccess();
+  } else {
+    // Shake wrong zones & show beaker clue
+    wrongIons.forEach(sym=>{
+      const zone=placed[sym];
+      const dzEl=document.getElementById(zone==='hydrolized'?'dropHydrolized':'dropSpectator');
+      dzEl.classList.add('wrong');
+      setTimeout(()=>dzEl.classList.remove('wrong'),600);
+    });
+    showBeakerClue();
+    showHint(predState.attempts);
+
+    if(predState.attempts>=3){
+      // After 3 wrong, still show hint but never reveal answer outright
+      showPersistentHint();
+    }
+  }
+}
+
+function showSuccess(){
+  predState.done=true;
+  document.getElementById('btnCheck').disabled=true;
+  document.getElementById('dropHydrolized').classList.add('correct');
+  document.getElementById('dropSpectator').classList.add('correct');
+  updateSteps(4);
+
+  const info=getInfo();
+  document.getElementById('feedbackBox').innerHTML=`
+    <div class="feedback-box success">
+      <div class="feedback-title">🎉 Jawaban Benar!</div>
+      <p>Kamu berhasil mengidentifikasi ion yang terhidrolisis dengan tepat!</p>
+      <p style="margin-top:.5rem">${info?info.expl:''}</p>
+      <p style="margin-top:.6rem;font-size:.85rem;color:#166534">✔ Lanjutkan ke LKPD untuk mengerjakan soal lebih lanjut.</p>
+    </div>`;
+}
+
+function showHint(attempt){
+  const ct=selCation.type, at=selAnion.type;
+  const hints=[null,
+    // Hint 1
+    `<div class="hint-box level-1">
+      <div class="hint-title">💡 Petunjuk 1</div>
+      <p>Perhatikan <strong>asal</strong> setiap ion. Ion yang berasal dari asam lemah atau basa lemah biasanya terhidrolisis.
+      Ion dari asam kuat/basa kuat adalah spektator.</p>
+    </div>`,
+    // Hint 2
+    `<div class="hint-box level-2">
+      <div class="hint-title">🔍 Petunjuk 2 (lebih spesifik)</div>
+      <p><strong>${selCation.symbol}</strong> berasal dari <em>${selCation.origin}</em>. 
+      <strong>${selAnion.symbol}</strong> berasal dari <em>${selAnion.origin}</em>.</p>
+      <p style="margin-top:.4rem">Ingat: basa <strong>${ct==='weak'?'lemah':'kuat'}</strong> → kationnya ${ct==='weak'?'terhidrolisis':'spektator'}.
+      Asam <strong>${at==='weak'?'lemah':'kuat'}</strong> → anionnya ${at==='weak'?'terhidrolisis':'spektator'}.</p>
+    </div>`,
+    // Hint 3
+    `<div class="hint-box level-3">
+      <div class="hint-title">🧪 Petunjuk 3 — Lihat Beaker</div>
+      <p>Amati partikel di beaker. Partikel yang berwarna <span style="color:#ef4444;font-weight:700">merah (H₃O⁺)</span> 
+      atau <span style="color:#3b82f6;font-weight:700">biru (OH⁻)</span> 
+      muncul karena ada ion yang bereaksi dengan air.</p>
+      <p style="margin-top:.4rem">Coba pikirkan: ion mana yang <em>bertanggung jawab</em> atas munculnya partikel produk tersebut?</p>
+    </div>`,
+  ];
+  const area=document.getElementById('hintArea');
+  if(attempt<=3 && hints[attempt]){
+    area.innerHTML+=hints[attempt];
+  }
+}
+
+function showPersistentHint(){
+  const area=document.getElementById('hintArea');
+  area.innerHTML+=`<div class="hint-box level-3">
+    <div class="hint-title">📝 Ingat Aturan Ini</div>
+    <p>Coba klik tombol <strong>ion</strong> di bagian atas untuk membaca ulang info tiap ion — 
+    ada penjelasan mengapa ion itu terhidrolisis atau tidak. Kamu pasti bisa!</p>
+  </div>`;
+}
+
+function showBeakerClue(){
+  const clue=document.getElementById('beakerClue');
+  const info=getInfo();
+  clue.textContent=info?(info.ph<6.5?'⚡ Lihat! Ada partikel H₃O⁺ merah muncul':info.ph>7.5?'⚡ Lihat! Ada partikel OH⁻ biru muncul':'⚡ H₃O⁺ dan OH⁻ seimbang'):'Amati beaker!';
+  clue.classList.add('show');
+  setTimeout(()=>clue.classList.remove('show'),3000);
+  // flash beaker liquid
+  const liq=document.getElementById('liqRect');
+  const origFill=liq.getAttribute('fill');
+  liq.setAttribute('fill','rgba(255,200,0,0.4)');
+  setTimeout(()=>liq.setAttribute('fill',origFill),500);
+}
+
+function updateAttemptDots(){
+  [1,2,3].forEach(i=>{
+    const dot=document.getElementById('dot'+i);
+    if(dot)dot.classList.toggle('used',predState.attempts>=i);
+  });
+}
+
+function resetPrediction(){
+  buildPrediction();
+  document.getElementById('hintArea').innerHTML='';
+  document.getElementById('feedbackBox').innerHTML='';
+  document.getElementById('dropHydrolized').classList.remove('correct','wrong');
+  document.getElementById('dropSpectator').classList.remove('correct','wrong');
+}
+
+/* ============================================================
+   SLIDER & RESIZE
+============================================================ */
+document.getElementById('concSlider').addEventListener('input',function(){
+  conc=this.value*.1;
+  document.getElementById('concDisplay').textContent=conc.toFixed(1)+' M';
+  updateAll();
+});
+window.addEventListener('resize',()=>{sizeCanvas();if(selCation&&selAnion)spawnParticles()});
+
+/* INIT */
+sizeCanvas();setLiquid([147,197,253],.15);startIdle();
+</script>
+</body>
+</html>
