@@ -154,7 +154,6 @@ html, body { max-width: 100%; overflow-x: hidden; }
 img, video, canvas, iframe { max-width: 100%; height: auto; }
 /* === RESPONSIVE_GLOBAL_END === */
 
-
 /* === NAV_UNIFORM_START === */
 .nav-menu{
   display:flex;
@@ -182,7 +181,6 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
   }
 }
 /* === NAV_UNIFORM_END === */
-
 </style>
 </head>
 <body>
@@ -625,8 +623,8 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
 <footer>&copy; 2026 Tsary ▏ Sumari ▏ Departemen Kimia ▏ Universitas Negeri Malang</footer>
 
 
-<!-- docx.js CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.0/papaparse.min.js"></script>
+<!-- ✅ FIX: Ganti PapaParse dengan JSZip yang benar -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 /* ============================================================
    FILENAME PREVIEW (live update)
@@ -652,17 +650,14 @@ updateFilenamePreview();
    COLLECT ALL ANSWERS
 ============================================================ */
 function collectData(){
-  // Identitas
   const nomor   = document.getElementById('nomorKelompok')?.value || '-';
   const kelas   = document.getElementById('kelasInput')?.value || '-';
   const anggota = document.getElementById('anggotaInput')?.value || '-';
   const tanggal = document.getElementById('tanggalInput')?.value || '-';
 
-  // All textareas in order
   const textareas = document.querySelectorAll('textarea');
   const tAns = Array.from(textareas).map(t => t.value || '(belum diisi)');
 
-  // All single-line inputs EXCLUDING identitas
   const inputs = document.querySelectorAll('input[type="text"]:not(#kelasInput):not(#nomorKelompok):not(#tanggalInput)');
   const iAns = Array.from(inputs).map(i => i.value || '(belum diisi)');
 
@@ -670,26 +665,29 @@ function collectData(){
 }
 
 /* ============================================================
-   GENERATE DOCX via raw XML (no external lib needed in browser)
-   We create a minimal but well-structured OOXML file
+   DOWNLOAD HANDLER
 ============================================================ */
 async function downloadDocx(){
-  const btn = document.getElementById('btnDownload');
+  const btn    = document.getElementById('btnDownload');
   const status = document.getElementById('downloadStatus');
+
   btn.classList.add('loading');
   btn.querySelector('span:last-child').textContent = 'Menyiapkan file...';
   status.style.display = 'block';
+  status.style.color = '#64748b';
   status.textContent = '⏳ Mengumpulkan jawaban...';
 
   await new Promise(r => setTimeout(r, 200));
 
   try {
-    const d = collectData();
+    if(typeof JSZip === 'undefined') throw new Error('Library JSZip belum termuat. Periksa koneksi internet lalu refresh halaman.');
+
+    const d        = collectData();
     const filename = buildFilename() + '.docx';
-    const docxBlob = buildDocx(d);
-    
-    const url = URL.createObjectURL(docxBlob);
-    const a = document.createElement('a');
+    const blob     = await buildDocx(d);
+
+    const url = URL.createObjectURL(blob);
+    const a   = document.createElement('a');
     a.href = url; a.download = filename;
     document.body.appendChild(a); a.click();
     document.body.removeChild(a);
@@ -699,7 +697,7 @@ async function downloadDocx(){
     status.style.color = '#16a34a';
   } catch(e){
     console.error(e);
-    status.textContent = '❌ Gagal membuat file. Coba lagi atau hubungi guru.';
+    status.textContent = '❌ Gagal: ' + e.message;
     status.style.color = '#dc2626';
   }
 
@@ -708,32 +706,32 @@ async function downloadDocx(){
 }
 
 /* ============================================================
-   BUILD DOCX (pure JS, no lib — using JSZip via CDN)
+   XML HELPERS
 ============================================================ */
-function escXml(s){ 
+function escXml(s){
   return String(s)
     .replace(/&/g,'&amp;')
     .replace(/</g,'&lt;')
     .replace(/>/g,'&gt;')
     .replace(/"/g,'&quot;')
-    .replace(/\r\n|\n/g,'</w:t><w:br/><w:t xml:space="preserve">');
+    .replace(/\r\n|\r|\n/g,'</w:t><w:br/><w:t xml:space="preserve">');
 }
 
 function para(text, opts={}){
-  const sz   = opts.sz   || 22;
-  const bold = opts.bold ? '<w:b/>' : '';
-  const color= opts.color? `<w:color w:val="${opts.color}"/>` : '';
-  const space= opts.space|| 120;
-  const align= opts.align? `<w:jc w:val="${opts.align}"/>` : '';
-  const shade= opts.shade? `<w:shd w:val="clear" w:color="auto" w:fill="${opts.shade}"/>` : '';
+  const sz    = opts.sz    || 22;
+  const bold  = opts.bold  ? '<w:b/>' : '';
+  const color = opts.color ? `<w:color w:val="${opts.color}"/>` : '';
+  const space = opts.space || 120;
+  const align = opts.align ? `<w:jc w:val="${opts.align}"/>` : '';
+  const shade = opts.shade ? `<w:shd w:val="clear" w:color="auto" w:fill="${opts.shade}"/>` : '';
   const indent= opts.indent? `<w:ind w:left="${opts.indent}"/>` : '';
   return `<w:p>
-    <w:pPr>
-      ${align}${shade}${indent}
+    <w:pPr>${align}${shade}${indent}
       <w:spacing w:before="${space}" w:after="${space}"/>
     </w:pPr>
     <w:r>
-      <w:rPr>${bold}<w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/>${color}<w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/></w:rPr>
+      <w:rPr>${bold}<w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/>${color}
+      <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/></w:rPr>
       <w:t xml:space="preserve">${escXml(text)}</w:t>
     </w:r>
   </w:p>`;
@@ -742,13 +740,16 @@ function para(text, opts={}){
 function heading(text, level=1){
   const sz    = level===1 ? 32 : level===2 ? 26 : 22;
   const color = level===1 ? '0891B2' : level===2 ? '0E7490' : '155E75';
+  const ppr   = level===1
+    ? '<w:jc w:val="center"/>'
+    : '<w:pBdr><w:left w:val="single" w:sz="18" w:space="10" w:color="06B6D4"/></w:pBdr>';
   return `<w:p>
-    <w:pPr>
+    <w:pPr>${ppr}
       <w:spacing w:before="240" w:after="100"/>
-      ${level===1 ? '<w:jc w:val="center"/>' : `<w:pBdr><w:left w:val="single" w:sz="18" w:space="10" w:color="06B6D4"/></w:pBdr>`}
     </w:pPr>
     <w:r>
-      <w:rPr><w:b/><w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/><w:color w:val="${color}"/>
+      <w:rPr><w:b/><w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/>
+      <w:color w:val="${color}"/>
       <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/></w:rPr>
       <w:t xml:space="preserve">${escXml(text)}</w:t>
     </w:r>
@@ -756,8 +757,7 @@ function heading(text, level=1){
 }
 
 function answerBox(label, answer){
-  return `
-  ${para(label, {sz:21, bold:true, color:'1E293B', space:80})}
+  return `${para(label, {sz:21, bold:true, color:'1E293B', space:80})}
   <w:p>
     <w:pPr>
       <w:spacing w:before="60" w:after="160"/>
@@ -801,158 +801,108 @@ function divider(){
   </w:p>`;
 }
 
+/* ============================================================
+   BUILD DOCUMENT XML  (logika sama persis dengan versi asli)
+============================================================ */
 function buildDocxXml(d){
   const { nomor, kelas, anggota, tanggal, tAns, iAns } = d;
-
-  // Map textarea indices (from DOM order)
-  const T = tAns; // 0-based
-  // Textareas order in DOM:
-  // 0: anggota (skip, in identitas)
-  // 1,2,3,4: T2.1,2.2,2.3,2.4 (tahap2)
-  // 5: hipotesis
-  // 6: sumber? no — sumber pakai input biasa
-  // Tahap 3 answers: T[1..4]
-  // Tahap 4a,b: T[5,6]
-  // Tahap 4 reaksi: iAns
-  // Tahap 4 perhitungan a,b,c: T[7,8,9]
-  // Tahap 5 q1,2,3: T[10,11,12]
-  // Kesimpulan: T[13]
-  // Refleksi: T[14]
-
-  // Source inputs (type=text excl identitas) — ordered as in DOM
+  const T = tAns;
   const I = iAns;
-
   const sections = [];
 
-  // ── COVER ──────────────────────────────────────────────
   sections.push(
     heading('LEMBAR KERJA PESERTA DIDIK (LKPD)', 1),
     para('Hidrolisis Garam  |  Kimia SMA Kelas XI', {sz:20, align:'center', color:'64748B', space:60}),
-    divider(),
+    divider()
   );
 
-  // ── IDENTITAS ──────────────────────────────────────────
   sections.push(heading('IDENTITAS KELOMPOK', 2));
-  const identRows = [
-    ['Nomor Kelompok', nomor],
-    ['Kelas', kelas],
-    ['Tanggal', tanggal],
-    ['Anggota Kelompok', anggota],
-  ];
-  identRows.forEach(([lbl, val]) => {
-    sections.push(`<w:p>
-      <w:pPr><w:spacing w:before="60" w:after="60"/>
-        <w:shd w:val="clear" w:color="auto" w:fill="F0F9FF"/>
-        <w:ind w:left="120"/>
-      </w:pPr>
-      <w:r><w:rPr><w:b/><w:sz w:val="21"/><w:szCs w:val="21"/><w:color w:val="0E7490"/>
-        <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/></w:rPr>
-        <w:t xml:space="preserve">${escXml(lbl)}: </w:t></w:r>
-      <w:r><w:rPr><w:sz w:val="21"/><w:szCs w:val="21"/><w:color w:val="1E293B"/>
-        <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/></w:rPr>
-        <w:t xml:space="preserve">${escXml(val)}</w:t></w:r>
-    </w:p>`);
-  });
+  [['Nomor Kelompok', nomor],['Kelas', kelas],['Tanggal', tanggal],['Anggota Kelompok', anggota]]
+    .forEach(([lbl, val]) => {
+      sections.push(`<w:p>
+        <w:pPr><w:spacing w:before="60" w:after="60"/>
+          <w:shd w:val="clear" w:color="auto" w:fill="F0F9FF"/>
+          <w:ind w:left="120"/>
+        </w:pPr>
+        <w:r><w:rPr><w:b/><w:sz w:val="21"/><w:szCs w:val="21"/><w:color w:val="0E7490"/>
+          <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/></w:rPr>
+          <w:t xml:space="preserve">${escXml(lbl)}: </w:t></w:r>
+        <w:r><w:rPr><w:sz w:val="21"/><w:szCs w:val="21"/><w:color w:val="1E293B"/>
+          <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/></w:rPr>
+          <w:t xml:space="preserve">${escXml(val)}</w:t></w:r>
+      </w:p>`);
+    });
   sections.push(divider());
 
-  // ── TAHAP 2 ────────────────────────────────────────────
   sections.push(badge('TAHAP 2 — Mengorganisasi Peserta Didik untuk Belajar'));
   sections.push(heading('Pertanyaan Analisis Masalah', 3));
-  const t2q = [
-    '1. Informasi penting dari berita Sebakung Jaya',
-    '2. Penyebab tanah bersifat asam',
-    '3. Hubungan pH tanah dengan pertumbuhan padi',
-    '4. Mengapa efek pupuk hilang saat banjir',
-  ];
-  t2q.forEach((q, i) => sections.push(answerBox(q, T[i+1] || '(belum diisi)')));
+  ['1. Informasi penting dari berita Sebakung Jaya',
+   '2. Penyebab tanah bersifat asam',
+   '3. Hubungan pH tanah dengan pertumbuhan padi',
+   '4. Mengapa efek pupuk hilang saat banjir']
+    .forEach((q, i) => sections.push(answerBox(q, T[i+1] || '(belum diisi)')));
   sections.push(heading('Hipotesis', 3));
   sections.push(answerBox('Hipotesis kelompok:', T[5] || '(belum diisi)'));
   sections.push(divider());
 
-  // ── TAHAP 3 — SUMBER ───────────────────────────────────
   sections.push(badge('TAHAP 3 — Membimbing Penyelidikan'));
   sections.push(heading('Sumber Referensi', 3));
-  // Sumber are the first 4 inputs (index 0–3 in iAns, since no table inputs come before)
-  // Actually from DOM: sumber inputs are BEFORE table inputs
-  const sumberLabels = ['Sumber 1','Sumber 2','Sumber 3','Sumber 4'];
-  sumberLabels.forEach((lbl, i) => {
+  ['Sumber 1','Sumber 2','Sumber 3','Sumber 4'].forEach((lbl, i) => {
     sections.push(para(`${lbl}: ${I[i] || '(belum diisi)'}`, {sz:21, space:60, indent:160}));
   });
   sections.push(divider());
 
-  // ── TABEL ANALISIS (inputs 4–43: 5 rows x 8 cols, but col0=no col1=fixed) ──
   sections.push(heading('Tabel Analisis Garam', 3));
-  const garamNames = ['(NH₄)₂SO₄ / Pupuk ZA','KNO₃ / Pupuk Niter','Ca(CH₃COO)₂ / Kalsium Asetat','(NH₄)₂HPO₄ / Pupuk DAP','Ca(H₂PO₄)₂ / Pupuk TSP'];
-  const colLabels = ['Nama Garam','Kation','Anion','Ion Bereaksi','Ion Spektator','Sifat Larutan'];
-  // Each row has 6 inputs (cols: nama, kation, anion, ion bereaksi, spektator, sifat)
-  // table inputs start at index 4 (after 4 sumber inputs)
+  const garamNames = ['(NH4)2SO4 / Pupuk ZA','KNO3 / Pupuk Niter','Ca(CH3COO)2 / Kalsium Asetat','(NH4)2HPO4 / Pupuk DAP','Ca(H2PO4)2 / Pupuk TSP'];
+  const colLabels  = ['Nama Garam','Kation','Anion','Ion Bereaksi','Ion Spektator','Sifat Larutan'];
   let tblIdx = 4;
   garamNames.forEach((garam, ri) => {
     sections.push(para(`${ri+1}. ${garam}`, {sz:21, bold:true, color:'0E7490', space:80}));
-    colLabels.forEach((col, ci) => {
-      const val = I[tblIdx++] || '(belum diisi)';
-      sections.push(para(`   ${col}: ${val}`, {sz:20, space:40, indent:320}));
+    colLabels.forEach(col => {
+      sections.push(para(`   ${col}: ${I[tblIdx++] || '(belum diisi)'}`, {sz:20, space:40, indent:320}));
     });
   });
   sections.push(divider());
 
-  // ── TAHAP 4 ────────────────────────────────────────────
   sections.push(badge('TAHAP 4 — Mengembangkan dan Menyajikan Hasil Karya'));
   sections.push(heading('Pembahasan dan Analisis Data', 3));
   sections.push(answerBox('a. Hubungan jenis asam/basa pembentuk dengan sifat larutan:', T[6] || '(belum diisi)'));
   sections.push(answerBox('b. Pengelompokan berdasarkan jenis hidrolisis:', T[7] || '(belum diisi)'));
 
   sections.push(heading('Persamaan Reaksi Hidrolisis', 3));
-  const reaksiGaram = ['(NH₄)₂SO₄','KNO₃','Ca(CH₃COO)₂','(NH₄)₂HPO₄','Ca(H₂PO₄)₂'];
-  // Reaksi inputs: ionisasi + hidrolisis per garam = 10 inputs total, starting at index tblIdx
-  reaksiGaram.forEach((g, i) => {
-    const ionisasi = I[tblIdx++] || '(belum diisi)';
-    const hidro    = I[tblIdx++] || '(belum diisi)';
+  ['(NH4)2SO4','KNO3','Ca(CH3COO)2','(NH4)2HPO4','Ca(H2PO4)2'].forEach((g, i) => {
     sections.push(para(`${i+1}. ${g}`, {sz:21, bold:true, color:'0E7490', space:80}));
-    sections.push(para(`   Ionisasi : ${ionisasi}`, {sz:20, space:40, indent:320}));
-    sections.push(para(`   Hidrolisis: ${hidro}`,  {sz:20, space:40, indent:320}));
+    sections.push(para(`   Ionisasi  : ${I[tblIdx++] || '(belum diisi)'}`, {sz:20, space:40, indent:320}));
+    sections.push(para(`   Hidrolisis: ${I[tblIdx++] || '(belum diisi)'}`, {sz:20, space:40, indent:320}));
   });
 
   sections.push(heading('Perhitungan pH dan Tetapan Hidrolisis', 3));
-  // T indices for perhitungan: check textarea order
-  // tAns: 0=anggota,1-4=t2q,5=hipotesis,6=tahap4a,7=tahap4b... wait, let's re-check
-  // Actual textarea order in HTML DOM:
-  // [0] anggota  [1] t2q1  [2] t2q2  [3] t2q3  [4] t2q4  [5] hipotesis
-  // [6] tahap4a  [7] tahap4b  (pembahasan)
-  // [8] Kh  [9] pH  [10] kesesuaian
-  // [11] t5q1  [12] t5q2  [13] t5q3
-  // [14] kesimpulan  [15] refleksi
-  sections.push(answerBox('a. Nilai Kh dari ion CH₃COO⁻:', T[8] || '(belum diisi)'));
-  sections.push(answerBox('b. Perhitungan pH larutan Ca(CH₃COO)₂ 0,1 M:', T[9] || '(belum diisi)'));
+  sections.push(answerBox('a. Nilai Kh dari ion CH3COO-:', T[8]  || '(belum diisi)'));
+  sections.push(answerBox('b. Perhitungan pH larutan Ca(CH3COO)2 0,1 M:', T[9]  || '(belum diisi)'));
   sections.push(answerBox('c. Kesesuaian pH untuk menaikkan pH tanah asam:', T[10] || '(belum diisi)'));
   sections.push(divider());
 
-  // ── TAHAP 5 ────────────────────────────────────────────
   sections.push(badge('TAHAP 5 — Evaluasi & Refleksi'));
   sections.push(heading('Kembali ke Masalah Petani Sebakung Jaya', 3));
   sections.push(answerBox('1. Pupuk paling tepat untuk menaikkan pH tanah asam:', T[11] || '(belum diisi)'));
-  sections.push(answerBox('2. Mengapa efek pupuk hilang saat banjir (konsep hidrolisis):', T[12] || '(belum diisi)'));
+  sections.push(answerBox('2. Mengapa efek pupuk hilang saat banjir:', T[12] || '(belum diisi)'));
   sections.push(answerBox('3. Pupuk yang tidak mengubah pH tanah:', T[13] || '(belum diisi)'));
   sections.push(divider());
 
   sections.push(heading('Kesimpulan', 3));
   sections.push(answerBox('Kesimpulan kelompok:', T[14] || '(belum diisi)'));
-
   sections.push(heading('Refleksi Diri', 3));
   sections.push(answerBox('Refleksi:', T[15] || '(belum diisi)'));
   sections.push(divider());
 
-  // ── FOOTER INFO ──────────────────────────────────────
-  sections.push(para('© 2026 Tsary  |  Sumari  |  Departemen Kimia  |  Universitas Negeri Malang', 
+  sections.push(para('© 2026 Tsary  |  Sumari  |  Departemen Kimia  |  Universitas Negeri Malang',
     {sz:18, align:'center', color:'94A3B8', space:200}));
   sections.push(para('Sumber berita: seputarfakta.com — Petani Keluhkan Kadar Keasaman Sawah Tinggi, Pemdes Sebakung Jaya (12 Januari 2025)',
     {sz:16, align:'center', color:'94A3B8', space:60}));
 
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
-  xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-  xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing">
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
   <w:body>
     ${sections.join('\n')}
     <w:sectPr>
@@ -964,11 +914,12 @@ function buildDocxXml(d){
 }
 
 /* ============================================================
-   ZIP ASSEMBLY (pure JS, no JSZip needed — we use a minimal zip)
-   Uses the JSZip library loaded from CDN
+   ✅ FIX UTAMA: Ganti ZIP manual → JSZip
+   ZIP manual pakai bytes.push(...data) akan crash saat data besar
+   (Maximum call stack size exceeded karena spread array >65536 item)
 ============================================================ */
-function buildDocx(d){
-  const docXml  = buildDocxXml(d);
+async function buildDocx(d){
+  const docXml = buildDocxXml(d);
 
   const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
@@ -989,90 +940,18 @@ function buildDocx(d){
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
 </Relationships>`;
 
-  // Manually assemble a ZIP file in pure JS
-  function str2ab(str){
-    const enc = new TextEncoder();
-    return enc.encode(str);
-  }
-  function u32le(n){ return [n&0xff,(n>>8)&0xff,(n>>16)&0xff,(n>>24)&0xff]; }
-  function u16le(n){ return [n&0xff,(n>>8)&0xff]; }
+  const zip = new JSZip();
+  zip.file('[Content_Types].xml', contentTypes);
+  zip.file('_rels/.rels',          rels);
+  zip.file('word/document.xml',    docXml);
+  zip.file('word/_rels/document.xml.rels', wordRels);
 
-  function crc32(data){
-    let crc = 0xFFFFFFFF;
-    for(let i=0;i<data.length;i++){
-      crc ^= data[i];
-      for(let j=0;j<8;j++) crc = (crc&1)?(crc>>>1)^0xEDB88320:(crc>>>1);
-    }
-    return (crc^0xFFFFFFFF)>>>0;
-  }
-
-  function addEntry(name, content){
-    const nameBytes = new TextEncoder().encode(name);
-    const data      = typeof content==='string' ? new TextEncoder().encode(content) : content;
-    const crc       = crc32(data);
-    const offset    = bytes.length;
-
-    // Local file header
-    const lhdr = [
-      0x50,0x4B,0x03,0x04, // sig
-      ...u16le(20),         // version needed
-      ...u16le(0),          // flags
-      ...u16le(0),          // compression (store)
-      ...u16le(0),          // mod time
-      ...u16le(0),          // mod date
-      ...u32le(crc),
-      ...u32le(data.length),
-      ...u32le(data.length),
-      ...u16le(nameBytes.length),
-      ...u16le(0),          // extra
-    ];
-    bytes.push(...lhdr, ...nameBytes, ...data);
-
-    centralDir.push({name:nameBytes, crc, size:data.length, offset});
-  }
-
-  const bytes = [];
-  const centralDir = [];
-
-  addEntry('[Content_Types].xml', contentTypes);
-  addEntry('_rels/.rels',          rels);
-  addEntry('word/document.xml',    docXml);
-  addEntry('word/_rels/document.xml.rels', wordRels);
-
-  // Central directory
-  const cdStart = bytes.length;
-  for(const e of centralDir){
-    const cdr = [
-      0x50,0x4B,0x01,0x02, // sig
-      ...u16le(20), ...u16le(20),
-      ...u16le(0), ...u16le(0),
-      ...u16le(0), ...u16le(0),
-      ...u32le(e.crc),
-      ...u32le(e.size), ...u32le(e.size),
-      ...u16le(e.name.length),
-      ...u16le(0), ...u16le(0),
-      ...u16le(0), ...u16le(0),
-      ...u32le(0),
-      ...u32le(e.offset),
-      ...e.name,
-    ];
-    bytes.push(...cdr);
-  }
-  const cdEnd = bytes.length;
-
-  // End of central directory
-  const eocd = [
-    0x50,0x4B,0x05,0x06,
-    ...u16le(0), ...u16le(0),
-    ...u16le(centralDir.length),
-    ...u16le(centralDir.length),
-    ...u32le(cdEnd - cdStart),
-    ...u32le(cdStart),
-    ...u16le(0),
-  ];
-  bytes.push(...eocd);
-
-  return new Blob([new Uint8Array(bytes)], {type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+  return await zip.generateAsync({
+    type        : 'blob',
+    mimeType    : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    compression : 'DEFLATE',
+    compressionOptions: { level: 6 }
+  });
 }
 </script>
 </body>
