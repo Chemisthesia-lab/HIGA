@@ -536,18 +536,23 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
     <div class="reaction">
       <math display="block">
         <mrow>
-          <mtext>pH</mtext>
+          <mo>[</mo>
+          <msup>
+            <mi>H</mi>
+            <mo>&#x2b;</mo>
+          </msup>
+          <mo>]</mo>
           <mo>=</mo>
-          <mfrac><mn>1</mn><mn>2</mn></mfrac>
-          <mfenced>
+          <msqrt>
             <mrow>
-              <mn>14</mn>
-              <mo>&#x2212;</mo>
-              <mtext>p</mtext><msub><mi>K</mi><mi>b</mi></msub>
-              <mo>&#x2212;</mo>
-              <mi>log</mi><mo>[</mo><mi>G</mi><mo>]</mo>
+              <mfrac>
+                <msub><mi>K</mi><mi>w</mi></msub>
+                <msub><mi>K</mi><mi>b</mi></msub>
+              </mfrac>
+              <mo>&#x00D7;</mo>
+              <mo>[</mo><mtext>G</mtext><mo>]</mo>
             </mrow>
-          </mfenced>
+          </msqrt>
         </mrow>
       </math>
     </div>
@@ -571,18 +576,23 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
     <div class="reaction">
       <math display="block">
         <mrow>
-          <mtext>pH</mtext>
+          <mo>[</mo>
+          <msup>
+            <mi>OH</mi>
+            <mo>&#x2212;</mo>
+          </msup>
+          <mo>]</mo>
           <mo>=</mo>
-          <mfrac><mn>1</mn><mn>2</mn></mfrac>
-          <mfenced>
+          <msqrt>
             <mrow>
-              <mn>14</mn>
-              <mo>+</mo>
-              <mtext>p</mtext><msub><mi>K</mi><mi>a</mi></msub>
-              <mo>+</mo>
-              <mi>log</mi><mo>[</mo><mi>G</mi><mo>]</mo>
+              <mfrac>
+                <msub><mi>K</mi><mi>w</mi></msub>
+                <msub><mi>K</mi><mi>a</mi></msub>
+              </mfrac>
+              <mo>&#x00D7;</mo>
+              <mo>[</mo><mtext>G</mtext><mo>]</mo>
             </mrow>
-          </mfenced>
+          </msqrt>
         </mrow>
       </math>
     </div>
