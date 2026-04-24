@@ -205,19 +205,19 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
     <div class="identitas-grid">
       <div>
         <div class="id-label">NOMOR KELOMPOK</div>
-        <input type="text" id="nomorKelompok" placeholder="Contoh: 1, 2, 3...">
+        <input type="text" id="nomorKelompok">
       </div>
       <div>
         <div class="id-label">KELAS</div>
-        <input type="text" id="kelasInput" placeholder="Kelas...">
+        <input type="text" id="kelasInput">
       </div>
       <div>
         <div class="id-label">ANGGOTA KELOMPOK</div>
-        <textarea id="anggotaInput" placeholder="1. &#10;2. &#10;3. &#10;4." style="min-height:75px"></textarea>
+        <textarea id="anggotaInput" style="min-height:75px"></textarea>
       </div>
       <div>
         <div class="id-label">TANGGAL</div>
-        <input type="text" id="tanggalInput" placeholder="Tanggal pengerjaan...">
+        <input type="text" id="tanggalInput">
       </div>
     </div>
   </div>
@@ -238,12 +238,12 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
        TAHAP 1: ORIENTASI
   ====================== -->
   <div class="card">
-    <span class="tahap-badge">TAHAP 1 — PROBLEM BASED LEARNING</span>
+    <span class="tahap-badge">TAHAP 1 — ORIENTASI TERHADAP MASALAH</span>
     <h2>Orientasi terhadap Masalah</h2>
 
     <div class="callout callout-info">
-      <div class="callout-title">📰 Bacalah berita nyata berikut dengan seksama!</div>
-      Berita ini merupakan kejadian nyata yang terjadi di Kalimantan Timur. Temukan kaitannya dengan konsep hidrolisis garam yang telah kalian pelajari!
+      <div class="callout-title">📰 Cermati artikel berita berikut dengan seksama!</div>
+      Temukan kaitannya dengan konsep hidrolisis garam yang telah kalian pelajari!
     </div>
 
     <!-- BERITA -->
@@ -258,32 +258,18 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
       <div class="news-body">
         <div class="news-title">Petani Keluhkan Kadar Keasaman Sawah Tinggi, Pemdes Sebakung Jaya Salurkan 5 Ton Pupuk Anti Asam</div>
         <p class="news-text">
-          <strong>Penajam</strong> — Para petani di Desa Sebakung, Kecamatan Babulu, Penajam Paser Utara (PPU), Kalimantan Timur, kerap mengeluhkan tingginya kadar keasaman tanah di lahan persawahan miliknya. Kondisi tanah dengan kadar pH rendah atau terlalu asam mengakibatkan pertumbuhan dan produktivitas tanaman padi menjadi tidak maksimal.
+          Para petani di Desa Sebakung Jaya kerap mengeluhkan tingginya kadar keasaman tanah (pH rendah) yang mengakibatkan produktivitas padi tidak maksimal. Sebagai upaya penanggulangan, Pemerintah Desa menyalurkan 5 ton pupuk "anti-asam" yang mengandung senyawa kalsium asetat [Ca(CH₃COO)₂] untuk menetralkan pH lahan.
         </p>
         <p class="news-text">
-          Untuk menetralkan kadar keasaman di lahan persawahan, Pemerintah Desa (Pemdes) Sebakung Jaya membantu para petani dengan menaburkan pupuk yang mengandung zat anti asam di lahan yang pH-nya rendah.
-        </p>
-        <div class="news-quote">
-          "Bantuan lima ton pupuk anti asam yang diberikan Distan baru-baru ini kita manfaatkan untuk membantu 16 Kelompok Tani (Poktan) di desa kita."
-          <cite>— Sajidin, Kepala Desa Sebakung Jaya</cite>
-        </div>
-        <p class="news-text">
-          Pupuk ini terbukti efektif dalam menurunkan kadar asam tanah. Namun pupuk ini memiliki kelemahan: saat hujan deras dan volume air di lahan naik, zat anti asamnya larut sehingga manfaatnya perlahan menghilang.
-        </p>
-        <div class="news-quote">
-          "Ketika hujan deras melanda, zat anti asamnya akan larut hingga manfaat pun ikut hilang. Jadi agar hasilnya nampak, jangan sampai banjir di lahan persawahannya."
-          <cite>— Sajidin, Kepala Desa Sebakung Jaya</cite>
-        </div>
-        <p class="news-text">
-          Para petani berharap dengan bantuan pupuk ini, produktivitas padi meningkat dan desa mereka dapat menjadi penyuplai beras bagi penduduk lokal hingga mendukung kehadiran Ibu Kota Nusantara (IKN) di wilayah terdekat.
+          Penggunaan pupuk ini menimbulkan diskusi di masyarakat. Sebagian petani mengandalkan pupuk tersebut karena dapat menaikkan pH secara instan demi mengejar target pasokan beras. Namun, beberapa pihak mengkhawatirkan sifat pupuk yang mudah larut saat banjir, yang menyebabkan efek penetralan hilang dan tanah kembali asam, serta potensi dampak jangka panjang bagi ekosistem tanah.
         </p>
         <div class="news-meta">📍 Desa Sebakung Jaya, Kec. Babulu, Penajam Paser Utara, Kalimantan Timur &nbsp;·&nbsp; Penulis: Agus Saputra &nbsp;·&nbsp; <a href="https://seputarfakta.com/seputar-kaltim/petani-keluhkan-kadar-keasaman-sawah-tinggi-pemdes-sebakung-jaya-salurkan-5-ton-pupuk-anti-asam-7897" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600;text-decoration:none">🔗 Baca Sumber Asli ↗</a></div>
       </div>
     </div>
 
     <div class="callout callout-warning">
-      <div class="callout-title">🌾 Konteks Tambahan</div>
-      pH ideal tanah untuk tanaman padi adalah <strong>5,5 – 6,5</strong>. Jika pH tanah terlalu rendah (sangat asam), unsur hara penting seperti fosfat tidak dapat diserap akar tanaman. Pupuk "anti asam" yang umum digunakan petani mengandung <strong>kapur pertanian (CaCO₃)</strong> atau garam-garam yang bersifat basa saat dilarutkan dalam air, misalnya <strong>Ca(CH₃COO)₂</strong> (kalsium asetat).
+      <div class="callout-title">❓ Pertanyaan Masalah</div>
+      Berdasarkan artikel di atas, lakukan analisis apakah penggunaan garam kalsium asetat [Ca(CH₃COO)₂] merupakan <strong>solusi yang efektif dan berkelanjutan</strong> untuk mengatasi keasaman tanah sawah?
     </div>
   </div>
 
@@ -291,41 +277,29 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
        TAHAP 2: ORGANISASI
   ====================== -->
   <div class="card">
-    <span class="tahap-badge">TAHAP 2 — PROBLEM BASED LEARNING</span>
+    <span class="tahap-badge">TAHAP 2 — MENGORGANISASI PESERTA DIDIK UNTUK BELAJAR</span>
     <h2>Mengorganisasi Peserta Didik untuk Belajar</h2>
 
-    <h3>📋 Pertanyaan Analisis Masalah</h3>
+    <p>Jawablah pertanyaan berikut berdasarkan hasil diskusi kelompok!</p>
 
     <div class="q-block">
-      <div class="q-label">1. Informasi penting apa saja yang kalian temukan dari berita di atas? Identifikasi minimal 4 poin!</div>
-      <textarea placeholder="Tuliskan poin-poin penting dari berita..."></textarea>
+      <div class="q-label">1. Identifikasi minimal 4 poin informasi penting yang terdapat dalam berita tersebut!</div>
+      <textarea></textarea>
     </div>
 
     <div class="q-block">
-      <div class="q-label">2. Mengapa tanah sawah di Desa Sebakung Jaya bisa bersifat asam? Apa saja kemungkinan penyebabnya?</div>
-      <textarea placeholder="Tuliskan kemungkinan penyebab tanah bersifat asam..."></textarea>
+      <div class="q-label">2. Jelaskan kaitan antara nilai pH tanah dengan produktivitas tanaman padi!</div>
+      <textarea></textarea>
     </div>
 
     <div class="q-block">
-      <div class="q-label">3. Mengapa produktivitas padi menurun saat pH tanah terlalu rendah? Jelaskan dari sisi kimia!</div>
-      <textarea placeholder="Jelaskan hubungan antara pH tanah dengan ketersediaan unsur hara..."></textarea>
+      <div class="q-label">3. Mengapa pemilihan jenis pupuk harus memperhatikan sifat kimia senyawa penyusunnya?</div>
+      <textarea></textarea>
     </div>
 
     <div class="q-block">
-      <div class="q-label">4. Mengapa "pupuk anti asam" efektif menaikkan pH tanah, tetapi efeknya hilang saat terkena banjir? Kaitkan dengan sifat kelarutan garam!</div>
-      <textarea placeholder="Jelaskan mengapa manfaat pupuk menghilang ketika banjir..."></textarea>
-    </div>
-
-    <hr class="divider">
-
-    <h3>💡 Hipotesis (Dugaan Awal)</h3>
-    <div class="callout callout-green">
-      <div class="callout-title">Petunjuk Merumuskan Hipotesis</div>
-      Hipotesis yang baik berformat: <em>"Jika [kondisi/variabel], maka [akibat/prediksi], karena [alasan]."</em>
-    </div>
-    <div class="q-block">
-      <div class="q-label">Rumuskan hipotesis kalian tentang: apakah jenis garam dalam pupuk mempengaruhi sifat larutan (asam/basa/netral) dan pH tanah? Jelaskan alasannya!</div>
-      <textarea placeholder="Hipotesis: Jika pupuk mengandung garam dari... maka... karena..."></textarea>
+      <div class="q-label">4. Hipotesis: Berdasarkan pemahaman awal kalian, rumuskan hipotesis mengenai hubungan antara jenis asam-basa penyusun garam dengan sifat larutan serta pengaruhnya terhadap pH tanah!</div>
+      <textarea></textarea>
     </div>
   </div>
 
@@ -333,24 +307,10 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
        TAHAP 3: PENYELIDIKAN
   ====================== -->
   <div class="card">
-    <span class="tahap-badge">TAHAP 3 — PROBLEM BASED LEARNING</span>
+    <span class="tahap-badge">TAHAP 3 — MEMBIMBING PENYELIDIKAN</span>
     <h2>Membimbing Penyelidikan Individual maupun Kelompok</h2>
 
-    <h3>🔍 Tugas Investigasi</h3>
-    <p>Cari informasi dari berbagai sumber untuk menjawab permasalahan yang telah diidentifikasi. Sumber dapat berupa buku paket, jurnal, video pembelajaran, atau bertanya kepada guru.</p>
-
-    <div class="q-block">
-      <div class="q-label">Sumber referensi yang digunakan kelompok:</div>
-      <input type="text" placeholder="1. Judul buku / URL / nama narasumber...">
-      <input type="text" placeholder="2." style="margin-top:.5rem">
-      <input type="text" placeholder="3." style="margin-top:.5rem">
-      <input type="text" placeholder="4." style="margin-top:.5rem">
-    </div>
-
-    <hr class="divider">
-
-    <h3>📊 Tabel Analisis Garam</h3>
-    <p>Kelima garam berikut berkaitan dengan jenis-jenis pupuk yang umum digunakan di pertanian Indonesia. Lengkapi tabel dengan tepat!</p>
+    <p>Lengkapi tabel analisis berikut untuk memahami sifat berbagai jenis pupuk!</p>
 
     <div class="table-wrap">
       <table>
@@ -358,7 +318,6 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
           <tr>
             <th>No.</th>
             <th>Rumus Kimia Garam</th>
-            <th>Nama Garam / Pupuk</th>
             <th>Kation</th>
             <th>Anion</th>
             <th>Ion yang Bereaksi dengan Air</th>
@@ -370,52 +329,47 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
           <tr>
             <td>1.</td>
             <td><strong>(NH₄)₂SO₄</strong><br><small>(Pupuk ZA)</small></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
           </tr>
           <tr>
             <td>2.</td>
-            <td><strong>KNO₃</strong><br><small>(Pupuk Niter)</small></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
+            <td><strong>KNO₃</strong><br><small>(Kalium Nitrat)</small></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
           </tr>
           <tr>
             <td>3.</td>
-            <td><strong>Ca(CH₃COO)₂</strong><br><small>(Kalsium Asetat / Anti Asam)</small></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
+            <td><strong>Ca(CH₃COO)₂</strong><br><small>(Kalsium Asetat)</small></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
           </tr>
           <tr>
             <td>4.</td>
             <td><strong>(NH₄)₂HPO₄</strong><br><small>(Pupuk DAP)</small></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
           </tr>
           <tr>
             <td>5.</td>
             <td><strong>Ca(H₂PO₄)₂</strong><br><small>(Pupuk TSP)</small></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
-            <td><input type="text" placeholder="..."></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
           </tr>
         </tbody>
       </table>
@@ -426,99 +380,51 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
        TAHAP 4: PENGEMBANGAN
   ====================== -->
   <div class="card">
-    <span class="tahap-badge">TAHAP 4 — PROBLEM BASED LEARNING</span>
+    <span class="tahap-badge">TAHAP 4 — MENGEMBANGKAN DAN MENYAJIKAN HASIL KARYA</span>
     <h2>Mengembangkan dan Menyajikan Hasil Karya</h2>
 
-    <h3>📝 Pembahasan dan Analisis Data</h3>
+    <h3>📝 Analisis Data dan Perhitungan</h3>
 
     <div class="q-block">
-      <div class="q-label">a. Berdasarkan tabel di atas, adakah hubungan antara jenis asam dan basa pembentuk garam dengan sifat larutannya? Jelaskan polanya!</div>
-      <textarea placeholder="Jelaskan hubungan antara kekuatan asam/basa pembentuk dengan sifat larutan garam..."></textarea>
+      <div class="q-label">1. Jelaskan hubungan antara kekuatan asam dan basa pembentuk garam terhadap sifat larutannya berdasarkan pola pada tabel di atas!</div>
+      <textarea></textarea>
     </div>
 
     <div class="q-block">
-      <div class="q-label">b. Kelompokkan kelima garam di atas berdasarkan jenis hidrolisis yang dialaminya! (Hidrolisis total / hidrolisis parsial / tidak terhidrolisis)</div>
-      <textarea placeholder="Hidrolisis total: ...&#10;Hidrolisis parsial: ...&#10;Tidak terhidrolisis: ..."></textarea>
+      <div class="q-label">2. Tuliskan persamaan reaksi ionisasi dan reaksi hidrolisis untuk garam (NH₄)₂SO₄ dan Ca(CH₃COO)₂!</div>
+      <p style="margin-bottom:.3rem"><strong>(NH₄)₂SO₄</strong></p>
+      <div class="reaksi-item">
+        <span class="reaksi-label">Ionisasi:</span>
+        <input type="text">
+      </div>
+      <div class="reaksi-item">
+        <span class="reaksi-label">Hidrolisis:</span>
+        <input type="text">
+      </div>
+      <p style="margin:.8rem 0 .3rem"><strong>Ca(CH₃COO)₂</strong></p>
+      <div class="reaksi-item">
+        <span class="reaksi-label">Ionisasi:</span>
+        <input type="text">
+      </div>
+      <div class="reaksi-item">
+        <span class="reaksi-label">Hidrolisis:</span>
+        <input type="text">
+      </div>
     </div>
 
     <hr class="divider">
 
-    <h3>⚗ Persamaan Reaksi Hidrolisis</h3>
-    <p>Tuliskan reaksi ionisasi garam dan reaksi hidrolisis yang terjadi saat masing-masing garam dilarutkan dalam air!</p>
-
-    <p style="margin-bottom:.3rem"><strong>1. (NH₄)₂SO₄</strong></p>
-    <div class="reaksi-item">
-      <span class="reaksi-label">Ionisasi:</span>
-      <input type="text" placeholder="(NH₄)₂SO₄ → ...">
-    </div>
-    <div class="reaksi-item">
-      <span class="reaksi-label">Hidrolisis:</span>
-      <input type="text" placeholder="... + H₂O ⇌ ...">
-    </div>
-
-    <p style="margin:.8rem 0 .3rem"><strong>2. KNO₃</strong></p>
-    <div class="reaksi-item">
-      <span class="reaksi-label">Ionisasi:</span>
-      <input type="text" placeholder="KNO₃ → ...">
-    </div>
-    <div class="reaksi-item">
-      <span class="reaksi-label">Hidrolisis:</span>
-      <input type="text" placeholder="Apakah terjadi hidrolisis? Jelaskan...">
-    </div>
-
-    <p style="margin:.8rem 0 .3rem"><strong>3. Ca(CH₃COO)₂</strong></p>
-    <div class="reaksi-item">
-      <span class="reaksi-label">Ionisasi:</span>
-      <input type="text" placeholder="Ca(CH₃COO)₂ → ...">
-    </div>
-    <div class="reaksi-item">
-      <span class="reaksi-label">Hidrolisis:</span>
-      <input type="text" placeholder="... + H₂O ⇌ ...">
-    </div>
-
-    <p style="margin:.8rem 0 .3rem"><strong>4. (NH₄)₂HPO₄</strong></p>
-    <div class="reaksi-item">
-      <span class="reaksi-label">Ionisasi:</span>
-      <input type="text" placeholder="(NH₄)₂HPO₄ → ...">
-    </div>
-    <div class="reaksi-item">
-      <span class="reaksi-label">Hidrolisis:</span>
-      <input type="text" placeholder="... + H₂O ⇌ ...">
-    </div>
-
-    <p style="margin:.8rem 0 .3rem"><strong>5. Ca(H₂PO₄)₂</strong></p>
-    <div class="reaksi-item">
-      <span class="reaksi-label">Ionisasi:</span>
-      <input type="text" placeholder="Ca(H₂PO₄)₂ → ...">
-    </div>
-    <div class="reaksi-item">
-      <span class="reaksi-label">Hidrolisis:</span>
-      <input type="text" placeholder="... + H₂O ⇌ ...">
-    </div>
-
-    <hr class="divider">
-
-    <h3>🧮 Perhitungan pH dan Tetapan Hidrolisis</h3>
+    <h3>🧮 Analisis Matematis</h3>
 
     <div class="callout callout-info">
       <div class="callout-title">📌 Data Soal</div>
-      Pemdes Sebakung Jaya menggunakan pupuk anti asam yang mengandung <strong>Ca(CH₃COO)₂</strong> (kalsium asetat) dengan konsentrasi <strong>0,1 M</strong>.<br>
+      Hitunglah tetapan hidrolisis (K<sub>h</sub>) dan pH larutan Ca(CH₃COO)₂ dengan konsentrasi <strong>0,1 M</strong>.<br>
       Diketahui: K<sub>a</sub> CH₃COOH = 1,8 × 10⁻⁵ &nbsp;&nbsp;|&nbsp;&nbsp; K<sub>w</sub> = 1 × 10⁻¹⁴
     </div>
 
     <div class="q-block" style="margin-top:.9rem">
-      <div class="q-label">a. Hitunglah nilai tetapan hidrolisis (K<sub>h</sub>) dari ion CH₃COO⁻!</div>
-      <textarea placeholder="Diketahui: ...&#10;Ditanya: ...&#10;Jawab: Kh = Kw / Ka = ..."></textarea>
-    </div>
-
-    <div class="q-block">
-      <div class="q-label">b. Hitunglah pH larutan Ca(CH₃COO)₂ 0,1 M tersebut! (Gunakan rumus pH = ½(14 + pKa + log[G]))</div>
-      <textarea placeholder="Langkah 1: Hitung pKa = ...&#10;Langkah 2: Substitusi ke rumus...&#10;Hasil: pH = ..."></textarea>
-    </div>
-
-    <div class="q-block">
-      <div class="q-label">c. Apakah pH larutan Ca(CH₃COO)₂ tersebut sesuai untuk digunakan menaikkan pH tanah yang asam? Jelaskan!</div>
-      <textarea placeholder="Bandingkan pH larutan dengan pH ideal tanah padi (5,5–6,5)..."></textarea>
+      <div class="q-label">3. Hitunglah tetapan hidrolisis (K<sub>h</sub>) dan pH larutan Ca(CH₃COO)₂ 0,1 M! Berikan langkah-langkah perhitungan secara sistematis!</div>
+      <textarea style="min-height:130px"></textarea>
     </div>
   </div>
 
@@ -526,56 +432,24 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
        TAHAP 5: EVALUASI & REFLEKSI
   ====================== -->
   <div class="card">
-    <span class="tahap-badge">TAHAP 5 — PROBLEM BASED LEARNING</span>
+    <span class="tahap-badge">TAHAP 5 — MENGANALISIS DAN MENGEVALUASI PROSES PEMECAHAN MASALAH</span>
     <h2>Menganalisis dan Mengevaluasi Proses Pemecahan Masalah</h2>
 
-    <h3>🌾 Kembali ke Masalah Petani Sebakung Jaya</h3>
-    <p>Setelah kalian mendalami konsep hidrolisis garam, sekarang saatnya membantu para petani di Desa Sebakung Jaya, Penajam Paser Utara!</p>
+    <h3>🌾 Evaluasi Masalah</h3>
 
-    <div class="callout callout-warning">
-      <div class="callout-title">📌 Situasi Kasus</div>
-      Tanah sawah di Desa Sebakung Jaya memiliki pH sekitar <strong>4,5 – 5,0 (sangat asam)</strong>. Tersedia empat jenis pupuk:
-      <ul style="margin-top:.5rem">
-        <li><strong>Pupuk ZA</strong> → mengandung (NH₄)₂SO₄</li>
-        <li><strong>Pupuk Niter</strong> → mengandung KNO₃</li>
-        <li><strong>Kalsium Asetat</strong> → mengandung Ca(CH₃COO)₂</li>
-        <li><strong>Pupuk DAP</strong> → mengandung (NH₄)₂HPO₄</li>
-      </ul>
-    </div>
-
-    <div class="q-block" style="margin-top:1rem">
-      <div class="q-label">1. Pupuk mana yang paling tepat digunakan untuk menaikkan pH tanah sawah Sebakung Jaya yang sangat asam? Jelaskan alasannya berdasarkan konsep hidrolisis!</div>
-      <textarea placeholder="Tuliskan pilihan pupuk dan alasannya berdasarkan sifat hidrolisis..."></textarea>
+    <div class="q-block">
+      <div class="q-label">1. Berdasarkan hasil perhitungan pH, apakah kalsium asetat efektif digunakan untuk menetralkan tanah yang memiliki pH 4,5? Jelaskan alasan logisnya!</div>
+      <textarea></textarea>
     </div>
 
     <div class="q-block">
-      <div class="q-label">2. Kepala Desa Sajidin menyebutkan bahwa efek pupuk anti asam hilang saat banjir. Jelaskan fenomena ini menggunakan konsep hidrolisis dan kelarutan garam!</div>
-      <textarea placeholder="Jelaskan mengapa larutan garam basa akan terencerkan dan pH-nya mendekati netral saat banjir..."></textarea>
+      <div class="q-label">2. Mengapa efek "pupuk anti-asam" tersebut hilang saat terjadi banjir? Jelaskan fenomena tersebut menggunakan konsep kesetimbangan hidrolisis dan sifat kelarutan!</div>
+      <textarea></textarea>
     </div>
 
     <div class="q-block">
-      <div class="q-label">3. Jika petani di Sebakung Jaya ingin menggunakan pupuk yang tidak mengubah pH tanah (netral), pupuk mana yang seharusnya dipilih? Jelaskan!</div>
-      <textarea placeholder="Pilih garam yang bersifat netral dan berikan alasan kimia yang mendukung..."></textarea>
-    </div>
-
-    <hr class="divider">
-
-    <h3>📌 Kesimpulan</h3>
-    <div class="callout callout-green">
-      <div class="callout-title">Panduan Menulis Kesimpulan</div>
-      Kesimpulan yang baik menjawab: <em>(1) apa yang telah dipelajari, (2) bagaimana hubungan dengan masalah nyata, (3) apa rekomendasi solusi.</em>
-    </div>
-    <div class="q-block" style="margin-top:.8rem">
-      <div class="q-label">Tuliskan kesimpulan kelompok kalian tentang: bagaimana konsep hidrolisis garam dapat membantu menyelesaikan masalah keasaman tanah di Desa Sebakung Jaya?</div>
-      <textarea style="min-height:120px" placeholder="Berdasarkan hasil diskusi dan analisis, dapat disimpulkan bahwa..."></textarea>
-    </div>
-
-    <hr class="divider">
-
-    <h3>🪞 Refleksi Diri</h3>
-    <div class="q-block">
-      <div class="q-label">Apa hal baru yang kalian pelajari dari LKPD ini? Apa yang masih membingungkan?</div>
-      <textarea placeholder="Hal baru yang saya pelajari: ...&#10;Hal yang masih membingungkan: ..."></textarea>
+      <div class="q-label">3. Kesimpulan: Berikan rekomendasi solusi kepada petani Desa Sebakung Jaya terkait pemilihan jenis pupuk yang paling tepat untuk menaikkan pH tanah secara stabil dan aman bagi lingkungan!</div>
+      <textarea style="min-height:120px"></textarea>
     </div>
   </div>
 
@@ -835,27 +709,19 @@ function buildDocxXml(d){
   sections.push(divider());
 
   sections.push(badge('TAHAP 2 — Mengorganisasi Peserta Didik untuk Belajar'));
-  sections.push(heading('Pertanyaan Analisis Masalah', 3));
-  ['1. Informasi penting dari berita Sebakung Jaya',
-   '2. Penyebab tanah bersifat asam',
-   '3. Hubungan pH tanah dengan pertumbuhan padi',
-   '4. Mengapa efek pupuk hilang saat banjir']
+  sections.push(heading('Pertanyaan Diskusi Kelompok', 3));
+  ['1. Identifikasi minimal 4 poin informasi penting dari berita',
+   '2. Kaitan nilai pH tanah dengan produktivitas tanaman padi',
+   '3. Mengapa pemilihan pupuk harus memperhatikan sifat kimia senyawa penyusunnya',
+   '4. Hipotesis: hubungan jenis asam-basa penyusun garam dengan sifat larutan dan pH tanah']
     .forEach((q, i) => sections.push(answerBox(q, T[i+1] || '(belum diisi)')));
-  sections.push(heading('Hipotesis', 3));
-  sections.push(answerBox('Hipotesis kelompok:', T[5] || '(belum diisi)'));
   sections.push(divider());
 
   sections.push(badge('TAHAP 3 — Membimbing Penyelidikan'));
-  sections.push(heading('Sumber Referensi', 3));
-  ['Sumber 1','Sumber 2','Sumber 3','Sumber 4'].forEach((lbl, i) => {
-    sections.push(para(`${lbl}: ${I[i] || '(belum diisi)'}`, {sz:21, space:60, indent:160}));
-  });
-  sections.push(divider());
-
   sections.push(heading('Tabel Analisis Garam', 3));
   const garamNames = ['(NH4)2SO4 / Pupuk ZA','KNO3 / Pupuk Niter','Ca(CH3COO)2 / Kalsium Asetat','(NH4)2HPO4 / Pupuk DAP','Ca(H2PO4)2 / Pupuk TSP'];
   const colLabels  = ['Nama Garam','Kation','Anion','Ion Bereaksi','Ion Spektator','Sifat Larutan'];
-  let tblIdx = 4;
+  let tblIdx = 0;
   garamNames.forEach((garam, ri) => {
     sections.push(para(`${ri+1}. ${garam}`, {sz:21, bold:true, color:'0E7490', space:80}));
     colLabels.forEach(col => {
@@ -865,34 +731,25 @@ function buildDocxXml(d){
   sections.push(divider());
 
   sections.push(badge('TAHAP 4 — Mengembangkan dan Menyajikan Hasil Karya'));
-  sections.push(heading('Pembahasan dan Analisis Data', 3));
-  sections.push(answerBox('a. Hubungan jenis asam/basa pembentuk dengan sifat larutan:', T[6] || '(belum diisi)'));
-  sections.push(answerBox('b. Pengelompokan berdasarkan jenis hidrolisis:', T[7] || '(belum diisi)'));
+  sections.push(heading('Analisis Data dan Perhitungan', 3));
+  sections.push(answerBox('1. Hubungan kekuatan asam/basa pembentuk garam terhadap sifat larutannya:', T[6] || '(belum diisi)'));
 
-  sections.push(heading('Persamaan Reaksi Hidrolisis', 3));
-  ['(NH4)2SO4','KNO3','Ca(CH3COO)2','(NH4)2HPO4','Ca(H2PO4)2'].forEach((g, i) => {
+  sections.push(heading('Persamaan Reaksi Ionisasi dan Hidrolisis', 3));
+  ['(NH4)2SO4','Ca(CH3COO)2'].forEach((g, i) => {
     sections.push(para(`${i+1}. ${g}`, {sz:21, bold:true, color:'0E7490', space:80}));
     sections.push(para(`   Ionisasi  : ${I[tblIdx++] || '(belum diisi)'}`, {sz:20, space:40, indent:320}));
     sections.push(para(`   Hidrolisis: ${I[tblIdx++] || '(belum diisi)'}`, {sz:20, space:40, indent:320}));
   });
 
-  sections.push(heading('Perhitungan pH dan Tetapan Hidrolisis', 3));
-  sections.push(answerBox('a. Nilai Kh dari ion CH3COO-:', T[8]  || '(belum diisi)'));
-  sections.push(answerBox('b. Perhitungan pH larutan Ca(CH3COO)2 0,1 M:', T[9]  || '(belum diisi)'));
-  sections.push(answerBox('c. Kesesuaian pH untuk menaikkan pH tanah asam:', T[10] || '(belum diisi)'));
+  sections.push(heading('Analisis Matematis — Perhitungan Kh dan pH', 3));
+  sections.push(answerBox('3. Hitungan Kh dan pH larutan Ca(CH3COO)2 0,1 M (langkah sistematis):', T[7] || '(belum diisi)'));
   sections.push(divider());
 
-  sections.push(badge('TAHAP 5 — Evaluasi & Refleksi'));
-  sections.push(heading('Kembali ke Masalah Petani Sebakung Jaya', 3));
-  sections.push(answerBox('1. Pupuk paling tepat untuk menaikkan pH tanah asam:', T[11] || '(belum diisi)'));
-  sections.push(answerBox('2. Mengapa efek pupuk hilang saat banjir:', T[12] || '(belum diisi)'));
-  sections.push(answerBox('3. Pupuk yang tidak mengubah pH tanah:', T[13] || '(belum diisi)'));
-  sections.push(divider());
-
-  sections.push(heading('Kesimpulan', 3));
-  sections.push(answerBox('Kesimpulan kelompok:', T[14] || '(belum diisi)'));
-  sections.push(heading('Refleksi Diri', 3));
-  sections.push(answerBox('Refleksi:', T[15] || '(belum diisi)'));
+  sections.push(badge('TAHAP 5 — Evaluasi & Pemecahan Masalah'));
+  sections.push(heading('Evaluasi Masalah', 3));
+  sections.push(answerBox('1. Efektivitas kalsium asetat untuk menetralkan tanah pH 4,5 (berdasarkan hasil perhitungan):', T[8] || '(belum diisi)'));
+  sections.push(answerBox('2. Mengapa efek pupuk anti-asam hilang saat banjir (konsep kesetimbangan hidrolisis):', T[9] || '(belum diisi)'));
+  sections.push(answerBox('3. Kesimpulan & Rekomendasi solusi pupuk untuk petani Desa Sebakung Jaya:', T[10] || '(belum diisi)'));
   sections.push(divider());
 
   sections.push(para('© 2026 Tsary  |  Sumari  |  Departemen Kimia  |  Universitas Negeri Malang',
