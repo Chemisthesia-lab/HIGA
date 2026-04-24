@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modul 1: Pendahuluan | Hidrolisis Garam</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- MathJax untuk rumus kimia -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>
   * {margin:0; padding:0; box-sizing:border-box;}
   :root {
@@ -73,6 +76,11 @@
     color:var(--accent);
     margin-bottom:1rem;
   }
+  h2 {
+    color:var(--accent);
+    margin: 1.2rem 0 0.6rem 0;
+    font-size: 1.1rem;
+  }
   p {
     text-align:justify;
     line-height:1.8;
@@ -85,6 +93,59 @@
     padding:0.6rem 1rem;
     border-radius:10px;
     margin:1rem 0;
+  }
+  /* Tabel pupuk */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+  thead {
+    background: var(--accent);
+    color: white;
+  }
+  th, td {
+    padding: 0.65rem 0.9rem;
+    border: 1px solid rgba(6,182,212,0.25);
+    text-align: left;
+    vertical-align: middle;
+  }
+  tbody tr:nth-child(even) {
+    background: rgba(6,182,212,0.05);
+  }
+  tbody tr:hover {
+    background: rgba(6,182,212,0.12);
+  }
+  /* Badge pH */
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+  .badge-asam  { background: #fee2e2; color: #b91c1c; }
+  .badge-basa  { background: #dcfce7; color: #15803d; }
+  .badge-netral{ background: #e0f2fe; color: #0369a1; }
+  /* Kotak pertanyaan pemantik */
+  .question-box {
+    background: linear-gradient(135deg, rgba(6,182,212,0.12), rgba(6,182,212,0.04));
+    border-left: 4px solid var(--accent);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+    color: var(--text-primary);
+    font-style: italic;
+    line-height: 1.8;
+  }
+  .question-box::before {
+    content: "💬 ";
+    font-style: normal;
   }
   .concept-map {
     display:flex;
@@ -120,13 +181,11 @@
     box-shadow:0 -2px 8px var(--shadow);
     transition:0.3s;
   }
-  
 
 /* === RESPONSIVE_GLOBAL_START === */
 html, body { max-width: 100%; overflow-x: hidden; }
 img, video, canvas, iframe { max-width: 100%; height: auto; }
 /* === RESPONSIVE_GLOBAL_END === */
-
 
 /* === NAV_UNIFORM_START === */
 .nav-menu{
@@ -155,7 +214,6 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
   }
 }
 /* === NAV_UNIFORM_END === */
-
 </style>
 </head>
 <body>
@@ -175,33 +233,76 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
 <!-- KONTEN UTAMA -->
 <div class="container">
   <h1>Pendahuluan</h1>
-
   <p>
-    Pernahkah kamu memperhatikan bagaimana pupuk yang ditambahkan ke tanah dapat memengaruhi pertumbuhan tanaman? Mengapa ada tanah yang menjadi terlalu asam setelah penggunaan pupuk tertentu? 🤔
+    Pernahkah kamu memperhatikan bagaimana pupuk yang ditambahkan ke tanah dapat memengaruhi pertumbuhan tanaman? Mengapa ada tanah yang menjadi terlalu asam setelah penggunaan pupuk tertentu?🤔
   </p>
 
   <p>
-    Tanah yang terlalu asam atau terlalu basa dapat memengaruhi ketersediaan unsur hara bagi tanaman. Perubahan ini tidak terjadi begitu saja, tetapi berkaitan dengan reaksi kimia yang terjadi ketika suatu garam larut dalam air dan berinteraksi dengan lingkungannya.
+    Tanah yang terlalu asam atau terlalu basa dapat memengaruhi ketersediaan unsur hara bagi tanaman agar tetap seimbang selama proses pertumbuhannya. Perubahan ini tidak terjadi begitu saja, tetapi berkaitan dengan reaksi kimia yang terjadi ketika suatu garam dalam pupuk larut dalam air tanah dan berinteraksi dengan lingkungannya.
   </p>
 
-  <p>
-    Menariknya, tidak semua garam bersifat netral ketika dilarutkan dalam air. Ada garam yang membuat larutan menjadi asam, ada pula yang menjadikannya basa. Hal ini bergantung pada jenis asam dan basa penyusun garam tersebut.
-  </p>
+  <!-- Sub-judul tabel -->
+  <h2>Mengenal Senyawa dalam Pupuk</h2>
 
   <p>
-    Pada bagian ini, kamu akan mempelajari konsep hidrolisis garam, yaitu proses reaksi ion-ion garam dengan air yang dapat memengaruhi sifat larutan. Materi akan dipelajari secara bertahap, meliputi:
+    Secara kimia, pupuk yang digunakan petani adalah senyawa garam yang terbentuk dari bahan-bahan kimia yang diproses melalui pabrik. Namun, setiap jenis pupuk memberikan pengaruh yang berbeda terhadap pH tanah. Perhatikan data beberapa jenis pupuk berikut:
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Jenis Pupuk</th>
+          <th>Senyawa Aktif</th>
+          <th>Komposisi Penyusun</th>
+          <th>Dampak pada pH Tanah</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ZA</td>
+          <td>Amonium Sulfat — \((NH_4)_2SO_4\)</td>
+          <td>Asam Kuat \((H_2SO_4)\) + Basa Lemah \((NH_3)\)</td>
+          <td><span class="badge badge-asam">Asam</span></td>
+        </tr>
+        <tr>
+          <td>TSP</td>
+          <td>Triple Super Phosphate — \(Ca(H_2PO_4)_2\)</td>
+          <td>Asam Lemah \((H_3PO_4)\) + Basa Kuat \((Ca(OH)_2)\)</td>
+          <td><span class="badge badge-basa">Basa</span></td>
+        </tr>
+        <tr>
+          <td>Kalium Nitrat</td>
+          <td>Potasium Nitrat — \(KNO_3\)</td>
+          <td>Asam Kuat \((HNO_3)\) + Basa Kuat \((KOH)\)</td>
+          <td><span class="badge badge-netral">Netral</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Menariknya, meskipun semuanya disebut "garam", tidak semuanya bersifat netral ketika dilarutkan dalam air. Ada garam yang membuat larutan menjadi asam (seperti pada pupuk ZA yang mengandung ion \(NH_4^+\)), ada pula yang menjadikannya basa (seperti pada pupuk TSP yang mengandung ion fosfat).
+  </p>
+
+  <!-- Kotak pertanyaan pemantik -->
+  <div class="question-box">
+    Berdasarkan data yang diberikan, mengapa garam dalam pupuk dapat menyebabkan tanah menjadi asam atau basa? Padahal secara umum garam sering dianggap bersifat netral. Bagaimana interaksi ion-ion tersebut dengan air tanah?
+  </div>
+
+  <!-- Sub-judul materi -->
+  <h2>Apa yang Akan Kita Pelajari?</h2>
+
+  <p>
+    Untuk menjawab teka-teki tersebut, pada bagian ini kamu akan mempelajari konsep <strong>Hidrolisis Garam</strong>, yaitu proses reaksi ion-ion garam dengan air yang dapat memengaruhi sifat larutan. Materi akan dipelajari secara bertahap, meliputi:
   </p>
   <ul style="margin-left:1.5rem; color:var(--text-secondary); line-height:1.8;">
-    <li>pengertian hidrolisis garam,</li>
-    <li>jenis-jenis garam berdasarkan sifat larutannya,</li>
-    <li>reaksi hidrolisis yang terjadi,</li>
-    <li>perhitungan pH larutan garam hasil hidrolisis, serta</li>
-    <li>video pembelajaran sebagai penguatan materi.</li>
+    <li>Pengertian hidrolisis garam.</li>
+    <li>Jenis-jenis garam berdasarkan sifat larutannya.</li>
+    <li>Reaksi hidrolisis yang terjadi.</li>
+    <li>Perhitungan pH larutan garam hasil hidrolisis.</li>
+    <li>Video pembelajaran sebagai penguatan materi.</li>
   </ul>
-
-  <p>
-    Melalui pembelajaran ini, kamu akan dapat menjelaskan mengapa suatu larutan garam bisa bersifat asam, basa, atau netral, serta memahami kaitannya dengan fenomena di sekitar.
-  </p>
 
   <div class="highlight">
     <h3 style="color:var(--accent); margin-bottom:0.5rem;">CAPAIAN PEMBELAJARAN</h3>
@@ -209,10 +310,10 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
       Melalui pembelajaran ini, peserta didik diharapkan mampu:
     </p>
     <ul style="margin-left:1.5rem; line-height:1.8;">
-      <li>memahami konsep asam–basa dan kesetimbangan kimia yang berkaitan dengan sifat larutan garam,</li>
-      <li>menganalisis reaksi hidrolisis yang terjadi,</li>
-      <li>menentukan pH larutan garam hasil hidrolisis melalui perhitungan yang sesuai, serta</li>
-      <li>mengaitkan konsep yang dipelajari dengan fenomena kontekstual dalam kehidupan sehari-hari.</li>
+      <li>menjelaskan hubungan antara kekuatan asam–basa dengan sifat larutan garam,</li>
+      <li>menganalisis reaksi hidrolisis ion dalam larutan garam,</li>
+      <li>menghitung pH larutan garam berdasarkan konsep kesetimbangan (Ka, Kb, dan Kw), serta</li>
+      <li>mengaitkan konsep hidrolisis garam dengan fenomena nyata dalam kehidupan sehari-hari.</li>
     </ul>
   </div>
 
@@ -222,9 +323,10 @@ img, video, canvas, iframe { max-width: 100%; height: auto; }
       Setelah mempelajari materi ini, peserta didik diharapkan dapat:
     </p>
     <ol style="margin-left:1.5rem; line-height:1.8;">
-      <li>Menganalisis sifat larutan garam berdasarkan konsep hidrolisis.</li>
-      <li>Menuliskan reaksi hidrolisis yang terjadi.</li>
-      <li>Menghitung pH larutan garam hasil hidrolisis dengan tepat.</li>
+      <li>Menjelaskan hubungan antara kekuatan asam dan basa penyusunnya dengan sifat larutan garam (asam, basa, atau netral) secara tepat.</li>
+      <li>Menganalisis reaksi hidrolisis ion (kation atau anion) yang terjadi saat garam dilarutkan dalam air untuk menentukan penyebab sifat larutannya.</li>
+      <li>Menghitung pH larutan garam dengan akurat menggunakan data konstanta kesetimbangan (Ka, Kb, dan Kw).</li>
+      <li>Mengaitkan konsep hidrolisis garam dengan fenomena nyata dalam kehidupan sehari-hari, seperti pada permasalahan keasaman tanah akibat penggunaan pupuk.</li>
     </ol>
   </div>
 
