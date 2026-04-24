@@ -133,6 +133,41 @@ footer{
   table{font-size:0.85rem}
   th,td{padding:0.5rem}
 }
+
+/* === RESPONSIVE_GLOBAL_START === */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, video, canvas, iframe { max-width: 100%; height: auto; }
+/* === RESPONSIVE_GLOBAL_END === */
+
+
+/* === NAV_UNIFORM_START === */
+.nav-menu{
+  display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  align-items:center;
+}
+.nav-menu .nav-btn{
+  appearance:none;
+  border:0;
+  cursor:pointer;
+  border-radius:999px;
+  padding:.55rem .95rem;
+  font-size:.95rem !important;
+  font-weight:500 !important;
+  line-height:1.1;
+  white-space:nowrap;
+}
+@media (max-width:600px){
+  .nav-menu{ justify-content:center; }
+  .nav-menu .nav-btn{
+    padding:.5rem .8rem;
+    font-size:.9rem !important;
+  }
+}
+/* === NAV_UNIFORM_END === */
+
 </style>
 </head>
 
@@ -250,15 +285,13 @@ const quizData = [
   },
   {
     question: "Garam dari asam kuat dan basa kuat tidak dapat terhidrolisis karena...",
-    options: ["Garam bersifat basa","Garam bersifat asam","Tidak ada ionisasi","Senyawa terionisasi sebagian","Senyawa terionisasi sempurna"],
+    options: ["Senyawa terionisasi sebagian","Senyawa mengalami hidrolisis total","Terbentuk endapan yang tidak larut","Garam memiliki sifat asam yang kuat","Tidak ada reaksi dengan air"],
     correct: 4,
     explanationHTML: `<strong>💡 Pembahasan:</strong><br>
-      Garam dari asam kuat dan basa kuat terionisasi sempurna menghasilkan ion-ion yang merupakan
-      asam/basa konjugasi sangat lemah, sehingga tidak dapat mengikat molekul air.
-      Tidak terhidrolisis, pH = 7 (netral).`
+      Garam dari asam kuat dan basa kuat terbentuk dari kation basa kuat dan anion asam kuat. Karena keduanya merupakan pasangan konjugasi yang sangat lemah, tidak ada ion yang cukup reaktif untuk bereaksi dengan air. Oleh karena itu, garam jenis ini tidak mengalami hidrolisis dan larutannya bersifat netral.`
   },
   {
-    question: "pH garam yang terbentuk dari asam lemah dan basa kuat akan ….",
+    question: "Sifat garam yang terbentuk dari asam lemah dan basa kuat akan ….",
     options: ["memerahkan lakmus biru","membirukan lakmus merah","bersifat netral","tidak berwarna jika ditetesi phenolphthalein","berwarna merah jika ditetesi metil merah"],
     correct: 1,
     explanationHTML: `<strong>💡 Pembahasan:</strong><br>
@@ -281,7 +314,7 @@ const quizData = [
 <strong>Langkah 1 — Hitung K<sub>b</sub>:</strong>
 <math display="block">
   <mrow>
-    <msub><mi>K</mi><mi>b</mi></msub>
+    <msub><mi>K</mi><mi>h</mi></msub>
     <mo>=</mo>
     <mfrac>
       <msub><mi>K</mi><mi>w</mi></msub>
@@ -303,7 +336,7 @@ const quizData = [
     <mo>=</mo>
     <msqrt>
       <mrow>
-        <msub><mi>K</mi><mi>b</mi></msub>
+        <msub><mi>K</mi><mi>h</mi></msub>
         <mo>×</mo>
         <mi>M</mi>
       </mrow>
